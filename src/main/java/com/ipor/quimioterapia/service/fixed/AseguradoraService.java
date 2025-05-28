@@ -18,8 +18,6 @@ public class AseguradoraService {
         entidad.setIsActive(Boolean.TRUE);
         aseguradoraRepository.save(entidad);
     }
-
-
     public List<Aseguradora> getLista(){
         return aseguradoraRepository.findAllByOrderByNombreAsc();
     }
@@ -29,10 +27,10 @@ public class AseguradoraService {
     public Aseguradora getPorID(Long id) {
         return aseguradoraRepository.findById(id).get();
     }
-    public void actualizar(Long id, Aseguradora aseguradoraActualizada) {
-        Aseguradora aseguradoraExistente = aseguradoraRepository.findById(id).get();
-        aseguradoraExistente.setNombre(aseguradoraActualizada.getNombre());
-        aseguradoraRepository.save(aseguradoraExistente);
+    public void actualizar(Long id, String nombre) {
+        Aseguradora entidad = aseguradoraRepository.findById(id).orElseThrow();
+        entidad.setNombre(nombre);
+        aseguradoraRepository.save(entidad);
     }
     public void cambiarEstado(Long id, boolean isActive) {
         Aseguradora aseguradora = aseguradoraRepository.findById(id).get();

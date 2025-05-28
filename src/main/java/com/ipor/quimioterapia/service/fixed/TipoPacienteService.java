@@ -32,11 +32,12 @@ public class TipoPacienteService {
         return tipoPacienteRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, TipoPaciente tipoPacienteActualizada) {
-        TipoPaciente tipoPacienteExistente = tipoPacienteRepository.findById(id).get();
-        tipoPacienteExistente.setNombre(tipoPacienteActualizada.getNombre());
-        tipoPacienteRepository.save(tipoPacienteExistente);
+    public void actualizar(Long id, String nombre) {
+        TipoPaciente entidad = tipoPacienteRepository.findById(id).orElseThrow();
+        entidad.setNombre(nombre);
+        tipoPacienteRepository.save(entidad);
     }
+
     public void cambiarEstado(Long id, boolean isActive) {
         TipoPaciente tipoPaciente = tipoPacienteRepository.findById(id).get();
         tipoPaciente.setIsActive(isActive);

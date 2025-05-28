@@ -33,11 +33,12 @@ public class TipoDocIdentidadService {
         return tipoDocIdentidadRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, TipoDocIdentidad tipoDocIdentidadActualizada) {
-        TipoDocIdentidad tipoDocIdentidadExistente = tipoDocIdentidadRepository.findById(id).get();
-        tipoDocIdentidadExistente.setNombre(tipoDocIdentidadActualizada.getNombre());
-        tipoDocIdentidadRepository.save(tipoDocIdentidadExistente);
+    public void actualizar(Long id, String nombre) {
+        TipoDocIdentidad entidad = tipoDocIdentidadRepository.findById(id).orElseThrow();
+        entidad.setNombre(nombre);
+        tipoDocIdentidadRepository.save(entidad);
     }
+
 
     public void cambiarEstado(Long id, boolean isActive) {
         TipoDocIdentidad tipoDocIdentidad = tipoDocIdentidadRepository.findById(id).get();

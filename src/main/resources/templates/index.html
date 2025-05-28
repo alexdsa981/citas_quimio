@@ -54,15 +54,23 @@
                 <input type="text" class="form-control" placeholder="Paciente">
             </div>
             <div class="col-md-2">
-                <select class="form-select">
-                    <option>Estado: TODO</option>
+                <select class="form-select" name="estado">
+                    <option value="">Estado: TODO</option>
+                    <option th:each="estado : ${estadosCita}"
+                            th:value="${estado}"
+                            th:text="${estado}"></option>
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-select">
-                    <option>Cama: TODO</option>
+                <select class="form-select" name="cubiculo">
+                    <option value="">Cubículo: TODO</option>
+                    <option th:each="c : ${Lista_Cubiculo_Activos}"
+                            th:value="${c.id}"
+                            th:text="${c.codigo}">
+                    </option>
                 </select>
             </div>
+
             <div class="col-md-2">
                 <input type="text" id="fechaInicio" class="form-control" placeholder="Desde">
             </div>

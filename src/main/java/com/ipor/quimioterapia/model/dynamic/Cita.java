@@ -28,6 +28,11 @@ public class Cita {
     @Column(nullable = false)
     private LocalTime horaFin;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoCita estado;
+
+
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;

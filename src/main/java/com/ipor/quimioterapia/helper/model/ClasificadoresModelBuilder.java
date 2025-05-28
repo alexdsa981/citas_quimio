@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.helper.model;
 
+import com.ipor.quimioterapia.model.dynamic.EstadoCita;
 import com.ipor.quimioterapia.model.fixed.*;
 import com.ipor.quimioterapia.service.fixed.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class ClasificadoresModelBuilder {
     TipoDocIdentidadService tipoDocIdentidadService;
     @Autowired
     TipoPacienteService tipoPacienteService;
+
+    //ESTADO CITA
+    public Model getListaEstadoCita(Model model) {
+        model.addAttribute("estadosCita", EstadoCita.values());
+        return model;
+    }
 
     //
     // GET LISTA

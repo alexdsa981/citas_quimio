@@ -34,11 +34,11 @@ public class CieService {
         return cieRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, Cie cieActualizado) {
-        Cie cieExistente = cieRepository.findById(id).get();
-        cieExistente.setCodigo(cieActualizado.getCodigo());
-        cieExistente.setDescripcion(cieActualizado.getDescripcion());
-        cieRepository.save(cieExistente);
+    public void actualizar(Long id, String codigo, String descripcion) {
+        Cie entidad = cieRepository.findById(id).orElseThrow();
+        entidad.setCodigo(codigo);
+        entidad.setDescripcion(descripcion);
+        cieRepository.save(entidad);
     }
 
     public void cambiarEstado(Long id, boolean isActive) {

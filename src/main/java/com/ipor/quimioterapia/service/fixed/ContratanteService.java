@@ -33,11 +33,12 @@ public class ContratanteService {
         return contratanteRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, Contratante contratanteActualizado) {
-        Contratante contratanteExistente = contratanteRepository.findById(id).get();
-        contratanteExistente.setNombre(contratanteActualizado.getNombre());
-        contratanteRepository.save(contratanteExistente);
+    public void actualizar(Long id, String nombre) {
+        Contratante entidad = contratanteRepository.findById(id).orElseThrow();
+        entidad.setNombre(nombre);
+        contratanteRepository.save(entidad);
     }
+
 
     public void cambiarEstado(Long id, boolean isActive) {
         Contratante contratante = contratanteRepository.findById(id).get();

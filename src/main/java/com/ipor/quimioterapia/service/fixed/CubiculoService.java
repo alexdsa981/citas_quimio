@@ -33,11 +33,12 @@ public class CubiculoService {
         return cubiculoRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, Cubiculo cubiculoActualizado) {
-        Cubiculo cubiculoExistente = cubiculoRepository.findById(id).get();
-        cubiculoExistente.setCodigo(cubiculoActualizado.getCodigo());
-        cubiculoRepository.save(cubiculoExistente);
+    public void actualizar(Long id, String codigo) {
+        Cubiculo entidad = cubiculoRepository.findById(id).orElseThrow();
+        entidad.setCodigo(codigo);
+        cubiculoRepository.save(entidad);
     }
+
 
     public void cambiarEstado(Long id, boolean isActive) {
         Cubiculo cubiculo = cubiculoRepository.findById(id).get();
