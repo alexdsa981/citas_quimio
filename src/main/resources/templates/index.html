@@ -1,22 +1,194 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head th:insert="~{common/imports :: headImports}">
 </head>
-<body>
-<div th:replace="~{common/header :: header}">
-</div>
-<main class="content-wrapper">
 
+<body class="bg-light">
+    <div th:replace="~{common/header :: header}">
+    </div>
+    <main class="container py-4">
+        <h2 class="text-center mb-4">Quimioterapia</h2>
 
+        <div class="section-header row g-3 align-items-center">
+            <div class="col-md-3">
+                <label class="form-label">Establecimiento</label>
+                <select class="form-select">
+                    <option>ONCOLOGIA</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Servicio</label>
+                <select class="form-select">
+                    <option>QUIMIOTERAPIA</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Médico</label>
+                <select class="form-select">
+                    <option>RODRIGUEZ PANTIGOSO WUILBERT</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Fecha</label>
+                <div class="input-group">
+                    <input type="text" id="fechaPicker" class="form-control">
+                    <button class="btn btn-primary"><i class="bi bi-plus-lg"></i> Agregar</button>
+                </div>
+            </div>
+        </div>
 
+        <div class="mb-3 d-flex flex-wrap gap-2 actions">
+            <button class="btn btn-success"><i class="bi bi-check2-circle"></i> Atendido</button>
+            <button class="btn btn-secondary"><i class="bi bi-check-circle"></i> Confirmar</button>
+            <button class="btn btn-warning"><i class="bi bi-hourglass-split"></i> Pendiente</button>
+            <button class="btn btn-info"><i class="bi bi-arrow-left-right"></i> Transferir</button>
+            <button class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modificar</button>
+            <button class="btn btn-danger"><i class="bi bi-trash"></i> Eliminar</button>
+            <button class="btn btn-outline-secondary"><i class="bi bi-copy"></i> Duplicar Sesión</button>
+            <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Agregar Item's</button>
+        </div>
 
+        <div class="row g-3 mb-3">
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Paciente">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select">
+                    <option>Estado: TODO</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select">
+                    <option>Cama: TODO</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="fechaInicio" class="form-control" placeholder="Desde">
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="fechaFin" class="form-control" placeholder="Hasta">
+            </div>
+            <div class="col-md-1 d-flex gap-1">
+                <button class="btn btn-dark w-100"><i class="bi bi-file-earmark-text"></i></button>
+                <button class="btn btn-outline-dark w-100"><i class="bi bi-download"></i></button>
+            </div>
+        </div>
 
+        <div class="table-wrapper">
+            <table class="table table-bordered table-striped table-sm">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Historia</th>
+                        <th>Paciente</th>
+                        <th>Fec. Ingreso</th>
+                        <th>Cama</th>
+                        <th>Hora Programada</th>
+                        <th>Hora Real</th>
+                        <th>Hora Fin</th>
+                        <th>Hora Protocolo</th>
+                        <th>Estado</th>
+                        <th>TipoPaciente</th>
+                        <th>Aseguradora</th>
+                        <th>Contratante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#">07480298</a></td>
+                        <td>HURTADO CUELLAR, P.</td>
+                        <td>27/05/2025</td>
+                        <td>G</td>
+                        <td>07:30:00</td>
+                        <td>08:00:00</td>
+                        <td>00:00:00</td>
+                        <td>05:00:00</td>
+                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
+                        <td>PARTICULAR</td>
+                        <td>PARTICULAR</td>
+                        <td>ONCOLOGIA</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">237848</a></td>
+                        <td>RAZURI LOPEZ, M.</td>
+                        <td>27/05/2025</td>
+                        <td>B</td>
+                        <td>08:00:00</td>
+                        <td>00:00:00</td>
+                        <td>00:00:00</td>
+                        <td>02:00:00</td>
+                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
+                        <td>PARTICULAR</td>
+                        <td>PARTICULAR</td>
+                        <td>ONCOLOGIA</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">07362426</a></td>
+                        <td>GUTTI CAMPOS, L.</td>
+                        <td>27/05/2025</td>
+                        <td>S2</td>
+                        <td>08:00:00</td>
+                        <td>00:00:00</td>
+                        <td>00:00:00</td>
+                        <td>06:00:00</td>
+                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
+                        <td>CONVENIO</td>
+                        <td>NINGUNO</td>
+                        <td>NINGUNO</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">08192557</a></td>
+                        <td>ZEGARRA ROJAS, C.</td>
+                        <td>27/05/2025</td>
+                        <td>C</td>
+                        <td>09:00:00</td>
+                        <td>00:00:00</td>
+                        <td>00:00:00</td>
+                        <td>02:00:00</td>
+                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
+                        <td>CRP</td>
+                        <td>ADMINISTRADO</td>
+                        <td>PLAN SALUD (9...)</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">43053</a></td>
+                        <td>ELERA PICHILINGUE, A.</td>
+                        <td>27/05/2025</td>
+                        <td>S2</td>
+                        <td>09:30:00</td>
+                        <td>00:00:00</td>
+                        <td>00:00:00</td>
+                        <td>03:00:00</td>
+                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
+                        <td>CRP</td>
+                        <td>ADMINISTRADO</td>
+                        <td>PACIFICO SA EN...</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </main>
     <div th:insert="~{common/imports :: bodyImports}">
     </div>
     <div th:insert="~{common/footer :: footer}">
     </div>
-</main>
+    <script>
+        new Litepicker({
+            element: document.getElementById('fechaPicker'),
+            format: 'DD/MM/YYYY'
+        });
+
+        new Litepicker({
+            element: document.getElementById('fechaInicio'),
+            format: 'DD/MM/YYYY'
+        });
+
+        new Litepicker({
+            element: document.getElementById('fechaFin'),
+            format: 'DD/MM/YYYY'
+        });
+    </script>
 </body>
 
 </html>

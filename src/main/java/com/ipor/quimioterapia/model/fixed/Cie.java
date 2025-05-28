@@ -17,4 +17,6 @@ public class Cie {
     private String codigo;
     @Column(nullable = false)
     private String descripcion;
+    @Column(nullable = false)
+    private Boolean isActive;
 }

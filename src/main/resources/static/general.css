@@ -1,0 +1,15 @@
+.section-header {
+  background-color: #e0e7ff;
+  padding: 1rem;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+}
+
+.table-wrapper {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.actions button {
+  margin: 0.25rem;
+}

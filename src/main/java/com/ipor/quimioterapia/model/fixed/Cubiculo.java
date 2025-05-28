@@ -17,5 +17,6 @@ public class Cubiculo {
     private Long id;
     @Column(nullable = false)
     private String codigo;
-
+    @Column(nullable = false)
+    private Boolean isActive;
 }
