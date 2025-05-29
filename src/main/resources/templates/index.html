@@ -33,7 +33,9 @@
                 <label class="form-label">Fecha</label>
                 <div class="input-group">
                     <input type="text" id="fechaPicker" class="form-control">
-                    <button class="btn btn-primary"><i class="bi bi-plus-lg"></i> Agregar</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFichaPaciente">
+                        <i class="bi bi-plus-lg"></i> Agregar
+                    </button>
                 </div>
             </div>
         </div>
@@ -176,6 +178,12 @@
 
             </table>
         </div>
+
+
+
+        <div th:replace="fragments/modal-ficha-paciente :: modalFichaPaciente"></div>
+
+
     </main>
     <div th:insert="~{common/imports :: bodyImports}">
     </div>
