@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.service.fixed;
 
+import com.ipor.quimioterapia.model.fixed.Aseguradora;
 import com.ipor.quimioterapia.model.fixed.Contratante;
 import com.ipor.quimioterapia.repository.fixed.ContratanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,15 @@ import java.util.List;
 public class ContratanteService {
 
     @Autowired
-    private ContratanteRepository contratanteRepository;
+    ContratanteRepository contratanteRepository;
+    @Autowired
+    AseguradoraService aseguradoraService;
 
-    public void crear(String nombre) {
+    public void crear(String nombre, Long idAseguradora) {
         Contratante entidad = new Contratante();
         entidad.setNombre(nombre);
         entidad.setIsActive(Boolean.TRUE);
+        entidad.setAseguradora(aseguradoraService.getPorID(idAseguradora));
         contratanteRepository.save(entidad);
     }
 
@@ -32,6 +36,11 @@ public class ContratanteService {
     public Contratante getPorID(Long id) {
         return contratanteRepository.findById(id).get();
     }
+
+    public List<Contratante> getPorAseguradora(Long idAseguradora) {
+        return contratanteRepository.findByAseguradoraIdAndIsActiveTrueOrderByNombreAsc(idAseguradora);
+    }
+
 
     public void actualizar(Long id, String nombre) {
         Contratante entidad = contratanteRepository.findById(id).orElseThrow();

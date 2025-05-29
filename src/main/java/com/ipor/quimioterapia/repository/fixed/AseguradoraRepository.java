@@ -8,5 +8,6 @@ import java.util.List;
 public interface AseguradoraRepository extends JpaRepository<Aseguradora, Long> {
     List<Aseguradora> findAllByOrderByNombreAsc();
     List<Aseguradora> findByIsActiveTrueOrderByNombreAsc();
+    List<Aseguradora> findByTipoPacienteIdAndIsActiveTrueOrderByNombreAsc(Long id);
 
 }

@@ -1,6 +1,7 @@
 package com.ipor.quimioterapia.controller;
 
 import com.ipor.quimioterapia.helper.model.ClasificadoresModelBuilder;
+import com.ipor.quimioterapia.helper.model.PersonalModelBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
     @Autowired
     ClasificadoresModelBuilder clasificadoresModelBuilder;
-
+    @Autowired
+    PersonalModelBuilder personalModelBuilder;
     //redirige / a /login
     @GetMapping("/")
     public String redirectToInicio() {
@@ -28,6 +30,10 @@ public class WebController {
         clasificadoresModelBuilder.getListaCubiculosActivos(model);
         clasificadoresModelBuilder.getListaTipoDocIdentidadActivos(model);
         clasificadoresModelBuilder.getListaTipoPacienteActivos(model);
+
+        personalModelBuilder.getListaMedicosActivos(model);
+        personalModelBuilder.getListaEnfermerasActivos(model);
+
         model.addAttribute("Titulo", "Quimioterapia | Principal");
         return "index";
     }

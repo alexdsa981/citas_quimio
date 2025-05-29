@@ -1,6 +1,7 @@
 package com.ipor.quimioterapia.model.dynamic;
 
 import com.ipor.quimioterapia.model.fixed.Cubiculo;
+import com.ipor.quimioterapia.repository.dynamic.MedicoRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,5 +43,8 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "id_enfermera")
     private Enfermera enfermera;
+    @ManyToOne
+    @JoinColumn(name = "id_medico")
+    private Medico medico;
 
 }

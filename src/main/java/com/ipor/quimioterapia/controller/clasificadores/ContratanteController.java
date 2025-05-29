@@ -1,9 +1,13 @@
 package com.ipor.quimioterapia.controller.clasificadores;
 
+import com.ipor.quimioterapia.model.fixed.Aseguradora;
+import com.ipor.quimioterapia.service.fixed.AseguradoraService;
 import com.ipor.quimioterapia.service.fixed.ContratanteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/app/clasificadores/contratante")
@@ -12,9 +16,10 @@ public class ContratanteController {
     @Autowired
     ContratanteService contratanteService;
 
+
     @PostMapping("/nuevo")
-    public ResponseEntity<?> crear(@RequestParam String nombre) {
-        contratanteService.crear(nombre);
+    public ResponseEntity<?> crear(@RequestParam String nombre, @RequestParam Long idContratante) {
+        contratanteService.crear(nombre, idContratante);
         return ResponseEntity.ok().build();
     }
 

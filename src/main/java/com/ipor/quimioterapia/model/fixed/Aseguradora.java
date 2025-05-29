@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.model.fixed;
 
+import com.ipor.quimioterapia.model.dynamic.Medico;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,8 @@ public class Aseguradora {
     private String nombre;
     @Column(nullable = false)
     private Boolean isActive;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_paciente")
+    private TipoPaciente tipoPaciente;
 
 }

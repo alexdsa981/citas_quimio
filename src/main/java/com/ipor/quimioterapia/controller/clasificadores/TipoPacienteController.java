@@ -1,9 +1,13 @@
 package com.ipor.quimioterapia.controller.clasificadores;
 
+import com.ipor.quimioterapia.model.fixed.Aseguradora;
+import com.ipor.quimioterapia.service.fixed.AseguradoraService;
 import com.ipor.quimioterapia.service.fixed.TipoPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/app/clasificadores/tipopaciente")
@@ -11,6 +15,15 @@ public class TipoPacienteController {
 
     @Autowired
     TipoPacienteService tipoPacienteService;
+
+    @Autowired
+    AseguradoraService aseguradoraService;
+
+    @GetMapping("/lista-aseguradoras/{id}")
+    @ResponseBody
+    public List<Aseguradora> getAseguradoras(@PathVariable Long id) {
+        return aseguradoraService.getPorTipoPaciente(id);
+    }
 
     @PostMapping("/nuevo")
     public ResponseEntity<?> crear(@RequestParam String nombre) {

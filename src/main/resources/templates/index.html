@@ -8,7 +8,13 @@
     <div th:replace="~{common/header :: header}">
     </div>
     <main class="container py-4">
-        <h2 class="text-center mb-4">Quimioterapia</h2>
+        <h2 class="text-center mb-4">
+            Quimioterapia
+            <small class="text-muted">
+                (<span th:text="${fechaActual}"></span> <span id="horaActual" th:text="${horaActual}"></span>)
+            </small>
+        </h2>
+
 
         <div class="section-header row g-3 align-items-center">
             <div class="col-md-3">
@@ -25,10 +31,15 @@
             </div>
             <div class="col-md-3">
                 <label class="form-label">Médico</label>
-                <select class="form-select">
-                    <option>RODRIGUEZ PANTIGOSO WUILBERT</option>
+                <select class="form-select" name="idMedico">
+                    <option value="">-- Seleccione --</option>
+                    <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                        <option th:value="${medico.id}"
+                                th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                    </th:block>
                 </select>
             </div>
+
             <div class="col-md-3">
                 <label class="form-label">Fecha</label>
                 <div class="input-group">
@@ -181,18 +192,20 @@
 
 
 
-        <div th:replace="fragments/modal-ficha-paciente :: modalFichaPaciente"></div>
+        <div th:replace="~{fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
 
 
     </main>
-    <div th:insert="~{common/imports :: bodyImports}">
-    </div>
+    <th:block th:replace="~{common/imports :: bodyImports}"/>
+
     <div th:insert="~{common/footer :: footer}">
     </div>
+    <script src="/js/fragments/modal-ficha-paciente.js"></script>
     <script>
         new Litepicker({
             element: document.getElementById('fechaPicker'),
-            format: 'DD/MM/YYYY'
+            format: 'DD/MM/YYYY',
+            startDate: new Date() // Establece la fecha actual
         });
 
         new Litepicker({

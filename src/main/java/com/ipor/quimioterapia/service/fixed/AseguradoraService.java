@@ -11,10 +11,13 @@ import java.util.List;
 public class AseguradoraService {
     @Autowired
     AseguradoraRepository aseguradoraRepository;
+    @Autowired
+    TipoPacienteService tipoPacienteService;
 
-    public void crear(String nombre) {
+    public void crear(String nombre, Long idTipoPaciente) {
         Aseguradora entidad = new Aseguradora();
         entidad.setNombre(nombre);
+        entidad.setTipoPaciente(tipoPacienteService.getPorID(idTipoPaciente));
         entidad.setIsActive(Boolean.TRUE);
         aseguradoraRepository.save(entidad);
     }
@@ -24,9 +27,16 @@ public class AseguradoraService {
     public List<Aseguradora> getListaActivos(){
         return aseguradoraRepository.findByIsActiveTrueOrderByNombreAsc();
     }
+
+
     public Aseguradora getPorID(Long id) {
         return aseguradoraRepository.findById(id).get();
     }
+    public List<Aseguradora> getPorTipoPaciente(Long idTipoPaciente) {
+        return aseguradoraRepository.findByTipoPacienteIdAndIsActiveTrueOrderByNombreAsc(idTipoPaciente);
+    }
+
+
     public void actualizar(Long id, String nombre) {
         Aseguradora entidad = aseguradoraRepository.findById(id).orElseThrow();
         entidad.setNombre(nombre);

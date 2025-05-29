@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.model.fixed;
+package com.ipor.quimioterapia.model.dynamic;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,15 +9,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Contratante {
+public class Medico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
+    private String apellidoP;
+    @Column(nullable = false)
+    private String apellidoM;
+    @Column(nullable = false)
     private Boolean isActive;
-    @ManyToOne
-    @JoinColumn(name = "id_aseguradora")
-    private Aseguradora aseguradora;
+
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface ContratanteRepository extends JpaRepository<Contratante, Long> {
     List<Contratante> findAllByOrderByNombreAsc();
     List<Contratante> findByIsActiveTrueOrderByNombreAsc();
+    List<Contratante> findByAseguradoraIdAndIsActiveTrueOrderByNombreAsc(Long idAseguradora);
 }

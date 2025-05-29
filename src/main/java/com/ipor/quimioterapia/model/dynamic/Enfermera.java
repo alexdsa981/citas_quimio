@@ -23,5 +23,7 @@ public class Enfermera {
     private String apellidoP;
     @Column(nullable = false)
     private String apellidoM;
+    @Column(nullable = false)
+    private Boolean isActive;
 
 }
