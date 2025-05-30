@@ -81,3 +81,27 @@ document.addEventListener('DOMContentLoaded', function () {
         edadInput.value = edad;
     });
 });
+
+
+/*
+function generarOpcionesHora(selectElement) {
+for (let h = 7; h < 20; h++) {
+  for (let m = 0; m < 60; m += 15) {
+    const hora = h.toString().padStart(2, '0');
+    const minuto = m.toString().padStart(2, '0');
+    const option = document.createElement('option');
+    option.value = `${hora}:${minuto}`;
+    option.textContent = `${hora}:${minuto}`;
+    selectElement.appendChild(option);
+  }
+}
+
+// Agregar exactamente 20:00
+const option = document.createElement('option');
+option.value = `20:00`;
+option.textContent = `20:00`;
+selectElement.appendChild(option);
+}
+
+document.querySelectorAll('.hora-select').forEach(generarOpcionesHora);
+*/

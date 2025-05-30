@@ -23,6 +23,8 @@ public class ClasificadoresModelBuilder {
     TipoDocIdentidadService tipoDocIdentidadService;
     @Autowired
     TipoPacienteService tipoPacienteService;
+    @Autowired
+    TipoEntradaService tipoEntradaService;
 
     //ESTADO CITA
     public Model getListaEstadoCita(Model model) {
@@ -62,6 +64,11 @@ public class ClasificadoresModelBuilder {
     public Model getListaTipoPaciente(Model model) {
         List<TipoPaciente> lista = tipoPacienteService.getLista();
         model.addAttribute("Lista_TipoPaciente", lista);
+        return model;
+    }
+    public Model getListaTipoEntrada(Model model) {
+        List<TipoEntrada> lista = tipoEntradaService.getLista();
+        model.addAttribute("Lista_TipoEntrada", lista);
         return model;
     }
 
@@ -105,4 +112,10 @@ public class ClasificadoresModelBuilder {
         model.addAttribute("Lista_TipoPaciente_Activos", lista);
         return model;
     }
+    public Model getListaTipoEntradaActivos(Model model) {
+        List<TipoEntrada> lista = tipoEntradaService.getListaActivos();
+        model.addAttribute("Lista_TipoEntrada_Activos", lista);
+        return model;
+    }
+
 }

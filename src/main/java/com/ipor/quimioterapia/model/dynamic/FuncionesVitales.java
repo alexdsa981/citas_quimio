@@ -18,8 +18,8 @@ public class FuncionesVitales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "id_paciente")
-    private Paciente paciente;
+    @JoinColumn(name = "id_cita")
+    private Cita cita;
     @Column(nullable = false)
     private Boolean estado;
     @Column(nullable = false)

@@ -30,6 +30,8 @@ public class WebController {
         clasificadoresModelBuilder.getListaCubiculosActivos(model);
         clasificadoresModelBuilder.getListaTipoDocIdentidadActivos(model);
         clasificadoresModelBuilder.getListaTipoPacienteActivos(model);
+        clasificadoresModelBuilder.getListaTipoEntradaActivos(model);
+
 
         personalModelBuilder.getListaMedicosActivos(model);
         personalModelBuilder.getListaEnfermerasActivos(model);

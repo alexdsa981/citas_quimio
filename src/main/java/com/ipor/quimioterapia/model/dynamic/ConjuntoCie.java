@@ -19,7 +19,7 @@ public class ConjuntoCie {
     @JoinColumn(name = "id_cie")
     private Cie cie;
     @ManyToOne
-    @JoinColumn(name = "id_funciones_vitales")
-    private FuncionesVitales funcionesVitales;
+    @JoinColumn(name = "id_cita")
+    private Cita cita;
 
 }

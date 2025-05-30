@@ -55,6 +55,12 @@ public class DataInitializer implements CommandLineRunner {
     TipoPacienteRepository tipoPacienteRepository;
 
     @Autowired
+    TipoEntradaService tipoEntradaService;
+    @Autowired
+    TipoEntradaRepository tipoEntradaRepository;
+
+
+    @Autowired
     MedicoService medicoService;
     @Autowired
     MedicoRepository medicoRepository;
@@ -75,65 +81,119 @@ public class DataInitializer implements CommandLineRunner {
         }
 
 
-
+        if (tipoEntradaRepository.count() == 0) {
+            tipoEntradaService.crear("AMBULATORIO");
+            tipoEntradaService.crear("HOSPITALIZADO");
+        }
 
 
         // Crear Tipo Paciente
         if (tipoPacienteRepository.count() == 0) {
             tipoPacienteService.crear("CRP");    // ID: 1
-            tipoPacienteService.crear("Convenio");  // ID: 2
-            tipoPacienteService.crear("Particular");     // ID: 3
+            tipoPacienteService.crear("CONVENIO");  // ID: 2
+            tipoPacienteService.crear("PARTICULAR");     // ID: 3
         }
 
         // Crear Aseguradoras asociadas a cada Tipo Paciente
         if (aseguradoraRepository.count() == 0) {
-            // Para Ambulatorio (tipoPacienteId = 1)
-            aseguradoraService.crear("Rímac Seguros", 1L);       // ID: 1
-            aseguradoraService.crear("Pacífico EPS", 1L);        // ID: 2
+            // PARA CRP (tipoPacienteId = 1)
+            aseguradoraService.crear("ADMINISTRADORA CLINICA RICARDO PALMA", 1L); //1
+            // PARA CONVENIO (tipoPacienteId = 2)
+            aseguradoraService.crear("ADMINISTRADORA CLINICA RICARDO PALMA", 2L); //2
+            aseguradoraService.crear("ESALUD", 2L); //3
+            aseguradoraService.crear("FOPASEP", 2L); //4
+            aseguradoraService.crear("IAFAS DE LA MARINA DE GUERRA DEL PERU", 2L); //5
+            aseguradoraService.crear("IPOR (SEDE SAN BORJA)", 2L); //6
+            aseguradoraService.crear("MINSA", 2L); //7
+            aseguradoraService.crear("NINGUNO", 2L); //8
+            aseguradoraService.crear("O-BNP PARIBAS CARDIF SA", 2L); //9
+            aseguradoraService.crear("O-FEBAN", 2L); //10
+            aseguradoraService.crear("ONCO - FAP", 2L); //11
+            aseguradoraService.crear("O-ONCOSALUD SAC", 2L); //12
+            aseguradoraService.crear("O-SALUDPOL-HNLNS-PNP", 2L); //13
+            aseguradoraService.crear("SAN PABLO - ALMENARA", 2L); //14
+            aseguradoraService.crear("VESALIO SA", 2L); //15
+            // PARA PARTICULAR (tipoPacienteId = 3)
+            aseguradoraService.crear("PARTICULAR", 3L); //16
+            aseguradoraService.crear("PARTICULAR MEDICO", 3L); //17
 
-            // Para Hospitalizado (tipoPacienteId = 2)
-            aseguradoraService.crear("Mapfre Perú", 2L);         // ID: 3
-            aseguradoraService.crear("La Positiva", 2L);         // ID: 4
-            aseguradoraService.crear("SIS", 2L);                 // ID: 5
 
-            // Para Emergencia (tipoPacienteId = 3)
-            aseguradoraService.crear("Seguros SURA", 3L);        // ID: 6
+
         }
 
         // Crear Contratantes asociados a cada Aseguradora
         if (contratanteRepository.count() == 0) {
-            // Para Rímac Seguros (aseguradoraId = 1)
-            contratanteService.crear("Ministerio de Salud", 1L);     // ID: 1
-            contratanteService.crear("EsSalud", 1L);                 // ID: 2
+            // Para ADMINISTRADORA CLINICA RICARDO PALMA (aseguradoraId = 1)
+            contratanteService.crear("ELECTRO PERU SA (51690)", 1L);
+            contratanteService.crear("FEBAN (40047)", 1L);
+            contratanteService.crear("MAFRE PERU SA ENTIDAD PRESTADORA DE SALUD (70008)", 1L);
+            contratanteService.crear("MAPFRE COMPAÑIA DE SEGUROS (20008)", 1L);
+            contratanteService.crear("NINGUNO", 1L);
+            contratanteService.crear("ONCOSALUD (50548)", 1L);
+            contratanteService.crear("PACIFICO PERUANO SUIZA (20003)", 1L);
+            contratanteService.crear("PACIFICO SA ENTIDAD PRESTADORA DE SALUD (70004)", 1L);
+            contratanteService.crear("PARTICULAR (1000)", 1L);
+            contratanteService.crear("PETROLEOS DEL PERU - PETROPERU (40051)", 1L);
+            contratanteService.crear("PLAN SALUD (90001 - 55986)", 1L);
+            contratanteService.crear("PLAN SALUD ADULTO MAYOR (90001 - 57669)", 1L);
+            contratanteService.crear("PROGRAMA DE APOYO SOCIAL (10019)", 1L);
+            contratanteService.crear("RIMAC SA ENTIDAD PRESTADORA (70001)", 1L);
+            contratanteService.crear("RIMAC SEGUROS Y REASEGUROS (20026)", 1L);
+            contratanteService.crear("SUNAT", 1L);
 
-            // Para Pacífico EPS (aseguradoraId = 2)
-            contratanteService.crear("Sanidad de las Fuerzas Armadas", 2L); // ID: 3
+            // Para ADMINISTRADORA CLINICA RICARDO PALMA (aseguradoraId = 2)
+            contratanteService.crear("LA POSITIVA SANITAS EPS (70011)", 2L);
 
-            // Para Mapfre Perú (aseguradoraId = 3)
-            contratanteService.crear("Clínica Internacional", 3L);   // ID: 4
-            contratanteService.crear("RedSalud", 3L);                // ID: 5
+            // Para ESSALUD (aseguradoraId = 3)
+            contratanteService.crear("RAS. ALMENARA", 3L);
+            contratanteService.crear("RAS. AREQUIPA", 3L);
+            contratanteService.crear("RAS. CUSCO", 3L);
+            contratanteService.crear("RAS. REBAGLIATI", 3L);
+            contratanteService.crear("RAS. SABOGAL", 3L);
+            // Para FOPASEP (aseguradoraId = 4)
+            contratanteService.crear("FOPASEP", 4L);
+            // Para IAFAS DE LA MARINA DE GUERRA DEL PERU (aseguradoraId = 5)
+            contratanteService.crear("IAFAS DE LA MARINA DE GUERRA DEL PERU", 5L);
+            // Para IPOR (SEDE SAN BORJA) (aseguradoraId = 6)
+            contratanteService.crear("PARTICULAR", 6L);
+            // Para MINSA (aseguradoraId = 7)
+            contratanteService.crear("HOSPITAL NACIONAL DOS DE MAYO", 7L);
+            contratanteService.crear("INSTITUTO NACIONAL DEL NIÑO", 7L);
+            contratanteService.crear("INSTITUTO NACIONAL DE CIENCIAS NEUROLOGICAS", 7L);
+            // Para NINGUNO (aseguradoraId = 8)
+            contratanteService.crear("NINGUNO", 8L);
+            // Para O-BNP PARIBAS CARDIF SA (aseguradoraId = 9)
+            contratanteService.crear("BNP PARIBAS CARDIF SA", 9L);
+            // Para O-FEBAN (aseguradoraId = 10)
+            contratanteService.crear("FONDOS DE EMPLEADOS DEL BANCO DE LA NACION", 10L);
+            // Para ONCO - FAP (aseguradoraId = 11)
+            contratanteService.crear("ONCO - FAP", 11L);
+            // Para O-ONCOSALUD SAC (aseguradoraId = 12)
+            contratanteService.crear("ONCOSALUD", 12L);
+            // Para O-SALUDPOL-HNLNS-PNP (aseguradoraId = 13)
+            contratanteService.crear("SALUDPOL", 13L);
+            // Para SAN PABLO - ALMENARA (aseguradoraId = 14)
+            contratanteService.crear("SAN PABLO - ALMENARA", 14L);
+            // Para VESALIO SA (aseguradoraId = 15)
+            contratanteService.crear("BNP PARIBAS CARDIF", 15L);
+            contratanteService.crear("DOE RUN", 15L);
+            contratanteService.crear("FONDO EMPLEADOS BCRP", 15L);
+            contratanteService.crear("INMUEBLES Y RECUPERAC. CONTINENTAL BBVA", 15L);
+            contratanteService.crear("LA POSITIVA SANITAS EPS", 15L);
+            contratanteService.crear("LA POSITIVA SEGUROS Y REASEGUROS", 15L);
+            contratanteService.crear("PACIFICO PERUANO SUIZA", 15L);
+            contratanteService.crear("RIMAC SEGUROS Y REASEGUROS", 15L);
+            contratanteService.crear("VESALIO SA", 15L);
+            // Para VESALIO SA (aseguradoraId = 16)
+            contratanteService.crear("ONCOLOGIA", 16L);
+            // Para VESALIO SA (aseguradoraId = 17)
+            contratanteService.crear("PARTICULAR", 17L);
 
-            // Para La Positiva (aseguradoraId = 4)
-            contratanteService.crear("Policía Nacional", 4L);        // ID: 6
 
-            // Para SIS (aseguradoraId = 5)
-            contratanteService.crear("Ministerio de Inclusión Social", 5L); // ID: 7
-
-            // Para SURA (aseguradoraId = 6)
-            contratanteService.crear("Fuerza Aérea del Perú", 6L);   // ID: 8
-            contratanteService.crear("Ejército del Perú", 6L);       // ID: 9
         }
 
-
-
-
-
-
-
         if (cieRepository.count() == 0) {
-            cieService.crear("A00", "Cólera");
-            cieService.crear("B20", "VIH");
-            cieService.crear("C34", "Neoplasia maligna de bronquios y pulmón");
+
         }
 
 
@@ -148,6 +208,8 @@ public class DataInitializer implements CommandLineRunner {
             tipoDocIdentidadService.crear("DNI");
             tipoDocIdentidadService.crear("Carné de Extranjería");
             tipoDocIdentidadService.crear("Pasaporte");
+            tipoDocIdentidadService.crear("PTP");
+
         }
 
         if (tipoPacienteRepository.count() == 0) {
@@ -167,6 +229,7 @@ public class DataInitializer implements CommandLineRunner {
             enfermeraService.crear("Pedro", "Salas", "Mejía");
             enfermeraService.crear("Lucía", "Vega", "Huamán");
         }
+
 
 
     }

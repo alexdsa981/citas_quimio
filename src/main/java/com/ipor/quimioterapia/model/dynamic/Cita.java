@@ -25,7 +25,7 @@ public class Cita {
     @Column(nullable = false)
     private LocalTime horaProtocolo;
     @Column(nullable = false)
-    private LocalTime horaInicio;
+    private LocalTime horaInicio; //hora real
     @Column(nullable = false)
     private LocalTime horaFin;
 
@@ -46,5 +46,12 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "id_medico")
     private Medico medico;
+
+    @Column(nullable = false)
+    private String tipoPacienteNombre;
+    @Column(nullable = false)
+    private String aseguradoraNombre;
+    @Column(nullable = false)
+    private String contratanteNombre;
 
 }

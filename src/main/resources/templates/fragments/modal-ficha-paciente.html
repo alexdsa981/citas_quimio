@@ -42,13 +42,23 @@
                                     </select>
                                 </div>
 
+                                <!--
                                 <div class="col-md-3">
-                                    <label class="form-label">Hora Inicio</label>
-                                    <select class="form-select"></select>
+                                    <label class="form-label">Hora Inicio:</label>
+                                    <select class="form-control hora-select"></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Hora Protocolo:</label>
+                                    <select class="form-control hora-select"></select>
+                                </div>
+                                -->
+                                <div class="col-md-3">
+                                    <label class="form-label">Hora Programada</label>
+                                    <input type="time" class="form-control" value="07:00">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Hora Protocolo</label>
-                                    <input type="time" class="form-control" value="00:00">
+                                    <input type="time" class="form-control" value="07:00">
                                 </div>
                             </div>
                         </div>
@@ -137,11 +147,13 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Entrada</label>
-                                    <select class="form-select">
-                                        <option>AMBULATORIO</option>
-                                        <!-- otras opciones -->
+                                    <select class="form-select" name="tipoEntradaId">
+                                        <th:block th:each="entrada : ${Lista_TipoEntrada_Activos}">
+                                            <option th:value="${entrada.id}" th:text="${entrada.nombre}"></option>
+                                        </th:block>
                                     </select>
                                 </div>
+
 
                                 <div class="col-md-3">
                                     <label class="form-label">CIE 10</label>
