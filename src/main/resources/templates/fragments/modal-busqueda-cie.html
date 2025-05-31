@@ -1,0 +1,40 @@
+<div th:fragment="modalBusquedaCie" xmlns:th="http://www.thymeleaf.org">
+    <!-- Modal de búsqueda -->
+    <div class="modal fade" id="modalCie" tabindex="-1" aria-labelledby="modalCieLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCieLabel">Buscar CIE10</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select id="tipo-busqueda" class="form-select">
+                                <option value="codigo">Buscar por código</option>
+                                <option value="nombre">Buscar por nombre</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" id="filtro-cie" class="form-control" placeholder="Escribe nombre o código..." autocomplete="off">
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Código CIE</th>
+                            <th>Nombre</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-cie">
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">Ingrese un término para buscar</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

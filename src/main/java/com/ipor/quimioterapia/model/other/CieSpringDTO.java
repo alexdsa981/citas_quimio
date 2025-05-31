@@ -1,6 +1,5 @@
 package com.ipor.quimioterapia.model.other;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
 /*
 function generarOpcionesHora(selectElement) {
 for (let h = 7; h < 20; h++) {
@@ -105,3 +106,14 @@ selectElement.appendChild(option);
 
 document.querySelectorAll('.hora-select').forEach(generarOpcionesHora);
 */
+
+
+
+
+
+
+
+
+
+
+

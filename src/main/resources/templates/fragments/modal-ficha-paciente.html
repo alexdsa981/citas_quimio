@@ -1,6 +1,6 @@
 
 <div th:fragment="modalFichaPaciente"  xmlns:th="http://www.thymeleaf.org">
-    <div class="modal fade" id="modalFichaPaciente" tabindex="-1" aria-labelledby="modalFichaPacienteLabel" aria-hidden="true">
+    <div class="modal fade" id="modalFichaPaciente" tabindex="-1" aria-labelledby="modalFichaPacienteLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -29,12 +29,11 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Fecha</label>
-                                    <input type="date" class="form-control" th:value="${fechaInputActual}">
+                                    <input type="date" class="form-control" th:value="${fechaInputActual}" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Cubículo</label>
                                     <select class="form-select" name="idCubiculo">
-                                        <option value="">-- Seleccione --</option>
                                         <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
                                             <option th:value="${cubiculo.id}"
                                                     th:text="${cubiculo.codigo}"></option>
@@ -54,26 +53,52 @@
                                 -->
                                 <div class="col-md-3">
                                     <label class="form-label">Hora Programada</label>
-                                    <input type="time" class="form-control" value="07:00">
+                                    <input type="time" class="form-control" value="07:00" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Hora Protocolo</label>
-                                    <input type="time" class="form-control" value="07:00">
+                                    <input type="time" class="form-control" value="07:00" autocomplete="off">
                                 </div>
                             </div>
                         </div>
+
+
+
                         <div class="tab-pane fade" id="paciente" role="tabpanel" aria-labelledby="paciente-tab">
                             <div class="row g-3">
+                                <!-- N° Historia -->
+                                <div class="col-md-6">
+                                    <label class="form-label">N° Historia</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="nroHistoria" autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="buscarPorHistoria()">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Número Documento -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Número Documento</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="numeroDocumento" autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="buscarPorDni()">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Tipo Paciente -->
                                 <div class="col-md-4">
                                     <label class="form-label">Tipo Paciente</label>
                                     <select class="form-select" name="idTipoPaciente" id="tipoPaciente">
-                                        <th:block th:each="tipo : ${Lista_TipoPaciente_Activos}">
-                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}"
-                                                    th:selected="${tipoStat.index == 0}"></option>
+                                        <th:block th:each="tipo, tipoStat : ${Lista_TipoPaciente_Activos}">
+                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${tipoStat.index == 0}"></option>
                                         </th:block>
                                     </select>
                                 </div>
 
+                                <!-- Aseguradora -->
                                 <div class="col-md-8">
                                     <label class="form-label">Aseguradora</label>
                                     <select class="form-select" name="idAseguradora" id="aseguradora">
@@ -81,6 +106,7 @@
                                     </select>
                                 </div>
 
+                                <!-- Contratante -->
                                 <div class="col-md-6">
                                     <label class="form-label">Contratante</label>
                                     <select class="form-select" name="idContratante" id="contratante">
@@ -88,35 +114,31 @@
                                     </select>
                                 </div>
 
-
-                                <div class="col-md-6">
-                                    <label class="form-label">N° Historia</label>
-                                    <input type="text" class="form-control">
-                                </div>
-
+                                <!-- Apellidos y nombres -->
                                 <div class="col-md-3">
                                     <label class="form-label">Apellido Paterno</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" autocomplete="off">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Apellido Materno</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Nombres</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" autocomplete="off">
                                 </div>
 
+                                <!-- Fecha nacimiento y edad -->
                                 <div class="col-md-4">
                                     <label class="form-label">Fecha Nac.</label>
-                                    <input type="date" class="form-control" id="fechaNacimiento">
+                                    <input type="date" class="form-control" id="fechaNacimiento" autocomplete="off">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Edad</label>
-                                    <input type="text" class="form-control" id="edad" readonly>
+                                    <input type="text" class="form-control" id="edad" readonly autocomplete="off">
                                 </div>
 
-
+                                <!-- Sexo -->
                                 <div class="col-md-3">
                                     <label class="form-label">Sexo</label>
                                     <select class="form-select">
@@ -124,27 +146,24 @@
                                         <option>MASCULINO</option>
                                     </select>
                                 </div>
+
+                                <!-- Tipo Documento -->
                                 <div class="col-md-3">
                                     <label class="form-label">Doc. Identidad</label>
                                     <select class="form-select" name="idTipoDocIdentidad">
                                         <th:block th:each="tipo : ${Lista_TipoDocIdentidad_Activos}">
-                                            <option th:value="${tipo.id}"
-                                                    th:text="${tipo.nombre}"></option>
+                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
                                         </th:block>
                                     </select>
                                 </div>
 
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Número Documento</label>
-                                    <input type="text" class="form-control">
-                                </div>
-
+                                <!-- Teléfono -->
                                 <div class="col-md-6">
                                     <label class="form-label">Teléfono / Celular</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" autocomplete="off">
                                 </div>
 
+                                <!-- Entrada -->
                                 <div class="col-md-6">
                                     <label class="form-label">Entrada</label>
                                     <select class="form-select" name="tipoEntradaId">
@@ -154,17 +173,27 @@
                                     </select>
                                 </div>
 
-
-                                <div class="col-md-3">
-                                    <label class="form-label">CIE 10</label>
-                                    <input type="text" class="form-control">
+                                <!-- Buscar CIE10 -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Buscar CIE10</label>
+                                    <div class="input-group">
+                                        <span class="form-control" style="background-color: #e9ecef;">Haz clic en Buscar para seleccionar un CIE10</span>
+                                        <button class="btn btn-outline-primary" type="button" onclick="abrirModalCie()">Buscar</button>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">CIE 10</label>
-                                    <input type="text" class="form-control">
+
+                                <!-- CIE10 seleccionados -->
+                                <div class="col-md-12 mt-3">
+                                    <label class="form-label">CIE10 Seleccionados</label>
+                                    <ul id="lista-cie-seleccionados" class="list-group mt-3">
+                                        <!-- Aquí se agregan los ítems seleccionados -->
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+
+
+
                         <div class="tab-pane fade" id="signos-vitales" role="tabpanel" aria-labelledby="signos-vitales-tab">
                             <div class="row g-3">
                                 <div class="col-md-3">
@@ -172,9 +201,9 @@
                                         Presión Arterial <small class="text-muted">(mmHg)</small>
                                     </label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Sistólica">
+                                        <input type="text" class="form-control" placeholder="Sistólica" autocomplete="off">
                                         <span class="input-group-text">/</span>
-                                        <input type="text" class="form-control" placeholder="Diastólica">
+                                        <input type="text" class="form-control" placeholder="Diastólica" autocomplete="off">
                                     </div>
                                 </div>
 
@@ -182,49 +211,49 @@
                                     <label class="form-label">
                                         Frecuencia Respiratoria <small class="text-muted">(x Min)</small>
                                     </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 18">
+                                    <input type="number" class="form-control" placeholder="Ej. 18" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label">
                                         Frecuencia Cardíaca <small class="text-muted">(x Min)</small>
                                     </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 72">
+                                    <input type="number" class="form-control" placeholder="Ej. 72" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label">
                                         Temperatura <small class="text-muted">(°C)</small>
                                     </label>
-                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 36.5">
+                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 36.5" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label">
                                         Saturación <small class="text-muted">(%)</small>
                                     </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 98">
+                                    <input type="number" class="form-control" placeholder="Ej. 98" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label">
                                         Peso <small class="text-muted">(kg)</small>
                                     </label>
-                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 70.5">
+                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 70.5" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label">
                                         Talla <small class="text-muted">(cm)</small>
                                     </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 172">
+                                    <input type="number" class="form-control" placeholder="Ej. 172" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label">
                                         Sup. Corporal <small class="text-muted">(m²)</small>
                                     </label>
-                                    <input type="number" step="0.01" class="form-control" placeholder="Ej. 1.85">
+                                    <input type="number" step="0.01" class="form-control" placeholder="Ej. 1.85" autocomplete="off">
                                 </div>
                             </div>
                         </div>
