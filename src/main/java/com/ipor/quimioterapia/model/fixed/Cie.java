@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,4 +22,8 @@ public class Cie {
     private String descripcion;
     @Column(nullable = false)
     private Boolean isActive;
+    @Column(nullable = false)
+    private LocalDate fechaActualizacion;
+    @Column(nullable = false)
+    private LocalTime horaActualizacion;
 }

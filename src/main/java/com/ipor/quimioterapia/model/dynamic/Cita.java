@@ -1,6 +1,7 @@
 package com.ipor.quimioterapia.model.dynamic;
 
 import com.ipor.quimioterapia.model.fixed.Cubiculo;
+import com.ipor.quimioterapia.model.fixed.TipoEntrada;
 import com.ipor.quimioterapia.repository.dynamic.MedicoRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Cita {
     @Column(nullable = false)
     private LocalTime horaProtocolo;
     @Column(nullable = false)
-    private LocalTime horaInicio; //hora real
+    private LocalTime horaInicio;
     @Column(nullable = false)
     private LocalTime horaFin;
 
@@ -33,7 +34,9 @@ public class Cita {
     @Column(nullable = false)
     private EstadoCita estado;
 
-
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_entrada")
+    private TipoEntrada tipoEntrada;
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;

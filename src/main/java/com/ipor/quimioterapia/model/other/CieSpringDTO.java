@@ -1,0 +1,17 @@
+package com.ipor.quimioterapia.model.other;
+
+import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@Getter
+@Setter
+public class CieSpringDTO {
+    private Long id;
+    private String codigoCiePadre;
+    private String codigoCie;
+    private String nombre;
+    private String descripcion;
+}

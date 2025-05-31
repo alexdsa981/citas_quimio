@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.controller;
+package com.ipor.quimioterapia.controller.other;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
