@@ -5,221 +5,159 @@
 </head>
 
 <body class="bg-light">
-    <div th:replace="~{common/header :: header}">
+<div th:replace="~{common/header :: header}">
+</div>
+<main class="container py-4">
+    <h2 class="text-center mb-4">
+        Quimioterapia
+        <small class="text-muted">
+            (<span th:text="${fechaActual}"></span> <span id="horaActual" th:text="${horaActual}"></span>)
+        </small>
+    </h2>
+
+
+    <div class="section-header row g-3 align-items-center">
+        <div class="col-md-3">
+            <label class="form-label">Establecimiento</label>
+            <select class="form-select">
+                <option>ONCOLOGIA</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Servicio</label>
+            <select class="form-select">
+                <option>QUIMIOTERAPIA</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Médico</label>
+            <select class="form-select" name="idMedico" id="idMedico">
+                <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                    <option th:value="${medico.id}"
+                            th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                </th:block>
+            </select>
+        </div>
+
+
+        <div class="col-md-3">
+            <label class="form-label">Fecha</label>
+            <div class="input-group">
+                <input type="text" id="fechaPickerPrincipal" class="form-control">
+                <button type="button" class="btn btn-primary" id="btnAgregarFecha" data-bs-toggle="modal"
+                        data-bs-target="#modalAgendarCita">
+                    <i class="bi bi-plus-lg"></i> Agregar
+                </button>
+            </div>
+        </div>
+
     </div>
-    <main class="container py-4">
-        <h2 class="text-center mb-4">
-            Quimioterapia
-            <small class="text-muted">
-                (<span th:text="${fechaActual}"></span> <span id="horaActual" th:text="${horaActual}"></span>)
-            </small>
-        </h2>
 
+    <div class="mb-3 d-flex flex-wrap gap-2 actions">
+        <button class="btn btn-success btn-finalizar"><i class="bi bi-check2-circle"></i> Atendido</button>
 
-        <div class="section-header row g-3 align-items-center">
-            <div class="col-md-3">
-                <label class="form-label">Establecimiento</label>
-                <select class="form-select">
-                    <option>ONCOLOGIA</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Servicio</label>
-                <select class="form-select">
-                    <option>QUIMIOTERAPIA</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Médico</label>
-                <select class="form-select" name="idMedico">
-                    <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                        <option th:value="${medico.id}"
-                                th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
-                    </th:block>
-                </select>
-            </div>
+        <button class="btn btn-secondary btn-iniciar" data-id-ficha="123">
+            <i class="bi bi-check-circle"></i> Iniciar
+        </button>
 
-            <div class="col-md-3">
-                <label class="form-label">Fecha</label>
-                <div class="input-group">
-                    <input type="text" id="fechaPicker" class="form-control">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFichaPaciente">
-                        <i class="bi bi-plus-lg"></i> Agregar
-                    </button>
-                </div>
-            </div>
-        </div>
+        <button class="btn btn-warning btn-pendiente">
+            <i class="bi bi-hourglass-split"></i> Pendiente
+        </button>
 
-        <div class="mb-3 d-flex flex-wrap gap-2 actions">
-            <button class="btn btn-success"><i class="bi bi-check2-circle"></i> Atendido</button>
-            <button class="btn btn-secondary"><i class="bi bi-check-circle"></i> Confirmar</button>
-            <button class="btn btn-warning"><i class="bi bi-hourglass-split"></i> Pendiente</button>
-            <button class="btn btn-info"><i class="bi bi-arrow-left-right"></i> Transferir</button>
-            <button class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modificar</button>
-            <button class="btn btn-danger"><i class="bi bi-trash"></i> Eliminar</button>
-            <button class="btn btn-outline-secondary"><i class="bi bi-copy"></i> Duplicar Sesión</button>
-            <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Agregar Item's</button>
-        </div>
-
-        <div class="row g-3 mb-3">
-            <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Paciente">
-            </div>
-            <div class="col-md-2">
-                <select class="form-select" name="estado">
-                    <option value="">Estado: TODO</option>
-                    <option th:each="estado : ${estadosCita}"
-                            th:value="${estado}"
-                            th:text="${estado}"></option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-select" name="cubiculo">
-                    <option value="">Cubículo: TODO</option>
-                    <option th:each="c : ${Lista_Cubiculo_Activos}"
-                            th:value="${c.id}"
-                            th:text="${c.codigo}">
-                    </option>
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <input type="text" id="fechaInicio" class="form-control" placeholder="Desde">
-            </div>
-            <div class="col-md-2">
-                <input type="text" id="fechaFin" class="form-control" placeholder="Hasta">
-            </div>
-            <div class="col-md-1 d-flex gap-1">
-                <button class="btn btn-dark w-100"><i class="bi bi-file-earmark-text"></i></button>
-                <button class="btn btn-outline-dark w-100"><i class="bi bi-download"></i></button>
-            </div>
-        </div>
-
-        <div class="table-wrapper">
-            <table class="table table-bordered table-striped table-sm">
-                <thead class="table-primary">
-                    <tr>
-                        <th>Historia</th>
-                        <th>Paciente</th>
-                        <th>Fec. Ingreso</th>
-                        <th>Cama</th>
-                        <th>Hora Programada</th>
-                        <th>Hora Inicio</th>
-                        <th>Hora Fin</th>
-                        <th>Hora Protocolo</th>
-                        <th>Estado</th>
-                        <th>TipoPaciente</th>
-                        <th>Aseguradora</th>
-                        <th>Contratante</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="#">07480298</a></td>
-                        <td>HURTADO CUELLAR, P.</td>
-                        <td>27/05/2025</td>
-                        <td>G</td>
-                        <td>07:30:00</td>
-                        <td>08:00:00</td>
-                        <td>00:00:00</td>
-                        <td>05:00:00</td>
-                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
-                        <td>PARTICULAR</td>
-                        <td>PARTICULAR</td>
-                        <td>ONCOLOGIA</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">237848</a></td>
-                        <td>RAZURI LOPEZ, M.</td>
-                        <td>27/05/2025</td>
-                        <td>B</td>
-                        <td>08:00:00</td>
-                        <td>00:00:00</td>
-                        <td>00:00:00</td>
-                        <td>02:00:00</td>
-                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
-                        <td>PARTICULAR</td>
-                        <td>PARTICULAR</td>
-                        <td>ONCOLOGIA</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">07362426</a></td>
-                        <td>GUTTI CAMPOS, L.</td>
-                        <td>27/05/2025</td>
-                        <td>S2</td>
-                        <td>08:00:00</td>
-                        <td>00:00:00</td>
-                        <td>00:00:00</td>
-                        <td>06:00:00</td>
-                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
-                        <td>CONVENIO</td>
-                        <td>NINGUNO</td>
-                        <td>NINGUNO</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">08192557</a></td>
-                        <td>ZEGARRA ROJAS, C.</td>
-                        <td>27/05/2025</td>
-                        <td>C</td>
-                        <td>09:00:00</td>
-                        <td>00:00:00</td>
-                        <td>00:00:00</td>
-                        <td>02:00:00</td>
-                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
-                        <td>CRP</td>
-                        <td>ADMINISTRADO</td>
-                        <td>PLAN SALUD (9...)</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">43053</a></td>
-                        <td>ELERA PICHILINGUE, A.</td>
-                        <td>27/05/2025</td>
-                        <td>S2</td>
-                        <td>09:30:00</td>
-                        <td>00:00:00</td>
-                        <td>00:00:00</td>
-                        <td>03:00:00</td>
-                        <td><span class="badge bg-warning text-dark">PENDIENTE</span></td>
-                        <td>CRP</td>
-                        <td>ADMINISTRADO</td>
-                        <td>PACIFICO SA EN...</td>
-                    </tr>
-                </tbody>
-
-            </table>
-        </div>
-
-
-
-        <div th:replace="~{fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
-        <div th:replace="~{fragments/modal-busqueda-cie :: modalBusquedaCie}"></div>
-
-
-
-    </main>
-    <th:block th:replace="~{common/imports :: bodyImports}"/>
-
-    <div th:insert="~{common/footer :: footer}">
+        <button class="btn btn-info"><i class="bi bi-arrow-left-right"></i> Transferir</button>
+        <button class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modificar</button>
+        <button class="btn btn-danger"><i class="bi bi-trash"></i> Eliminar</button>
+        <button class="btn btn-outline-secondary"><i class="bi bi-copy"></i> Duplicar Sesión</button>
+        <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Agregar Item's</button>
     </div>
-    <script src="/js/fragments/modal-ficha-paciente.js"></script>
-    <script src="/js/fragments/modal-busqueda-cie.js"></script>
-    <script>
-        new Litepicker({
-            element: document.getElementById('fechaPicker'),
-            format: 'DD/MM/YYYY',
-            startDate: new Date() // Establece la fecha actual
-        });
 
-        new Litepicker({
-            element: document.getElementById('fechaInicio'),
-            format: 'DD/MM/YYYY'
-        });
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="Paciente">
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" name="estado">
+                <option value="">Estado: TODO</option>
+                <option th:each="estado : ${estadosCita}"
+                        th:value="${estado}"
+                        th:text="${estado}"></option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" name="cubiculo">
+                <option value="">Cubículo: TODO</option>
+                <option th:each="c : ${Lista_Cubiculo_Activos}"
+                        th:value="${c.id}"
+                        th:text="${c.codigo}">
+                </option>
+            </select>
+        </div>
 
-        new Litepicker({
-            element: document.getElementById('fechaFin'),
-            format: 'DD/MM/YYYY'
-        });
-    </script>
+        <div class="col-md-2">
+            <input type="text" id="filtroFecha" class="form-control" placeholder="Seleccionar fecha(s)">
+        </div>
+
+
+
+
+        <div class="col-md-1 d-flex gap-1">
+            <button class="btn btn-dark w-100"><i class="bi bi-file-earmark-text"></i></button>
+            <button class="btn btn-outline-dark w-100"><i class="bi bi-download"></i></button>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="table table-bordered table-sm">
+            <thead class="table-primary">
+            <tr>
+                <th>Num. Documento</th>
+                <th>Paciente</th>
+                <th>Fec. Ingreso</th>
+                <th>Cama</th>
+                <th>Hora Prog.</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Duración Protocolo</th>
+                <th>Estado</th>
+                <th>TipoPaciente</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+
+        </table>
+    </div>
+
+
+    <div th:replace="~{fragments/modal-cita :: modalCita}"></div>
+    <div th:replace="~{fragments/modal-busqueda-cie :: modalBusquedaCie}"></div>
+    <div th:replace="~{fragments/modal-iniciar :: modalIniciarProtocolo}"></div>
+    <div th:replace="~{fragments/modal-atender :: modalFinalizarProtocolo}"></div>
+
+    <div th:replace="~{fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
+
+
+
+</main>
+<th:block th:replace="~{common/imports :: bodyImports}"/>
+
+<div th:insert="~{common/footer :: footer}">
+</div>
+<script src="/js/index.js"></script>
+<script src="/js/fragments/cita/modal-cita-guardar.js"></script>
+<script src="/js/fragments/cita/modal-cita.js"></script>
+
+<script src="/js/fragments/botones/pendiente.js"></script>
+<script src="/js/fragments/botones/modal-iniciar.js"></script>
+<script src="/js/fragments/botones/modal-finalizar.js"></script>
+<script src="/js/fragments/botones/seleccion-ficha.js"></script>
+
+
+<script src="/js/fragments/modal-busqueda-cie.js"></script>
+<script src="/js/index-datostabla-filtrofecha.js"></script>
+
+
 </body>
 
 </html>

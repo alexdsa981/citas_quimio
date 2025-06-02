@@ -1,0 +1,20 @@
+<div th:fragment="modalIniciarProtocolo" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal fade" id="modalIniciarProtocolo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white py-2">
+                    <h5 class="modal-title">Iniciar Protocolo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="horaInicio">Hora de inicio:</label>
+                    <input type="time" id="horaInicio" class="form-control" />
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-primary btn-confirmar-inicio">Confirmar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

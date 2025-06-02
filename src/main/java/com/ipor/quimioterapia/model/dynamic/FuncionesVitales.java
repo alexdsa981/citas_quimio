@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.model.dynamic;
 
-import com.ipor.quimioterapia.model.fixed.Cie;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,12 @@ public class FuncionesVitales {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_cita")
-    private Cita cita;
+    @JoinColumn(name = "id_ficha_paciente")
+    private FichaPaciente fichaPaciente;
+
     @Column(nullable = false)
     private Boolean estado;
     @Column(nullable = false)

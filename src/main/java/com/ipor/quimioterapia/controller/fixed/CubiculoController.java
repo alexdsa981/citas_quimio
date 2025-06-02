@@ -1,43 +1,38 @@
-package com.ipor.quimioterapia.controller.clasificadores;
+package com.ipor.quimioterapia.controller.fixed;
 
-import com.ipor.quimioterapia.model.fixed.Aseguradora;
-import com.ipor.quimioterapia.service.fixed.AseguradoraService;
-import com.ipor.quimioterapia.service.fixed.ContratanteService;
+import com.ipor.quimioterapia.service.fixed.CubiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/app/clasificadores/contratante")
-public class ContratanteController {
+@RequestMapping("/app/clasificadores/cubiculo")
+public class CubiculoController {
 
     @Autowired
-    ContratanteService contratanteService;
-
+    CubiculoService cubiculoService;
 
     @PostMapping("/nuevo")
-    public ResponseEntity<?> crear(@RequestParam String nombre, @RequestParam Long idContratante) {
-        contratanteService.crear(nombre, idContratante);
+    public ResponseEntity<?> crear(@RequestParam String nombre) {
+        cubiculoService.crear(nombre);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/actualizar/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestParam String nombre) {
-        contratanteService.actualizar(id, nombre);
+        cubiculoService.actualizar(id, nombre);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/activar/{id}")
     public ResponseEntity<?> activar(@PathVariable Long id) {
-        contratanteService.cambiarEstado(id, true);
+        cubiculoService.cambiarEstado(id, true);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/desactivar/{id}")
     public ResponseEntity<?> desactivar(@PathVariable Long id) {
-        contratanteService.cambiarEstado(id, false);
+        cubiculoService.cambiarEstado(id, false);
         return ResponseEntity.ok().build();
     }
 }

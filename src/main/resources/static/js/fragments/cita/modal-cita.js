@@ -1,9 +1,8 @@
-//SELECCIONA EL MEDICO SELECCIONADO ANTERIORMENTE
-const idMedicoSelect = document.getElementById('idMedico');
-const medicoReadonlySelect = document.getElementById('medico');
-
-idMedicoSelect.addEventListener('change', () => {
-  medicoReadonlySelect.value = idMedicoSelect.value;
+//FECHA PRINCIPAL SELECCIONADA SE COPIA AL MODAL
+document.getElementById('btnAgregarFecha').addEventListener('click', function() {
+    const fechaTexto = document.getElementById('fechaPickerPrincipal').value;
+    const fechaFormateada = convertirFecha(fechaTexto);
+    document.getElementById('fechaCitaSeleccionada').value = fechaFormateada;
 });
 
 
@@ -79,26 +78,30 @@ document.addEventListener('DOMContentLoaded', function () {
             edadInput.value = '';
             return;
         }
-        // Forzamos el inicio del día para evitar problemas de desfase por zona horaria
+
+        // Forzar el inicio del día para evitar desfase
         const fechaNac = new Date(this.value + 'T00:00:00');
         const hoy = new Date();
-        const hoyFijo = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()); // Sin horas
+        const hoyFijo = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 
         let edad = hoyFijo.getFullYear() - fechaNac.getFullYear();
-
         const cumpleEsteAnio = new Date(hoyFijo.getFullYear(), fechaNac.getMonth(), fechaNac.getDate());
 
         if (hoyFijo < cumpleEsteAnio) {
             edad--;
         }
 
+        if (edad < 0) {
+            edadInput.value = '';
+            Swal.fire({
+                icon: 'error',
+                title: 'Fecha inválida',
+                text: 'La fecha de nacimiento no puede ser en el futuro.'
+            });
+            return;
+        }
+
         edadInput.value = edad;
     });
 });
-
-
-
-
-
-
 

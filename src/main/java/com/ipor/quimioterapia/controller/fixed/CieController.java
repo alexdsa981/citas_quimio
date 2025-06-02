@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.controller.clasificadores;
+package com.ipor.quimioterapia.controller.fixed;
 
 import com.ipor.quimioterapia.model.other.CieSpringDTO;
 import com.ipor.quimioterapia.service.fixed.CieService;

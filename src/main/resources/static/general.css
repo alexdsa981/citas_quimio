@@ -30,3 +30,29 @@
 .modal.fade .modal-dialog {
     transition: transform 0.3s ease-out;
 }
+
+.is-filled {
+    border: 1.5px solid #0d6efd4d; /* Azul Bootstrap con opacidad */
+    background-color: #e9f2ff;      /* Azul clarito de fondo */
+    transition: all 0.2s ease-in-out;
+}
+
+#horaProgramada {
+    cursor: pointer;
+}
+
+.readonly-select {
+  pointer-events: none;    /* No permite hacer click ni desplegar */
+  background-color: #e9ecef; /* Fondo gris claro, como disabled */
+  color: #6c757d;          /* Texto gris para que parezca deshabilitado */
+  user-select: none;       /* No permite seleccionar texto */
+}
+
+tr.fila-ficha td{
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+tr.fila-ficha.seleccionada td{
+    background-color: #d0ebff !important; /* Un azul clarito para destacar */
+}

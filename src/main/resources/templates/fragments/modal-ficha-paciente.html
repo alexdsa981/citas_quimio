@@ -1,8 +1,9 @@
-
-<div th:fragment="modalFichaPaciente"  xmlns:th="http://www.thymeleaf.org">
-    <div class="modal fade" id="modalFichaPaciente" tabindex="-1" aria-labelledby="modalFichaPacienteLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div th:fragment="modalFichaPaciente" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal fade" id="modalFichaPaciente" tabindex="-1" aria-labelledby="modalFichaPacienteLabel"
+         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalFichaPacienteLabel">Ficha del Paciente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -11,257 +12,407 @@
                     <!-- Nav Tabs -->
                     <ul class="nav nav-tabs" id="fichaTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="datos-cita-tab" data-bs-toggle="tab" data-bs-target="#datos-cita" type="button" role="tab">Datos de Cita</button>
+                            <button class="nav-link active" id="datos-cita-tab" data-bs-toggle="tab"
+                                    data-bs-target="#datos-cita" type="button" role="tab">Datos de Cita
+                            </button>
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="paciente-tab" data-bs-toggle="tab" data-bs-target="#paciente" type="button" role="tab">Paciente</button>
+                            <button class="nav-link" id="paciente-tab" data-bs-toggle="tab"
+                                    data-bs-target="#paciente" type="button" role="tab">Paciente
+                            </button>
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="signos-vitales-tab" data-bs-toggle="tab" data-bs-target="#signos-vitales" type="button" role="tab">Signos Vitales</button>
+                            <button class="nav-link" id="signos-vitales-tab" data-bs-toggle="tab"
+                                    data-bs-target="#signos-vitales" type="button" role="tab">Signos Vitales
+                            </button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="datos-quimioterapia-tab" data-bs-toggle="tab"
+                                    data-bs-target="#quimioterapia" type="button" role="tab">Quimioterapia
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="cie10-tab" data-bs-toggle="tab" data-bs-target="#cie10"
+                                    type="button" role="tab" aria-controls="cie10" aria-selected="false">Diagnóstico
+                            </button>
+                        </li>
+
                     </ul>
 
-                    <!-- Tab Content -->
-                    <div class="tab-content mt-3">
-                        <div class="tab-pane fade show active" id="datos-cita" role="tabpanel" aria-labelledby="datos-cita-tab">
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">Fecha</label>
-                                    <input type="date" class="form-control" th:value="${fechaInputActual}" autocomplete="off">
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Cubículo</label>
-                                    <select class="form-select" name="idCubiculo">
-                                        <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
-                                            <option th:value="${cubiculo.id}"
-                                                    th:text="${cubiculo.codigo}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
+                    <form id="formFichaPaciente">
+                        <!-- Tab Content -->
+                        <div class="tab-content mt-3">
+                            <div class="tab-pane fade show active" id="datos-cita" role="tabpanel"
+                                 aria-labelledby="datos-cita-tab">
+                                <div class="row g-3">
 
-                                <!--
-                                <div class="col-md-3">
-                                    <label class="form-label">Hora Inicio:</label>
-                                    <select class="form-control hora-select"></select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Hora Protocolo:</label>
-                                    <select class="form-control hora-select"></select>
-                                </div>
-                                -->
-                                <div class="col-md-3">
-                                    <label class="form-label">Hora Programada</label>
-                                    <input type="time" class="form-control" value="07:00" autocomplete="off">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Hora Protocolo</label>
-                                    <input type="time" class="form-control" value="07:00" autocomplete="off">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Fecha</label>
+                                        <input type="date" id="fechaCitaSeleccionada" class="form-control"
+                                               th:value="${fechaInputActual}"
+                                               autocomplete="off"
+                                               readonly
+                                               style="background-color: #e9ecef; pointer-events: none;">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">Hora Programada</label>
+                                        <input type="time" id="horaProgramada" class="form-control" value="07:00"
+                                               autocomplete="off">
+                                    </div>
+
+
+
                                 </div>
                             </div>
-                        </div>
 
 
+                            <div class="tab-pane fade" id="paciente" role="tabpanel" aria-labelledby="paciente-tab">
+                                <div class="row g-3">
+                                    <div class="col-md-3 mt-3">
+                                        <label class="form-label">Entrada</label>
+                                        <select class="form-select" name="tipoEntradaId" id="tipoEntrada">
+                                            <th:block th:each="entrada : ${Lista_TipoEntrada_Activos}">
+                                                <option th:value="${entrada.id}" th:text="${entrada.nombre}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
 
-                        <div class="tab-pane fade" id="paciente" role="tabpanel" aria-labelledby="paciente-tab">
-                            <div class="row g-3">
-                                <!-- N° Historia -->
-                                <div class="col-md-6">
-                                    <label class="form-label">N° Historia</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="nroHistoria" autocomplete="off">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="buscarPorHistoria()">
-                                            <i class="bi bi-search"></i>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Doc. Identidad</label>
+                                        <select class="form-select" name="idTipoDocIdentidad" id="tipoDocIdentidad" required>
+                                            <option value="">Seleccione:</option>
+                                            <th:block th:each="tipo : ${Lista_TipoDocIdentidad_Activos}">
+                                                <option th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+
+                                    <!-- Número Documento -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Número Documento</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="numeroDocumento"
+                                                   autocomplete="off" required>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- N° Historia
+                                    <div class="col-md-6">
+                                        <label class="form-label">N° Historia</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="nroHistoria" autocomplete="off">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                    onclick="buscarPorHistoria()">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                     -->
+
+                                    <hr>
+
+                                    <!-- Apellidos y nombres -->
+                                    <div class="col-md-3">
+                                        <label class="form-label">Apellido Paterno</label>
+                                        <input type="text" id="apellidoPaterno" class="form-control" autocomplete="off">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Apellido Materno</label>
+                                        <input type="text" id="apellidoMaterno" class="form-control" autocomplete="off">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombres</label>
+                                        <input type="text" id="nombres" class="form-control" autocomplete="off">
+                                    </div>
+
+                                    <!-- Fecha nacimiento, edad y sexo -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Fecha Nac.</label>
+                                        <input type="date" class="form-control" id="fechaNacimiento" autocomplete="off">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Edad</label>
+                                        <input type="text" class="form-control" id="edad" readonly autocomplete="off">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Sexo</label>
+                                        <select class="form-select" id="sexo">
+                                            <option value="femenino">FEMENINO</option>
+                                            <option value="masculino">MASCULINO</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Teléfono -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Teléfono / Celular</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="telefono">
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Tipo Paciente</label>
+                                        <select class="form-select" name="idTipoPaciente" id="tipoPaciente">
+                                            <th:block th:each="tipo, tipoStat : ${Lista_TipoPaciente_Activos}">
+                                                <option th:value="${tipo.id}" th:text="${tipo.nombre}"
+                                                        th:selected="${tipoStat.index == 0}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+
+                                    <!-- Aseguradora -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Aseguradora</label>
+                                        <select class="form-select" name="idAseguradora" id="aseguradora">
+                                            <!-- Se llenará dinámicamente -->
+                                        </select>
+                                    </div>
+
+                                    <!-- Contratante -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Contratante</label>
+                                        <select class="form-select" name="idContratante" id="contratante">
+                                            <!-- Se llenará dinámicamente -->
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="signos-vitales" role="tabpanel"
+                                 aria-labelledby="signos-vitales-tab">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Presión Arterial <small class="text-muted">(mmHg)</small>
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Sistólica"
+                                                   autocomplete="off" id="presionSistolica">
+                                            <span class="input-group-text">/</span>
+                                            <input type="text" class="form-control" placeholder="Diastólica"
+                                                   autocomplete="off" id="presionDiastolica">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Frecuencia Respiratoria <small class="text-muted">(x Min)</small>
+                                        </label>
+                                        <input type="number" class="form-control" placeholder="Ej. 18"
+                                               autocomplete="off" id="frecuenciaRespiratoria">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Frecuencia Cardíaca <small class="text-muted">(x Min)</small>
+                                        </label>
+                                        <input type="number" class="form-control" placeholder="Ej. 72"
+                                               autocomplete="off" id="frecuenciaCardiaca">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Temperatura <small class="text-muted">(°C)</small>
+                                        </label>
+                                        <input type="number" step="0.1" class="form-control" placeholder="Ej. 36.5"
+                                               autocomplete="off" id="temperatura">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Saturación <small class="text-muted">(%)</small>
+                                        </label>
+                                        <input type="number" class="form-control" placeholder="Ej. 98"
+                                               autocomplete="off" id="saturacionOxigeno">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Peso <small class="text-muted">(kg)</small>
+                                        </label>
+                                        <input type="number" step="0.1" class="form-control" placeholder="Ej. 70.5"
+                                               autocomplete="off" id="peso">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Talla <small class="text-muted">(cm)</small>
+                                        </label>
+                                        <input type="number" class="form-control" placeholder="Ej. 172"
+                                               autocomplete="off" id="talla">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">
+                                            Sup. Corporal <small class="text-muted">(m²)</small>
+                                        </label>
+                                        <input type="number" step="0.01" class="form-control" placeholder="Ej. 1.85"
+                                               autocomplete="off" id="superficieCorporal">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="quimioterapia" role="tabpanel"
+                                 aria-labelledby="datos-quimioterapia-tab">
+                                <div class="row g-3">
+                                    <!-- Select Enfermera -->
+                                    <div class="col-md-6">
+                                        <label for="enfermera" class="form-label">Enfermera</label>
+                                        <select id="enfermera" name="enfermera" class="form-select">
+                                            <option value="">Seleccionar enfermera</option>
+                                            <th:block th:each="enfermera : ${Lista_Enfermeras_Activos}">
+                                                <option th:value="${enfermera.id}"
+                                                        th:text="${enfermera.apellidoP + ' ' + enfermera.apellidoM + ' ' + enfermera.nombre}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <!-- Select Médico -->
+
+                                    <div class="col-md-6">
+                                        <label for="medico" class="form-label">Medico</label>
+                                        <select id="medico" name="medico" class="form-select readonly-select" required>
+                                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                                                <option th:value="${medico.id}"
+                                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label">Cubículo</label>
+                                        <select class="form-select" name="idCubiculo" id="cubiculoSelect">
+                                            <option value="">Seleccione:</option>
+                                            <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
+                                                <option th:value="${cubiculo.id}"
+                                                        th:text="${cubiculo.codigo}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Tiempo Protocolo</label>
+                                        <div class="input-group">
+                                            <select class="form-select" id="horasProtocolo">
+                                                <option value="0">0 h</option>
+                                                <option value="1">1 h</option>
+                                                <option value="2">2 h</option>
+                                                <option value="3">3 h</option>
+                                                <option value="4">4 h</option>
+                                                <option value="5">5 h</option>
+                                                <option value="6">6 h</option>
+                                                <option value="7">7 h</option>
+                                                <option value="8">8 h</option>
+                                                <option value="9">9 h</option>
+                                                <option value="10">10 h</option>
+
+                                            </select>
+                                            <select class="form-select" id="minutosProtocolo">
+                                                <option value="0">0 min</option>
+                                                <option value="15">15 min</option>
+                                                <option value="30">30 min</option>
+                                                <option value="45">45 min</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="medicinas" class="form-label">Medicinas</label>
+                                            <textarea id="medicinas" name="medicinas" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="observaciones" class="form-label">Observaciones</label>
+                                            <textarea id="observaciones" name="observaciones" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="anamnesis" class="form-label">Anamnesis</label>
+                                            <textarea id="anamnesis" name="anamnesis" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="examenFisico" class="form-label">Examen Físico</label>
+                                            <textarea id="examenFisico" name="examenFisico" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="examenesAuxiliares" class="form-label">Exámenes
+                                                Auxiliares</label>
+                                            <textarea id="examenesAuxiliares" name="examenesAuxiliares"
+                                                      class="form-control" rows="2"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="tratamiento" class="form-label">Tratamiento</label>
+                                            <textarea id="tratamiento" name="tratamiento" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="evolucion" class="form-label">Evolución</label>
+                                            <textarea id="evolucion" name="evolucion" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Botón para agregar esquemas -->
+                                    <div class="col-12 text-end">
+                                        <button type="button" class="btn btn-outline-primary">
+                                            Agregar esquema
                                         </button>
                                     </div>
-                                </div>
 
-                                <!-- Número Documento -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Número Documento</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="numeroDocumento" autocomplete="off">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="buscarPorDni()">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Tipo Paciente -->
-                                <div class="col-md-4">
-                                    <label class="form-label">Tipo Paciente</label>
-                                    <select class="form-select" name="idTipoPaciente" id="tipoPaciente">
-                                        <th:block th:each="tipo, tipoStat : ${Lista_TipoPaciente_Activos}">
-                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${tipoStat.index == 0}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                                <!-- Aseguradora -->
-                                <div class="col-md-8">
-                                    <label class="form-label">Aseguradora</label>
-                                    <select class="form-select" name="idAseguradora" id="aseguradora">
-                                        <!-- Se llenará dinámicamente -->
-                                    </select>
-                                </div>
-
-                                <!-- Contratante -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Contratante</label>
-                                    <select class="form-select" name="idContratante" id="contratante">
-                                        <!-- Se llenará dinámicamente -->
-                                    </select>
-                                </div>
-
-                                <!-- Apellidos y nombres -->
-                                <div class="col-md-3">
-                                    <label class="form-label">Apellido Paterno</label>
-                                    <input type="text" class="form-control" autocomplete="off">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Apellido Materno</label>
-                                    <input type="text" class="form-control" autocomplete="off">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Nombres</label>
-                                    <input type="text" class="form-control" autocomplete="off">
-                                </div>
-
-                                <!-- Fecha nacimiento y edad -->
-                                <div class="col-md-4">
-                                    <label class="form-label">Fecha Nac.</label>
-                                    <input type="date" class="form-control" id="fechaNacimiento" autocomplete="off">
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Edad</label>
-                                    <input type="text" class="form-control" id="edad" readonly autocomplete="off">
-                                </div>
-
-                                <!-- Sexo -->
-                                <div class="col-md-3">
-                                    <label class="form-label">Sexo</label>
-                                    <select class="form-select">
-                                        <option>FEMENINO</option>
-                                        <option>MASCULINO</option>
-                                    </select>
-                                </div>
-
-                                <!-- Tipo Documento -->
-                                <div class="col-md-3">
-                                    <label class="form-label">Doc. Identidad</label>
-                                    <select class="form-select" name="idTipoDocIdentidad">
-                                        <th:block th:each="tipo : ${Lista_TipoDocIdentidad_Activos}">
-                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                                <!-- Teléfono -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Teléfono / Celular</label>
-                                    <input type="text" class="form-control" autocomplete="off">
-                                </div>
-
-                                <!-- Entrada -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Entrada</label>
-                                    <select class="form-select" name="tipoEntradaId">
-                                        <th:block th:each="entrada : ${Lista_TipoEntrada_Activos}">
-                                            <option th:value="${entrada.id}" th:text="${entrada.nombre}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                                <!-- Buscar CIE10 -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Buscar CIE10</label>
-                                    <div class="input-group">
-                                        <span class="form-control" style="background-color: #e9ecef;">Haz clic en Buscar para seleccionar un CIE10</span>
-                                        <button class="btn btn-outline-primary" type="button" onclick="abrirModalCie()">Buscar</button>
-                                    </div>
-                                </div>
-
-                                <!-- CIE10 seleccionados -->
-                                <div class="col-md-12 mt-3">
-                                    <label class="form-label">CIE10 Seleccionados</label>
-                                    <ul id="lista-cie-seleccionados" class="list-group mt-3">
-                                        <!-- Aquí se agregan los ítems seleccionados -->
-                                    </ul>
                                 </div>
                             </div>
-                        </div>
 
 
 
-                        <div class="tab-pane fade" id="signos-vitales" role="tabpanel" aria-labelledby="signos-vitales-tab">
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Presión Arterial <small class="text-muted">(mmHg)</small>
-                                    </label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Sistólica" autocomplete="off">
-                                        <span class="input-group-text">/</span>
-                                        <input type="text" class="form-control" placeholder="Diastólica" autocomplete="off">
+                            <div class="tab-pane fade" id="cie10" role="tabpanel" aria-labelledby="cie10-tab">
+                                <div class="row g-3">
+
+                                    <!-- Buscar CIE10 -->
+                                    <div class="col-md-12">
+                                        <label class="form-label">Buscar CIE10</label>
+                                        <div class="input-group">
+                                            <span class="form-control" style="background-color: #e9ecef;">
+                                                Haz clic en Buscar para seleccionar un CIE10
+                                            </span>
+                                            <button class="btn btn-outline-primary" type="button" onclick="abrirModalCie()">Buscar</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lista CIE10 -->
+                                    <div class="col-md-12 mt-3">
+                                        <label class="form-label">Lista CIE10 seleccionados:</label>
+                                        <ul id="lista-cie-seleccionados" class="list-group mt-2">
+                                            <!-- Aquí se agregan dinámicamente los CIE10 seleccionados -->
+                                        </ul>
                                     </div>
                                 </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Frecuencia Respiratoria <small class="text-muted">(x Min)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 18" autocomplete="off">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Frecuencia Cardíaca <small class="text-muted">(x Min)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 72" autocomplete="off">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Temperatura <small class="text-muted">(°C)</small>
-                                    </label>
-                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 36.5" autocomplete="off">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Saturación <small class="text-muted">(%)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 98" autocomplete="off">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Peso <small class="text-muted">(kg)</small>
-                                    </label>
-                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 70.5" autocomplete="off">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Talla <small class="text-muted">(cm)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 172" autocomplete="off">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Sup. Corporal <small class="text-muted">(m²)</small>
-                                    </label>
-                                    <input type="number" step="0.01" class="form-control" placeholder="Ej. 1.85" autocomplete="off">
-                                </div>
                             </div>
+
+
+
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-primary">Guardar</button>
+                    <button id="btnGuardarCita" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>

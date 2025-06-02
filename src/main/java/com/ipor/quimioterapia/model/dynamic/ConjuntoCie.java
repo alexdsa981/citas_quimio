@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.model.dynamic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ipor.quimioterapia.model.fixed.Cie;
-import com.ipor.quimioterapia.model.fixed.TipoDocIdentidad;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +18,10 @@ public class ConjuntoCie {
     @ManyToOne
     @JoinColumn(name = "id_cie")
     private Cie cie;
+
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_cita")
-    private Cita cita;
+    @JoinColumn(name = "id_ficha_paciente")
+    private FichaPaciente fichaPaciente;
 
 }
