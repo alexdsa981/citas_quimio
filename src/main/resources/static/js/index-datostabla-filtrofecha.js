@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('btnModificarPacienteFicha').disabled = false;
 
                 llenarFormularioFichaPaciente(data);
-
+                llenarFormularioFichaAtencionQuimioterapia(data);
             })
             .catch(err => {
                 console.error('Error al cargar ficha:', err);

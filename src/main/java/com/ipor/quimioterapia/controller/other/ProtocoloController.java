@@ -65,7 +65,7 @@ public class ProtocoloController {
     }
 
     @PostMapping("/finalizar")
-    public ResponseEntity<?> iniciarProtocolo(@RequestBody FinalizarProtocoloDTO finalizarProtocoloDTO) {
+    public ResponseEntity<?> finalizarProtocolo(@RequestBody FinalizarProtocoloDTO finalizarProtocoloDTO) {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(finalizarProtocoloDTO.getIdFicha());
             Medico medico = medicoService.getPorID(finalizarProtocoloDTO.getIdMedico());
