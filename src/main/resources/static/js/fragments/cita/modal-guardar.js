@@ -88,6 +88,18 @@ document.getElementById('formCrearCita').addEventListener('submit', async functi
                 document.getElementById('btnModificarPacienteModalCita').disabled = true;
                 document.getElementById('btnGuardarCita').disabled = true;
 
+                const campos = document.querySelectorAll(".bloqueable");
+                campos.forEach(campo => {
+                    campo.readOnly = true;
+                    campo.disabled = true;
+                    campo.style.backgroundColor = "#e9ecef";
+                    campo.style.color = "#6c757d";
+                    campo.style.cursor = "not-allowed";
+                    campo.setAttribute("tabindex", "-1");
+                    campo.onmousedown = (e) => e.preventDefault();
+                });
+
+
                 // Cerrar modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgendarCita'));
                 modal.hide();

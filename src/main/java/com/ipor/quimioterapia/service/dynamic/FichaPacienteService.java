@@ -17,19 +17,16 @@ public class FichaPacienteService {
 
     @Autowired
     FichaPacienteRepository fichaPacienteRepository;
-    @Autowired
-    AtencionQuimioterapiaService atencionQuimioterapiaService;
 
 
-    public void crear(Cita cita, TipoEntrada tipoEntrada, Medico medico) {
+    public FichaPaciente crear(Cita cita, TipoEntrada tipoEntrada) {
         FichaPaciente fichaPaciente = new FichaPaciente();
         fichaPaciente.setFechaCreacion(LocalDate.now());
         fichaPaciente.setHoraCreacion(LocalTime.now());
         fichaPaciente.setTipoEntrada(tipoEntrada);
         fichaPaciente.setCita(cita);
-        fichaPaciente.setMedico(medico);
         fichaPacienteRepository.save(fichaPaciente);
-        atencionQuimioterapiaService.crear(fichaPaciente);
+        return fichaPaciente;
     }
 
     public List<FichaPaciente> getLista() {

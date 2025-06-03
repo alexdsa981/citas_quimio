@@ -154,7 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 console.log('Datos ficha:', data);
 
-                //LLENA DATOS DESDE DATOS.JS DE FICHA PACIENTE
+                document.getElementById('datosModificablesPacienteFicha').classList.add('form-disabled');
+                document.getElementById('btnGuardarPacienteFicha').disabled = true;
+                document.getElementById('btnModificarPacienteFicha').disabled = false;
+
                 llenarFormularioFichaPaciente(data);
 
             })

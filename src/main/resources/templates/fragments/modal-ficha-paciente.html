@@ -18,15 +18,23 @@
                         </li>
 
                         <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="atencion-quimioterapia-tab" data-bs-toggle="tab"
+                                    data-bs-target="#atencionQuimioterapiaFicha" type="button" role="tab">Atención Quimioterapia
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="signos-vitales-tab" data-bs-toggle="tab"
                                     data-bs-target="#signos-vitalesFicha" type="button" role="tab">Signos Vitales
                             </button>
                         </li>
+
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="datos-quimioterapia-tab" data-bs-toggle="tab"
-                                    data-bs-target="#quimioterapiaFicha" type="button" role="tab">Quimioterapia
+                            <button class="nav-link" id="detalle-quimioterapia-tab" data-bs-toggle="tab"
+                                    data-bs-target="#detalleQuimioterapiaFicha" type="button" role="tab">Detalle Quimioterapia
                             </button>
                         </li>
+
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="cie10-tab" data-bs-toggle="tab"
                                     data-bs-target="#cie10Ficha" type="button" role="tab">Diagnóstico
@@ -240,8 +248,8 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="quimioterapiaFicha" role="tabpanel"
-                             aria-labelledby="datos-quimioterapia-tab">
+                        <div class="tab-pane fade" id="atencionQuimioterapiaFicha" role="tabpanel"
+                             aria-labelledby="atencion-quimioterapia-tab">
                             <div class="row g-3">
                                 <!-- Select Enfermera -->
                                 <div class="col-md-6">
@@ -302,8 +310,23 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Hora Inicio</label>
+                                    <input type="time" class="form-control" id="horaInicioProtocolo" name="horaInicioProtocolo" disabled>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Hora Fin</label>
+                                    <input type="time" class="form-control" id="horaFinProtocolo" name="horaFinProtocolo" disabled>
+                                </div>
+
+                            </div>
+                        </div>
 
 
+
+                        <div class="tab-pane fade" id="detalleQuimioterapiaFicha" role="tabpanel"
+                             aria-labelledby="detalle-quimioterapia-tab">
+                            <div class="row g-3">
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="medicinasFicha" class="form-label">Medicinas</label>
@@ -349,8 +372,6 @@
                                     </div>
                                 </div>
 
-
-                                <!-- Botón para agregar esquemas -->
                                 <div class="col-12 text-end">
                                     <button type="button" class="btn btn-outline-primary">
                                         Agregar esquema
@@ -359,8 +380,6 @@
 
                             </div>
                         </div>
-
-
                         <div class="tab-pane fade" id="cie10Ficha" role="tabpanel" aria-labelledby="cie10-tab">
                             <div class="row g-3">
 

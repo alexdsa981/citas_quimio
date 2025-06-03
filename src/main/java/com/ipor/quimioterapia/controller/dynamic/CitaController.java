@@ -1,9 +1,11 @@
 package com.ipor.quimioterapia.controller.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.Cita;
+import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
 import com.ipor.quimioterapia.model.dynamic.Medico;
 import com.ipor.quimioterapia.model.fixed.TipoEntrada;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
+import com.ipor.quimioterapia.service.dynamic.AtencionQuimioterapiaService;
 import com.ipor.quimioterapia.service.dynamic.CitaService;
 import com.ipor.quimioterapia.service.dynamic.FichaPacienteService;
 import com.ipor.quimioterapia.service.dynamic.MedicoService;
@@ -29,6 +31,8 @@ public class CitaController {
     TipoEntradaService tipoEntradaService;
     @Autowired
     MedicoService medicoService;
+    @Autowired
+    AtencionQuimioterapiaService atencionQuimioterapiaService;
 
     @PostMapping("/agendar")
     public ResponseEntity<?> guardarCita(@RequestBody CitaCreadaDTO citaCreadaDTO) {
@@ -37,7 +41,9 @@ public class CitaController {
             Medico medico = medicoService.getPorID(citaCreadaDTO.medicoId);
 
             Cita cita = citaService.crear(citaCreadaDTO);
-            fichaPacienteService.crear(cita, tipoEntrada, medico);
+            FichaPaciente fichaPaciente = fichaPacienteService.crear(cita, tipoEntrada);
+            atencionQuimioterapiaService.crear(fichaPaciente, medico);
+
             return ResponseEntity.ok(Map.of("message", "Cita agendada correctamente"));
         } catch (Exception e) {
             return ResponseEntity

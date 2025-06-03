@@ -20,9 +20,10 @@ public class AtencionQuimioterapiaService {
     CubiculoService cubiculoService;
 
 
-    public void crear(FichaPaciente fichaPaciente) {
+    public void crear(FichaPaciente fichaPaciente, Medico medico) {
         AtencionQuimioterapia atencionQuimioterapia = new AtencionQuimioterapia();
         atencionQuimioterapia.setFichaPaciente(fichaPaciente);
+        atencionQuimioterapia.setMedico(medico);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
@@ -37,7 +38,7 @@ public class AtencionQuimioterapiaService {
 
     public void pendienteProtocolo(FichaPaciente fichaPaciente) {
         AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
-        atencionQuimioterapia.setMedicoAlterno(null);
+        atencionQuimioterapia.setMedico(null);
         atencionQuimioterapia.setHoraInicio(null);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
@@ -51,7 +52,7 @@ public class AtencionQuimioterapiaService {
     public void finalizarProtocolo(LocalTime horaFin, Medico medico, FichaPaciente fichaPaciente) {
         AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
         atencionQuimioterapia.setHoraInicio(horaFin);
-        atencionQuimioterapia.setMedicoAlterno(medico);
+        atencionQuimioterapia.setMedico(medico);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 

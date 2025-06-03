@@ -29,8 +29,12 @@ public class AtencionQuimioterapia {
     private FichaPaciente fichaPaciente;
 
     @ManyToOne
-    @JoinColumn(name = "id_medico_alterno")
-    private Medico medicoAlterno;
+    @JoinColumn(name = "id_enfermera")
+    private Enfermera enfermera;
+    @ManyToOne
+    @JoinColumn(name = "id_medico")
+    private Medico medico;
+
 
     //@Column(nullable = false)
     private Integer duracionMinutosProtocolo;

@@ -33,12 +33,6 @@ public class FichaPaciente {
     @JoinColumn(name = "id_tipo_entrada")
     private TipoEntrada tipoEntrada;
 
-    @ManyToOne
-    @JoinColumn(name = "id_enfermera")
-    private Enfermera enfermera;
-    @ManyToOne
-    @JoinColumn(name = "id_medico")
-    private Medico medico;
 
 
     @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, orphanRemoval = true)
