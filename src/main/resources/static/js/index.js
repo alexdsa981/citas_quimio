@@ -1,5 +1,4 @@
 
-
 function convertirFecha(fechaTexto) {
     if (/^\d{4}-\d{2}-\d{2}$/.test(fechaTexto)) {
         return fechaTexto;

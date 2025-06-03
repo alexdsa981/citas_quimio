@@ -48,22 +48,30 @@
     </div>
 
     <div class="mb-3 d-flex flex-wrap gap-2 actions">
-        <button class="btn btn-success btn-finalizar"><i class="bi bi-check2-circle"></i> Atendido</button>
+        <button id="btn-atendido" class="btn btn-success btn-finalizar"><i class="bi bi-check2-circle"></i> Atendido</button>
+        <button id="btn-iniciar" class="btn btn-secondary btn-iniciar"><i class="bi bi-check-circle"></i> Iniciar</button>
+        <button id="btn-pendiente" class="btn btn-warning btn-pendiente"><i class="bi bi-hourglass-split"></i> Pendiente</button>
 
-        <button class="btn btn-secondary btn-iniciar" data-id-ficha="123">
-            <i class="bi bi-check-circle"></i> Iniciar
+
+
+
+        <button id="btn-transferir" class="btn btn-info">
+            <i class="bi bi-arrow-left-right"></i> Transferir
         </button>
 
-        <button class="btn btn-warning btn-pendiente">
-            <i class="bi bi-hourglass-split"></i> Pendiente
+        <button id="btn-modificar" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Modificar
         </button>
 
-        <button class="btn btn-info"><i class="bi bi-arrow-left-right"></i> Transferir</button>
-        <button class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modificar</button>
-        <button class="btn btn-danger"><i class="bi bi-trash"></i> Eliminar</button>
-        <button class="btn btn-outline-secondary"><i class="bi bi-copy"></i> Duplicar Sesión</button>
-        <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Agregar Item's</button>
+        <button id="btn-eliminar" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Eliminar
+        </button>
+
+        <button id="btn-duplicar" class="btn btn-outline-secondary">
+            <i class="bi bi-copy"></i> Duplicar Sesión
+        </button>
     </div>
+
 
     <div class="row g-3 mb-3">
         <div class="col-md-3">
@@ -147,11 +155,15 @@
 <script src="/js/fragments/botones/modal-iniciar.js"></script>
 <script src="/js/fragments/botones/modal-finalizar.js"></script>
 <script src="/js/fragments/botones/seleccion-ficha.js"></script>
+<!--
+<script src="/js/fragments/botones/restricciones.js"></script>
+-->
 
 <script src="/js/fragments/ficha-paciente/tab-paciente/datos.js"></script>
 <script src="/js/fragments/ficha-paciente/tab-paciente/botones.js"></script>
 
 <script src="/js/fragments/ficha-paciente/tab-atencion-quimioterapia/datos.js"></script>
+<script src="/js/fragments/ficha-paciente/tab-atencion-quimioterapia/botones.js"></script>
 
 
 <script src="/js/fragments/ficha-paciente/modal.js"></script>

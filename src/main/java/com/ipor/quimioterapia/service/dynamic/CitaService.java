@@ -28,7 +28,7 @@ public class CitaService {
         cita.setFecha(citaCreadaDTO.fechaCita);
         cita.setHoraProgramada(citaCreadaDTO.horaProgramada);
         cita.setHoraCreacion(LocalTime.now());
-        cita.setEstado(EstadoCita.PENDIENTE);
+        cita.setEstado(EstadoCita.NO_ASIGNADO);
 
         //crear logica para verificar existencia de paciente
         Optional<Paciente> optPaciente = pacienteService.getPorDocumento(

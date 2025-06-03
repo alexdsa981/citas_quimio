@@ -1,8 +1,11 @@
 package com.ipor.quimioterapia.service.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.AtencionQuimioterapia;
+import com.ipor.quimioterapia.model.dynamic.Enfermera;
 import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
 import com.ipor.quimioterapia.model.dynamic.Medico;
+import com.ipor.quimioterapia.model.fixed.Cubiculo;
+import com.ipor.quimioterapia.model.other.DTO.AtencionQuimioterapiaDTO;
 import com.ipor.quimioterapia.repository.dynamic.AtencionQuimioterapiaRepository;
 import com.ipor.quimioterapia.service.fixed.CubiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +19,7 @@ public class AtencionQuimioterapiaService {
 
     @Autowired
     AtencionQuimioterapiaRepository atencionQuimioterapiaRepository;
-    @Autowired
-    CubiculoService cubiculoService;
+
 
 
     public void crear(FichaPaciente fichaPaciente, Medico medico) {
@@ -38,7 +40,7 @@ public class AtencionQuimioterapiaService {
 
     public void pendienteProtocolo(FichaPaciente fichaPaciente) {
         AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
-        atencionQuimioterapia.setMedico(null);
+        atencionQuimioterapia.setHoraFin(null);
         atencionQuimioterapia.setHoraInicio(null);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
@@ -56,10 +58,18 @@ public class AtencionQuimioterapiaService {
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
-    public void actualizar(Long id, String nombre) {
-        AtencionQuimioterapia atencionQuimioterapia = atencionQuimioterapiaRepository.findById(id).orElseThrow();
+    public Boolean actualizar(AtencionQuimioterapiaDTO atencionQuimioterapiaDTO, FichaPaciente fichaPaciente, Medico medico, Cubiculo cubiculo, Enfermera enfermera) {
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        atencionQuimioterapia.setMedico(medico);
+        atencionQuimioterapia.setCubiculo(cubiculo);
+        atencionQuimioterapia.setEnfermera(enfermera);
+        atencionQuimioterapia.setDuracionMinutosProtocolo(atencionQuimioterapiaDTO.getDuracionMinutos());
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
+        if (atencionQuimioterapia.getEnfermera() != null && atencionQuimioterapia.getCubiculo() != null && atencionQuimioterapia.getDuracionMinutosProtocolo() != 0) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
     }
-
 }
 

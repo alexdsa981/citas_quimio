@@ -43,7 +43,10 @@ function cargarFichasEntreFechas(fechaInicio, fechaFin) {
         .catch(err => console.error("Error al obtener fichas entre fechas:", err));
 }
 
+
+let fichasGlobal = [];
 function llenarTablaFichas(fichas) {
+    fichasGlobal = fichas;
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = "";
     if (fichas.length === 0) {
@@ -65,9 +68,15 @@ function llenarTablaFichas(fichas) {
         const estado = cita.estado || "";
 
         let claseEstado = "bg-secondary";
-        if (estado === "PENDIENTE") claseEstado = "bg-warning text-dark";
-        else if (estado === "EN_PROCESO") claseEstado = "bg-info text-dark";
-        else if (estado === "ATENDIDO") claseEstado = "bg-success";
+            if (estado === "PENDIENTE") {
+                claseEstado = "bg-warning text-dark";
+            } else if (estado === "EN_PROCESO") {
+                claseEstado = "bg-info text-dark";
+            } else if (estado === "ATENDIDO") {
+                claseEstado = "bg-success";
+            } else if (estado === "NO_ASIGNADO") {
+                claseEstado = "bg-secondary text-white";
+            }
 
         const fila = `
             <tr class="fila-ficha" data-id-ficha="${ficha.id}">
@@ -142,6 +151,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const idFicha = fila.dataset.idFicha;
         console.log('Ficha seleccionada:', idFicha);
 
+    // Obtener datos de la variable global
+    const ficha = fichasGlobal.find(f => f.id == idFicha); // usa == por si el id es string
+    if (ficha) {
+        const cita = ficha.cita || {};
+        const estado = cita.estado || "NO_ASIGNADO";
+        const fecha = cita.fecha || "n/d";
+        const hora = formatearHora(cita.horaProgramada) || "n/d";
+
+        let claseEstado = "bg-secondary text-white";
+        if (estado === "PENDIENTE") claseEstado = "bg-warning text-dark";
+        else if (estado === "EN_PROCESO") claseEstado = "bg-info text-dark";
+        else if (estado === "ATENDIDO") claseEstado = "bg-success";
+        else if (estado === "NO_ASIGNADO") claseEstado = "bg-secondary text-white";
+
+        document.getElementById("info-cita").innerHTML = `
+            <span><strong>${fecha}</strong> ${hora}</span>
+            <span class="badge ${claseEstado} ms-2">${estado}</span>
+        `;
+    }
+
+
+
         // Abrir el modal
         modalFichaPaciente.show();
 
@@ -155,8 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Datos ficha:', data);
 
                 document.getElementById('datosModificablesPacienteFicha').classList.add('form-disabled');
+                document.getElementById('datosModificablesAtencionQuimioterapiaFicha').classList.add('form-disabled');
+
                 document.getElementById('btnGuardarPacienteFicha').disabled = true;
                 document.getElementById('btnModificarPacienteFicha').disabled = false;
+
+                document.getElementById('btnGuardarAtencionQuimioterapiaFicha').disabled = true;
+                document.getElementById('btnModificarAtencionQuimioterapiaFicha').disabled = false;
 
                 llenarFormularioFichaPaciente(data);
                 llenarFormularioFichaAtencionQuimioterapia(data);

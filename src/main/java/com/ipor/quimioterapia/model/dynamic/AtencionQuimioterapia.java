@@ -18,7 +18,6 @@ public class AtencionQuimioterapia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_cubiculo")
     private Cubiculo cubiculo;

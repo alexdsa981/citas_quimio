@@ -1,11 +1,11 @@
-function habilitarEdicionFicha() {
+function habilitarEdicionPacienteFicha() {
     document.getElementById('datosModificablesPacienteFicha').classList.remove('form-disabled');
     document.getElementById('btnGuardarPacienteFicha').disabled = false;
     document.getElementById('btnModificarPacienteFicha').disabled = true;
 
 }
 
-function deshabilitarEdicionFicha() {
+function deshabilitarEdicionPacienteFicha() {
     document.getElementById('datosModificablesPacienteFicha').classList.add('form-disabled');
     document.getElementById('btnGuardarPacienteFicha').disabled = true;
     document.getElementById('btnModificarPacienteFicha').disabled = false;
@@ -49,7 +49,7 @@ function guardarPacienteFicha() {
                 text: 'Los datos del paciente se actualizaron correctamente.'
             });
             refrescarTablaSegunFiltro();
-            deshabilitarEdicionFicha();
+            deshabilitarEdicionPacienteFicha();
         }
     })
     .catch(err => {

@@ -4,10 +4,15 @@
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalFichaPacienteLabel">Ficha del Paciente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title mb-0" id="modalFichaPacienteLabel">Ficha del Paciente</h5>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <div id="info-cita" class="small text-end"></div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
                 </div>
+
                 <div class="modal-body">
                     <!-- Nav Tabs -->
                     <ul class="nav nav-tabs" id="fichaTabs" role="tablist">
@@ -165,7 +170,7 @@
 
                                     <div class="mt-4 d-flex justify-content-end gap-2">
                                         <button type="reset" class="btn btn-secondary">Cancelar</button>
-                                        <button type="button" class="btn btn-info" id="btnModificarPacienteFicha" onclick="habilitarEdicionFicha()">Modificar</button>
+                                        <button type="button" class="btn btn-info" id="btnModificarPacienteFicha" onclick="habilitarEdicionPacienteFicha()">Modificar</button>
                                         <button type="button" class="btn btn-success" id="btnGuardarPacienteFicha" onclick="guardarPacienteFicha()" disabled>Guardar</button>
                                     </div>
 
@@ -251,74 +256,81 @@
                         <div class="tab-pane fade" id="atencionQuimioterapiaFicha" role="tabpanel"
                              aria-labelledby="atencion-quimioterapia-tab">
                             <div class="row g-3">
-                                <!-- Select Enfermera -->
-                                <div class="col-md-6">
-                                    <label for="enfermeraFicha" class="form-label">Enfermera</label>
-                                    <select id="enfermeraFicha" name="enfermera" class="form-select">
-                                        <option value="">Seleccionar enfermera</option>
-                                        <th:block th:each="enfermera : ${Lista_Enfermeras_Activos}">
-                                            <option th:value="${enfermera.id}"
-                                                    th:text="${enfermera.apellidoP + ' ' + enfermera.apellidoM + ' ' + enfermera.nombre}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-                                <!-- Select Médico -->
-
-                                <div class="col-md-6">
-                                    <label for="medicoFicha" class="form-label">Medico</label>
-                                    <select id="medicoFicha" name="medico" class="form-select readonly-select"
-                                            required>
-                                        <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                                            <option th:value="${medico.id}"
-                                                    th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <label class="form-label">Cubículo</label>
-                                    <select class="form-select" name="idCubiculo" id="cubiculoSelectFicha">
-                                        <option value="">Seleccione:</option>
-                                        <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
-                                            <option th:value="${cubiculo.id}"
-                                                    th:text="${cubiculo.codigo}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Tiempo Protocolo</label>
-                                    <div class="input-group">
-                                        <select class="form-select" id="horasProtocoloFicha">
-                                            <option value="0">0 h</option>
-                                            <option value="1">1 h</option>
-                                            <option value="2">2 h</option>
-                                            <option value="3">3 h</option>
-                                            <option value="4">4 h</option>
-                                            <option value="5">5 h</option>
-                                            <option value="6">6 h</option>
-                                            <option value="7">7 h</option>
-                                            <option value="8">8 h</option>
-                                            <option value="9">9 h</option>
-                                            <option value="10">10 h</option>
-
-                                        </select>
-                                        <select class="form-select" id="minutosProtocoloFicha">
-                                            <option value="0">0 min</option>
-                                            <option value="15">15 min</option>
-                                            <option value="30">30 min</option>
-                                            <option value="45">45 min</option>
+                                <div id="datosModificablesAtencionQuimioterapiaFicha" class="row g-3 form-disabled">
+                                    <!-- Select Enfermera -->
+                                    <div class="col-md-6">
+                                        <label for="enfermeraFicha" class="form-label">Enfermera</label>
+                                        <select id="enfermeraFicha" name="enfermera" class="form-select">
+                                            <option value="">Seleccionar enfermera</option>
+                                            <th:block th:each="enfermera : ${Lista_Enfermeras_Activos}">
+                                                <option th:value="${enfermera.id}"
+                                                        th:text="${enfermera.apellidoP + ' ' + enfermera.apellidoM + ' ' + enfermera.nombre}"></option>
+                                            </th:block>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Hora Inicio</label>
-                                    <input type="time" class="form-control" id="horaInicioProtocolo" name="horaInicioProtocolo" disabled>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Hora Fin</label>
-                                    <input type="time" class="form-control" id="horaFinProtocolo" name="horaFinProtocolo" disabled>
-                                </div>
+                                    <!-- Select Médico -->
 
+                                    <div class="col-md-6">
+                                        <label for="medicoFicha" class="form-label">Medico</label>
+                                        <select id="medicoFicha" name="medico" class="form-select"
+                                                required>
+                                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                                                <option th:value="${medico.id}"
+                                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Cubículo</label>
+                                        <select class="form-select" name="idCubiculo" id="cubiculoSelectFicha">
+                                            <option value="">Seleccione:</option>
+                                            <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
+                                                <option th:value="${cubiculo.id}"
+                                                        th:text="${cubiculo.codigo}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Tiempo Protocolo</label>
+                                        <div class="input-group">
+                                            <select class="form-select" id="horasProtocoloFicha">
+                                                <option value="0">0 h</option>
+                                                <option value="1">1 h</option>
+                                                <option value="2">2 h</option>
+                                                <option value="3">3 h</option>
+                                                <option value="4">4 h</option>
+                                                <option value="5">5 h</option>
+                                                <option value="6">6 h</option>
+                                                <option value="7">7 h</option>
+                                                <option value="8">8 h</option>
+                                                <option value="9">9 h</option>
+                                                <option value="10">10 h</option>
+
+                                            </select>
+                                            <select class="form-select" id="minutosProtocoloFicha">
+                                                <option value="0">0 min</option>
+                                                <option value="15">15 min</option>
+                                                <option value="30">30 min</option>
+                                                <option value="45">45 min</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Hora Inicio</label>
+                                        <input type="time" class="form-control" id="horaInicioProtocolo" name="horaInicioProtocolo" disabled>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Hora Fin</label>
+                                        <input type="time" class="form-control" id="horaFinProtocolo" name="horaFinProtocolo" disabled>
+                                    </div>
+                                    <div class="mt-4 d-flex justify-content-end gap-2">
+                                        <button type="reset" class="btn btn-secondary">Cancelar</button>
+                                        <button type="button" class="btn btn-info" id="btnModificarAtencionQuimioterapiaFicha" onclick="habilitarEdicionAtencionQuimioterapiaFicha()">Modificar</button>
+                                        <button type="button" class="btn btn-success" id="btnGuardarAtencionQuimioterapiaFicha"
+                                                onclick="guardarAtencionQuimioterapiaFicha()" disabled>Guardar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
