@@ -48,11 +48,13 @@
   user-select: none;       /* No permite seleccionar texto */
 }
 
-tr.fila-ficha td{
+tr.fila-ficha td {
     cursor: pointer;
     transition: background-color 0.2s ease;
+    user-select: none;
 }
 
-tr.fila-ficha.seleccionada td{
-    background-color: #d0ebff !important; /* Un azul clarito para destacar */
+tr.fila-ficha.seleccionada td {
+    background-color: #d0ebff !important;
+    user-select: none;
 }

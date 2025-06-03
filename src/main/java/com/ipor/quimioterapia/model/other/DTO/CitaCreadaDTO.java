@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.model.other;
+package com.ipor.quimioterapia.model.other.DTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,6 +18,8 @@ public class CitaCreadaDTO {
     public Long idTipoDocIdentidad;
     public String telefono;
     public Long tipoEntradaId;
+
+    public Long medicoId;
     //public Integer edad;
 
 

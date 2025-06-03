@@ -153,10 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 console.log('Datos ficha:', data);
-                // Aquí puedes llenar los campos del modal con 'data'
-                // Ejemplo:
-                // document.getElementById('nombrePaciente').textContent = data.paciente.nombre;
-                // etc...
+
+                //LLENA DATOS DESDE DATOS.JS DE FICHA PACIENTE
+                llenarFormularioFichaPaciente(data);
+
             })
             .catch(err => {
                 console.error('Error al cargar ficha:', err);

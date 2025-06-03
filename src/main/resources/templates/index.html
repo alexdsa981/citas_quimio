@@ -30,18 +30,12 @@
             </select>
         </div>
         <div class="col-md-3">
-            <label class="form-label">Médico</label>
-            <select class="form-select" name="idMedico" id="idMedico">
-                <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                    <option th:value="${medico.id}"
-                            th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
-                </th:block>
-            </select>
+
         </div>
 
 
         <div class="col-md-3">
-            <label class="form-label">Fecha</label>
+            <label class="form-label">Agendar Cita</label>
             <div class="input-group">
                 <input type="text" id="fechaPickerPrincipal" class="form-control">
                 <button type="button" class="btn btn-primary" id="btnAgregarFecha" data-bs-toggle="modal"
@@ -145,13 +139,17 @@
 <div th:insert="~{common/footer :: footer}">
 </div>
 <script src="/js/index.js"></script>
-<script src="/js/fragments/cita/modal-cita-guardar.js"></script>
-<script src="/js/fragments/cita/modal-cita.js"></script>
+<script src="/js/fragments/cita/busqueda-paciente-doc.js"></script>
+<script src="/js/fragments/cita/modal-guardar.js"></script>
+<script src="/js/fragments/cita/modal.js"></script>
 
 <script src="/js/fragments/botones/pendiente.js"></script>
 <script src="/js/fragments/botones/modal-iniciar.js"></script>
 <script src="/js/fragments/botones/modal-finalizar.js"></script>
 <script src="/js/fragments/botones/seleccion-ficha.js"></script>
+
+<script src="/js/fragments/ficha-paciente/datos.js"></script>
+<script src="/js/fragments/ficha-paciente/modal.js"></script>
 
 
 <script src="/js/fragments/modal-busqueda-cie.js"></script>

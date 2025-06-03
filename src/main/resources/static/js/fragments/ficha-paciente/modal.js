@@ -1,23 +1,9 @@
-//SELECCIONA EL MEDICO SELECCIONADO ANTERIORMENTE
-const idMedicoSelect = document.getElementById('idMedico');
-const medicoReadonlySelect = document.getElementById('medico');
-
-idMedicoSelect.addEventListener('change', () => {
-  medicoReadonlySelect.value = idMedicoSelect.value;
-});
-
-
-//MUESTRA AL PRESIONAR CUALQUIER PARTE DEL INPUT
-const inputHora = document.getElementById('horaProgramada');
-inputHora.addEventListener('click', function () {
-    this.showPicker?.();
-});
 
 //TIPO PACIENTE --> ASEGURADORA --> CONTRATANTE
 document.addEventListener("DOMContentLoaded", function () {
-    const tipoPacienteSelect = document.getElementById("tipoPaciente");
-    const aseguradoraSelect = document.getElementById("aseguradora");
-    const contratanteSelect = document.getElementById("contratante");
+    const tipoPacienteSelect = document.getElementById("tipoPacienteFicha");
+    const aseguradoraSelect = document.getElementById("aseguradoraFicha");
+    const contratanteSelect = document.getElementById("contratanteFicha");
 
     function cargarAseguradoras(idTipoPaciente, callback) {
         fetch(`/app/clasificadores/tipopaciente/lista-aseguradoras/${idTipoPaciente}`)
@@ -71,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //EDAD AL PONER FECHA
 document.addEventListener('DOMContentLoaded', function () {
-    const fechaNacimientoInput = document.getElementById('fechaNacimiento');
-    const edadInput = document.getElementById('edad');
+    const fechaNacimientoInput = document.getElementById('fechaNacimientoFicha');
+    const edadInput = document.getElementById('edadFicha');
 
     fechaNacimientoInput.addEventListener('change', function () {
         if (!this.value) {

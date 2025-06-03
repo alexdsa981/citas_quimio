@@ -1,9 +1,7 @@
 package com.ipor.quimioterapia.controller.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
-import com.ipor.quimioterapia.model.other.CitaCreadaDTO;
-import com.ipor.quimioterapia.model.other.FiltroFechasDTO;
-import com.ipor.quimioterapia.service.dynamic.CitaService;
+import com.ipor.quimioterapia.model.other.DTO.FiltroFechasDTO;
 import com.ipor.quimioterapia.service.dynamic.FichaPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

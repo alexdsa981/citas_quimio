@@ -1,7 +1,6 @@
 package com.ipor.quimioterapia.service.fixed;
 
 import com.ipor.quimioterapia.model.fixed.Cie;
-import com.ipor.quimioterapia.model.other.CieSpringDTO;
 import com.ipor.quimioterapia.repository.fixed.CieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

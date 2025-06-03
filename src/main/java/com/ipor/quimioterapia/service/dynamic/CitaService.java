@@ -4,7 +4,7 @@ import com.ipor.quimioterapia.model.dynamic.Cita;
 import com.ipor.quimioterapia.model.dynamic.EstadoCita;
 import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
 import com.ipor.quimioterapia.model.dynamic.Paciente;
-import com.ipor.quimioterapia.model.other.CitaCreadaDTO;
+import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.repository.dynamic.CitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,8 @@ public class CitaService {
                 citaCreadaDTO.numeroDocumento
         );
         if (optPaciente.isPresent()){
+            Paciente pacienteActual = optPaciente.get();
+            pacienteService.actualizar(citaCreadaDTO, pacienteActual);
             cita.setPaciente(optPaciente.get());
         }else{
             Paciente paciente = pacienteService.crear(citaCreadaDTO);

@@ -199,14 +199,16 @@ public class DataInitializer implements CommandLineRunner {
 
 
         if (cubiculoRepository.count() == 0) {
-            cubiculoService.crear("Cubículo 1 - Sala Principal");
-            cubiculoService.crear("Cubículo 2 - Sala de Aislamiento");
-            cubiculoService.crear("Cubículo 3 - Pediatría");
+            cubiculoService.crear("Cubículo A");
+            cubiculoService.crear("Cubículo B");
+            cubiculoService.crear("Cubículo C");
+            cubiculoService.crear("Cubículo D");
+            cubiculoService.crear("Cubículo E");
         }
 
         if (tipoDocIdentidadRepository.count() == 0) {
             tipoDocIdentidadService.crear("DNI");
-            tipoDocIdentidadService.crear("Carné de Extranjería");
+            tipoDocIdentidadService.crear("Carnet Ext.");
             tipoDocIdentidadService.crear("Pasaporte");
             tipoDocIdentidadService.crear("PTP");
 

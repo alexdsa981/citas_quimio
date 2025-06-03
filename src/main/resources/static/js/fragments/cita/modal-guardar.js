@@ -38,22 +38,24 @@ document.getElementById('formCrearCita').addEventListener('submit', async functi
     // Recoger datos del formulario
     const data = {
         fechaCita: fechaCitaStr,
-        horaProgramada: document.getElementById('horaProgramada').value,
+        horaProgramada: document.getElementById('horaProgramadaCita').value,
 
-        //nroHistoria: document.getElementById('nroHistoria').value,
-        numeroDocumento: document.getElementById('numeroDocumento').value,
-        idTipoPaciente: document.getElementById('tipoPaciente').value,
-        idAseguradora: document.getElementById('aseguradora').value,
-        idContratante: document.getElementById('contratante').value,
-        apellidoPaterno: document.getElementById('apellidoPaterno').value,
-        apellidoMaterno: document.getElementById('apellidoMaterno').value,
-        nombres: document.getElementById('nombres').value,
-        fechaNacimiento: document.getElementById('fechaNacimiento').value,
-        edad: document.getElementById('edad').value,
-        sexo: document.getElementById('sexo').value,
-        idTipoDocIdentidad: document.getElementById('tipoDocIdentidad').value,
-        telefono: document.getElementById('telefono').value,
-        tipoEntradaId: document.getElementById('tipoEntrada').value,
+        numeroDocumento: document.getElementById('numeroDocumentoCita').value,
+        idTipoPaciente: document.getElementById('tipoPacienteCita').value,
+        idAseguradora: document.getElementById('aseguradoraCita').value,
+        idContratante: document.getElementById('contratanteCita').value,
+        apellidoPaterno: document.getElementById('apellidoPaternoCita').value,
+        apellidoMaterno: document.getElementById('apellidoMaternoCita').value,
+        nombres: document.getElementById('nombresCita').value,
+        fechaNacimiento: document.getElementById('fechaNacimientoCita').value,
+        edad: document.getElementById('edadCita').value,
+        sexo: document.getElementById('sexoCita').value,
+        idTipoDocIdentidad: document.getElementById('tipoDocIdentidadCita').value,
+        telefono: document.getElementById('telefonoCita').value,
+        tipoEntradaId: document.getElementById('tipoEntradaCita').value,
+
+        medicoId: document.getElementById('idMedicoCita').value,
+
     };
 
     try {
@@ -77,6 +79,14 @@ document.getElementById('formCrearCita').addEventListener('submit', async functi
             }).then(() => {
                 // Resetear formulario
                 document.getElementById('formCrearCita').reset();
+
+                // Al terminar con éxito, desbloquear campo tipoDocIdentidad
+                document.getElementById('tipoDocIdentidadCita').disabled = false;
+                document.getElementById('btnBuscarPaciente').disabled = false;
+
+                document.getElementById('btnLimpiarModalCita').disabled = true;
+                document.getElementById('btnModificarPacienteModalCita').disabled = true;
+                document.getElementById('btnGuardarCita').disabled = true;
 
                 // Cerrar modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgendarCita'));

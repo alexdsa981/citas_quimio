@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.controller.fixed;
 
-import com.ipor.quimioterapia.model.other.CieSpringDTO;
+import com.ipor.quimioterapia.model.other.DTO.CieSpringDTO;
 import com.ipor.quimioterapia.service.fixed.CieService;
 import com.ipor.quimioterapia.service.fixed.CieSpringService;
 import org.springframework.beans.factory.annotation.Autowired;

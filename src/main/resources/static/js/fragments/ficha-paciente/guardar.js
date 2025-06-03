@@ -63,6 +63,12 @@ document.getElementById('formFichaPaciente').addEventListener('submit', async fu
                 // Resetear formulario
                 document.getElementById('formFichaPaciente').reset();
 
+
+
+
+
+
+
                 // Cerrar modal (si usas Bootstrap)
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modalFichaPaciente'));
                 modal.hide();

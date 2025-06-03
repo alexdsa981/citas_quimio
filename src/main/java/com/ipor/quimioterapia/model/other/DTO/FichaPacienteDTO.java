@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.model.other;
+package com.ipor.quimioterapia.model.other.DTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
