@@ -1,6 +1,7 @@
 package com.ipor.quimioterapia.controller.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.Paciente;
+import com.ipor.quimioterapia.model.other.DTO.ActualizarPacienteDTO;
 import com.ipor.quimioterapia.model.other.DTO.BusquedaPacienteDTO;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.service.dynamic.PacienteService;
@@ -42,4 +43,25 @@ public class PacienteController {
                     .body(Map.of("message", "Error al buscar paciente: " + e.getMessage()));
         }
     }
+
+    @PostMapping("/actualizar")
+    public ResponseEntity<?> actualizarPaciente(@RequestBody ActualizarPacienteDTO actualizarPacienteDTO) {
+        try {
+            Optional<Paciente> optPaciente = pacienteService.getPorDocumento(actualizarPacienteDTO.idTipoDocIdentidad, actualizarPacienteDTO.numeroDocumento);
+
+            if (optPaciente.isPresent()) {
+                Paciente pacienteActual = optPaciente.get();
+                pacienteService.actualizar(actualizarPacienteDTO, pacienteActual);
+
+                return ResponseEntity.ok(optPaciente.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("message", "Paciente no encontrado"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Error al actualizar paciente: " + e.getMessage()));
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.ipor.quimioterapia.service.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.Paciente;
+import com.ipor.quimioterapia.model.other.DTO.ActualizarPacienteDTO;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.repository.dynamic.PacienteRepository;
 import com.ipor.quimioterapia.service.fixed.ContratanteService;
@@ -76,6 +77,19 @@ public class PacienteService {
         pacienteActual.setApellidoM(dtoCitaPaciente.apellidoMaterno);
         pacienteActual.setNumCelular(dtoCitaPaciente.telefono);
         pacienteActual.setFechaNacimiento(dtoCitaPaciente.fechaNacimiento);
+
+        pacienteRepository.save(pacienteActual);
+    }
+    public void actualizar(ActualizarPacienteDTO actualizarPacienteDTO, Paciente pacienteActual) {
+        pacienteActual.setTipoDocIdentidad(tipoDocIdentidadService.getPorID(actualizarPacienteDTO.idTipoDocIdentidad));
+        pacienteActual.setNumDocIdentidad(actualizarPacienteDTO.numeroDocumento);
+        pacienteActual.setContratante(contratanteService.getPorID(actualizarPacienteDTO.idContratante));
+        pacienteActual.setNombre(actualizarPacienteDTO.nombres);
+        pacienteActual.setSexo(actualizarPacienteDTO.sexo);
+        pacienteActual.setApellidoP(actualizarPacienteDTO.apellidoPaterno);
+        pacienteActual.setApellidoM(actualizarPacienteDTO.apellidoMaterno);
+        pacienteActual.setNumCelular(actualizarPacienteDTO.telefono);
+        pacienteActual.setFechaNacimiento(actualizarPacienteDTO.fechaNacimiento);
 
         pacienteRepository.save(pacienteActual);
     }

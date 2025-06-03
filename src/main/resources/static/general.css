@@ -58,3 +58,13 @@ tr.fila-ficha.seleccionada td {
     background-color: #d0ebff !important;
     user-select: none;
 }
+
+
+.form-disabled input,
+.form-disabled select {
+    background-color: #e9ecef !important;
+    color: #6c757d !important;
+    pointer-events: none;
+    user-select: none;
+    cursor: not-allowed;
+}
