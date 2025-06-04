@@ -58,10 +58,9 @@ public class AtencionQuimioterapiaService {
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
-    public void finalizarProtocolo(LocalTime horaFin, Medico medico, FichaPaciente fichaPaciente) {
+    public void finalizarProtocolo(LocalTime horaFin,FichaPaciente fichaPaciente) {
         AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
         atencionQuimioterapia.setHoraFin(horaFin);
-        atencionQuimioterapia.setMedico(medico);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 

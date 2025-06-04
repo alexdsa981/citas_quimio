@@ -64,14 +64,13 @@ public class ProtocoloController {
         }
     }
 
-    @PostMapping("/finalizar")
+    @PostMapping("/atender")
     public ResponseEntity<?> finalizarProtocolo(@RequestBody FinalizarProtocoloDTO finalizarProtocoloDTO) {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(finalizarProtocoloDTO.getIdFicha());
-            Medico medico = medicoService.getPorID(finalizarProtocoloDTO.getIdMedico());
 
             citaService.cambiarEstado(EstadoCita.ATENDIDO, fichaPaciente);
-            atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), medico, fichaPaciente);
+            atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), fichaPaciente);
             return ResponseEntity.ok(Map.of("message", "Protocolo Iniciado correctamente"));
         } catch (Exception e) {
             return ResponseEntity

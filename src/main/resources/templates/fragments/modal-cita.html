@@ -15,7 +15,7 @@
                         <!-- Tab Content -->
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label">Fecha</label>
+                                <label class="form-label">Fecha</label><span style="color:red;">*</span>
                                 <input type="date" id="fechaCitaSeleccionada" class="form-control"
                                        th:value="${fechaInputActual}"
                                        autocomplete="off"
@@ -23,12 +23,12 @@
                                        style="background-color: #e9ecef; pointer-events: none;">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Hora Programada</label>
+                                <label class="form-label">Hora Programada</label><span style="color:red;">*</span>
                                 <input type="time" id="horaProgramadaCita" class="form-control" value="07:00"
                                        autocomplete="off">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Médico</label>
+                                <label class="form-label">Médico</label><span style="color:red;">*</span>
                                 <select class="form-select" name="idMedico" id="idMedicoCita">
                                     <th:block th:each="medico : ${Lista_Medicos_Activos}">
                                         <option th:value="${medico.id}"
@@ -44,7 +44,7 @@
                         <div id="contenedorPacienteModalCita">
                             <div class="row g-3">
                                 <div class="col-md-3 mt-3">
-                                    <label class="form-label">Entrada</label>
+                                    <label class="form-label">Entrada</label><span style="color:red;">*</span>
                                     <select class="form-select" name="tipoEntradaId" id="tipoEntradaCita">
                                         <th:block th:each="entrada : ${Lista_TipoEntrada_Activos}">
                                             <option th:value="${entrada.id}" th:text="${entrada.nombre}"></option>
@@ -53,7 +53,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label class="form-label">Doc. Identidad</label>
+                                    <label class="form-label">Doc. Identidad</label><span style="color:red;">*</span>
                                     <select class="form-select" name="idTipoDocIdentidad" id="tipoDocIdentidadCita"
                                             required>
                                         <option value="">Seleccione:</option>
@@ -65,7 +65,7 @@
 
                                 <!-- Número Documento con botón Buscar integrado -->
                                 <div class="col-md-6">
-                                    <label class="form-label">Número Documento</label>
+                                    <label class="form-label">Número Documento</label><span style="color:red;">*</span>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="numeroDocumentoCita"
                                                autocomplete="off" required>

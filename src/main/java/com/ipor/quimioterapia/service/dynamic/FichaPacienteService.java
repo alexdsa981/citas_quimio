@@ -2,6 +2,7 @@ package com.ipor.quimioterapia.service.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.Cita;
 import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
+import com.ipor.quimioterapia.model.dynamic.FuncionesVitales;
 import com.ipor.quimioterapia.model.dynamic.Medico;
 import com.ipor.quimioterapia.model.fixed.TipoEntrada;
 import com.ipor.quimioterapia.repository.dynamic.FichaPacienteRepository;
@@ -45,10 +46,6 @@ public class FichaPacienteService {
         return fichaPacienteRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, String nombre) {
-        FichaPaciente fichaPaciente = fichaPacienteRepository.findById(id).orElseThrow();
-        fichaPacienteRepository.save(fichaPaciente);
-    }
 
 }
 

@@ -7,14 +7,6 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <label for="medicoSeleccionado">Médico:</label>
-                    <select id="medicoSeleccionado" class="form-select mb-3" required>
-                        <option value="" disabled selected>Seleccione un médico</option>
-                        <option th:each="medico : ${Lista_Medicos_Activos}"
-                                th:value="${medico.id}"
-                                th:text="${medico.nombre}">Médico</option>
-                    </select>
-
                     <label for="horaFin">Hora Fin:</label>
                     <input type="time" id="horaFin" class="form-control" required />
                 </div>

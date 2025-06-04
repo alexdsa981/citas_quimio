@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const mm = String(ahora.getMinutes()).padStart(2, '0');
             document.getElementById('horaFin').value = `${hh}:${mm}`;
 
-            // Limpiar selección del médico
-            const medicoSelect = document.getElementById('medicoSeleccionado');
-            if (medicoSelect) medicoSelect.value = "";
+
 
             modal.show();
         }
@@ -30,30 +28,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelector('.btn-confirmar-fin').addEventListener('click', function () {
         const horaFin = document.getElementById('horaFin').value;
-        const medicoSelect = document.getElementById('medicoSeleccionado');
-        const idMedico = medicoSelect ? medicoSelect.value : null;
+
 
         if (!horaFin) {
             Swal.fire("Hora inválida", "Por favor, ingresa una hora válida", "error");
             return;
         }
 
-        if (!idMedico) {
-            Swal.fire("Médico no seleccionado", "Por favor, selecciona un médico", "error");
-            return;
-        }
 
-        console.log(`Finalizando protocolo para ficha ${idFichaSeleccionada} a las ${horaFin}, médico ID: ${idMedico}`);
-
-        fetch('/app/protocolo/finalizar', {
+        fetch('/app/protocolo/atender', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 idFicha: idFichaSeleccionada,
-                horaFin: horaFin,
-                idMedico: idMedico
+                horaFin: horaFin
             })
         })
         .then(res => res.json())

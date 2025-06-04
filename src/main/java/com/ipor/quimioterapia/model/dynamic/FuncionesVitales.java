@@ -23,29 +23,20 @@ public class FuncionesVitales {
     @JoinColumn(name = "id_ficha_paciente")
     private FichaPaciente fichaPaciente;
 
-    @Column(nullable = false)
+
     private Boolean estado;
-    @Column(nullable = false)
     private LocalDate fecha;
-    @Column(nullable = false)
     private LocalTime hora;
-    @Column(nullable = false)
-    private Double presionArterial;
-    @Column(nullable = false)
-    private Double presionArterialMax;
-    @Column(nullable = false)
-    private Double frecuenciaCardiaca;
-    @Column(nullable = false)
+
+    private Integer presionSistolica;
+    private Integer presionDiastolica;
+    private Integer frecuenciaCardiaca;
+    private Integer frecuenciaRespiratoria;
+    private Integer saturacionOxigeno;
+
     private Double temperatura;
-    @Column(nullable = false)
-    private Double saturacion;
-    @Column(nullable = false)
-    private Double frecuenciaRespiratoria;
-    @Column(nullable = false)
     private Double pesoKg;
-    @Column(nullable = false)
     private Double tallaCm;
-    @Column(nullable = false)
     private Double superficieCorporal;
 
 }

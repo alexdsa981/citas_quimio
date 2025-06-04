@@ -184,7 +184,7 @@
                             <div class="row g-3">
                                 <div class="col-md-3">
                                     <label class="form-label">
-                                        Presión Arterial <small class="text-muted">(mmHg)</small>
+                                        Presión Arterial<span style="color:red;">*</span> <small class="text-muted">(mmHg)</small>
                                     </label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Sistólica"
@@ -197,7 +197,7 @@
 
                                 <div class="col-md-3">
                                     <label class="form-label">
-                                        Frecuencia Respiratoria <small class="text-muted">(x Min)</small>
+                                        Frecuencia Respiratoria<span style="color:red;">*</span> <small class="text-muted">(x Min)</small>
                                     </label>
                                     <input type="number" class="form-control" placeholder="Ej. 18"
                                            autocomplete="off" id="frecuenciaRespiratoriaFicha">
@@ -205,7 +205,7 @@
 
                                 <div class="col-md-3">
                                     <label class="form-label">
-                                        Frecuencia Cardíaca <small class="text-muted">(x Min)</small>
+                                        Frecuencia Cardíaca<span style="color:red;">*</span> <small class="text-muted">(x Min)</small>
                                     </label>
                                     <input type="number" class="form-control" placeholder="Ej. 72"
                                            autocomplete="off" id="frecuenciaCardiacaFicha">
@@ -213,7 +213,7 @@
 
                                 <div class="col-md-3">
                                     <label class="form-label">
-                                        Temperatura <small class="text-muted">(°C)</small>
+                                        Temperatura<span style="color:red;">*</span> <small class="text-muted">(°C)</small>
                                     </label>
                                     <input type="number" step="0.1" class="form-control" placeholder="Ej. 36.5"
                                            autocomplete="off" id="temperaturaFicha">
@@ -221,7 +221,7 @@
 
                                 <div class="col-md-3">
                                     <label class="form-label">
-                                        Saturación <small class="text-muted">(%)</small>
+                                        Saturación<span style="color:red;">*</span> <small class="text-muted">(%)</small>
                                     </label>
                                     <input type="number" class="form-control" placeholder="Ej. 98"
                                            autocomplete="off" id="saturacionOxigenoFicha">
@@ -247,8 +247,21 @@
                                     <label class="form-label">
                                         Sup. Corporal <small class="text-muted">(m²)</small>
                                     </label>
-                                    <input type="number" step="0.01" class="form-control" placeholder="Ej. 1.85"
-                                           autocomplete="off" id="superficieCorporalFicha">
+                                    <input type="text" id="superficieCorporalFicha" class="form-control" readonly style="background-color: #e9ecef; pointer-events: none; cursor: not-allowed;">
+
+                                </div>
+                                <div class="mt-4 d-flex justify-content-end gap-2">
+                                    <label for="selectSignosVitalesFicha" class="form-label">Cargar</label>
+                                    <select id="selectSignosVitalesFicha" class="form-select">
+                                        <option value="">-- Seleccione una fecha --</option>
+
+
+                                        <!-- Aquí se llenarán las fechas con JS dinámicamente -->
+
+
+                                    </select>
+                                    <button type="button" class="btn btn-info" id="btnModificarSignosVitalesFicha" onclick="habilitarEdicionSignosVitalesFicha()">Modificar</button>
+                                    <button type="button" class="btn btn-success" id="btnGuardarSignosVitalesFicha" onclick="guardarSignosVitalesFicha()" >Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -259,7 +272,7 @@
                                 <div id="datosModificablesAtencionQuimioterapiaFicha" class="row g-3 form-disabled">
                                     <!-- Select Enfermera -->
                                     <div class="col-md-6">
-                                        <label for="enfermeraFicha" class="form-label">Enfermera</label>
+                                        <label for="enfermeraFicha" class="form-label">Enfermera</label><span style="color:red;">*</span>
                                         <select id="enfermeraFicha" name="enfermera" class="form-select">
                                             <option value="">Seleccionar enfermera</option>
                                             <th:block th:each="enfermera : ${Lista_Enfermeras_Activos}">
@@ -271,7 +284,7 @@
                                     <!-- Select Médico -->
 
                                     <div class="col-md-6">
-                                        <label for="medicoFicha" class="form-label">Medico</label>
+                                        <label for="medicoFicha" class="form-label">Medico</label><span style="color:red;">*</span>
                                         <select id="medicoFicha" name="medico" class="form-select"
                                                 required>
                                             <th:block th:each="medico : ${Lista_Medicos_Activos}">
@@ -282,7 +295,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label">Cubículo</label>
+                                        <label class="form-label">Cubículo</label><span style="color:red;">*</span>
                                         <select class="form-select" name="idCubiculo" id="cubiculoSelectFicha">
                                             <option value="">Seleccione:</option>
                                             <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">

@@ -196,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 llenarFormularioFichaPaciente(data);
                 llenarFormularioFichaAtencionQuimioterapia(data);
+                llenarFormularioFichaFuncionesVitales(data)
             })
             .catch(err => {
                 console.error('Error al cargar ficha:', err);

@@ -11,7 +11,7 @@
                     <form id="formAsignarAtencion" class="vstack gap-3">
                         <!-- Enfermera -->
                         <div>
-                            <label for="modalEnfermera" class="form-label">Enfermera</label>
+                            <label for="modalEnfermera" class="form-label">Enfermera</label><span style="color:red;">*</span>
                             <select id="modalEnfermera" name="enfermera" class="form-select">
                                 <option value="">Seleccione:</option>
                                 <th:block th:each="enfermera : ${Lista_Enfermeras_Activos}">
@@ -23,7 +23,7 @@
 
                         <!-- Médico -->
                         <div>
-                            <label for="modalMedico" class="form-label">Médico</label>
+                            <label for="modalMedico" class="form-label">Médico</label><span style="color:red;">*</span>
                             <select id="modalMedico" name="medico" class="form-select">
                                 <th:block th:each="medico : ${Lista_Medicos_Activos}">
                                     <option th:value="${medico.id}"
@@ -34,7 +34,7 @@
 
                         <!-- Cubículo -->
                         <div>
-                            <label for="modalCubiculo" class="form-label">Cubículo</label>
+                            <label for="modalCubiculo" class="form-label">Cubículo</label><span style="color:red;">*</span>
                             <select id="modalCubiculo" name="cubiculo" class="form-select">
                                 <option value="">Seleccione:</option>
                                 <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
@@ -44,7 +44,7 @@
                         </div>
 
                         <div>
-                            <label class="form-label">Tiempo Protocolo</label>
+                            <label class="form-label">Tiempo Protocolo</label><span style="color:red;">*</span>
                             <div class="input-group">
                                 <select class="form-select" id="modalHorasProtocolo">
                                     <option value="0">0 h</option>
