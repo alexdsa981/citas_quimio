@@ -166,8 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (estado === "NO_ASIGNADO") claseEstado = "bg-secondary text-white";
 
         document.getElementById("info-cita").innerHTML = `
-            <span><strong>${fecha}</strong> ${hora}</span>
-            <span class="badge ${claseEstado} ms-2">${estado}</span>
+            <div><strong>Fecha:</strong> ${fecha} | <strong>Hora:</strong> ${hora}</div>
+            <div><span class="badge ${claseEstado}">${estado}</span></div>
         `;
     }
 

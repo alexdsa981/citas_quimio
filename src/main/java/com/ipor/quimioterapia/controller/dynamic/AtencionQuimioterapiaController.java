@@ -11,10 +11,7 @@ import com.ipor.quimioterapia.service.fixed.TipoEntradaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -53,13 +50,45 @@ public class AtencionQuimioterapiaController {
                     "message", "Protocolo Atención guardado correctamente"
             ));
         } catch (Exception e) {
-            e.printStackTrace();
 
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Error al guardar Protocolo Atención: " + e.getMessage()));
         }
     }
+
+
+    @PostMapping("/ficha/{idFicha}")
+    public ResponseEntity<?> obtenerAtencionQuimioterapia(@PathVariable Long idFicha) {
+        try {
+            FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
+
+            if (fichaPaciente.getAtencionQuimioterapiaList().isEmpty()) {
+                return ResponseEntity.ok(Map.of(
+                        "success", true,
+                        "enfermeraId", null,
+                        "medicoId", null,
+                        "cubiculoId", null,
+                        "duracion", 0
+                ));
+            }
+
+            AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "enfermeraId", atencion.getEnfermera() != null ? atencion.getEnfermera().getId() : "",
+                    "medicoId", atencion.getMedico() != null ? atencion.getMedico().getId() : "",
+                    "cubiculoId", atencion.getCubiculo() != null ? atencion.getCubiculo().getId() : "",
+                    "duracion", atencion.getDuracionMinutosProtocolo() != null ? atencion.getDuracionMinutosProtocolo() : 0
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Error: " + e.getMessage()));
+        }
+    }
+
 
 
 }

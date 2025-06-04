@@ -7,8 +7,10 @@ import com.ipor.quimioterapia.model.dynamic.Paciente;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.repository.dynamic.CitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -62,12 +64,13 @@ public class CitaService {
         cita.setEstado(estadoCita);
         citaRepository.save(cita);
     }
-
-
-    public void actualizar(Long id, String nombre) {
-        Cita cita = citaRepository.findById(id).orElseThrow();
-        citaRepository.save(cita);
+    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion) {
+        citaActual.setFecha(fechaReprogramacion);
+        citaActual.setHoraProgramada(horaReprogramacion);
+        citaRepository.save(citaActual);
     }
+
+
 
 }
 

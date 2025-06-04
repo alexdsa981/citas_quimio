@@ -38,6 +38,13 @@ public class AtencionQuimioterapiaService {
         return atencionQuimioterapiaRepository.findById(id).get();
     }
 
+    public void reprogramarCita(FichaPaciente fichaPaciente,Medico medico) {
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        atencionQuimioterapia.setMedico(medico);
+        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
+    }
+
+
     public void pendienteProtocolo(FichaPaciente fichaPaciente) {
         AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
         atencionQuimioterapia.setHoraFin(null);

@@ -52,16 +52,17 @@
         <button id="btn-iniciar" class="btn btn-secondary btn-iniciar"><i class="bi bi-check-circle"></i> Iniciar</button>
         <button id="btn-pendiente" class="btn btn-warning btn-pendiente"><i class="bi bi-hourglass-split"></i> Pendiente</button>
 
+        <button id="btn-asignar" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Asignar
+        </button>
+
 
 
 
         <button id="btn-transferir" class="btn btn-info">
-            <i class="bi bi-arrow-left-right"></i> Transferir
+            <i class="bi bi-arrow-left-right"></i> Reprogramar
         </button>
 
-        <button id="btn-modificar" class="btn btn-primary">
-            <i class="bi bi-pencil-square"></i> Modificar
-        </button>
 
         <button id="btn-eliminar" class="btn btn-danger">
             <i class="bi bi-trash"></i> Eliminar
@@ -114,7 +115,7 @@
             <tr>
                 <th>Num. Documento</th>
                 <th>Paciente</th>
-                <th>Fec. Ingreso</th>
+                <th>Fec. Ingreso.</th>
                 <th>Cama</th>
                 <th>Hora Prog.</th>
                 <th>Inicio</th>
@@ -136,6 +137,8 @@
     <div th:replace="~{fragments/modal-busqueda-cie :: modalBusquedaCie}"></div>
     <div th:replace="~{fragments/modal-iniciar :: modalIniciarProtocolo}"></div>
     <div th:replace="~{fragments/modal-atender :: modalFinalizarProtocolo}"></div>
+    <div th:replace="~{fragments/modal-asignar :: modalAsignarAtencion}"></div>
+    <div th:replace="~{fragments/modal-reprogramar :: modalReprogramarCita}"></div>
 
     <div th:replace="~{fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
 
@@ -155,9 +158,10 @@
 <script src="/js/fragments/botones/modal-iniciar.js"></script>
 <script src="/js/fragments/botones/modal-finalizar.js"></script>
 <script src="/js/fragments/botones/seleccion-ficha.js"></script>
-<!--
-<script src="/js/fragments/botones/restricciones.js"></script>
--->
+<script src="/js/fragments/botones/modal-asignar.js"></script>
+<script src="/js/fragments/botones/modal-reprogramar.js"></script>
+
+
 
 <script src="/js/fragments/ficha-paciente/tab-paciente/datos.js"></script>
 <script src="/js/fragments/ficha-paciente/tab-paciente/botones.js"></script>
