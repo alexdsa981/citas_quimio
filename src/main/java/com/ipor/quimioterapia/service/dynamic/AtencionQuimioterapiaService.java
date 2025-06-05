@@ -22,11 +22,11 @@ public class AtencionQuimioterapiaService {
 
 
 
-    public void crear(FichaPaciente fichaPaciente, Medico medico) {
+    public AtencionQuimioterapia crear(Medico medico) {
         AtencionQuimioterapia atencionQuimioterapia = new AtencionQuimioterapia();
-        atencionQuimioterapia.setFichaPaciente(fichaPaciente);
         atencionQuimioterapia.setMedico(medico);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
+        return atencionQuimioterapia;
     }
 
     public List<AtencionQuimioterapia> getLista() {
@@ -39,33 +39,33 @@ public class AtencionQuimioterapiaService {
     }
 
     public void reprogramarCita(FichaPaciente fichaPaciente,Medico medico) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
         atencionQuimioterapia.setMedico(medico);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
 
     public void pendienteProtocolo(FichaPaciente fichaPaciente) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
         atencionQuimioterapia.setHoraFin(null);
         atencionQuimioterapia.setHoraInicio(null);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
     public void iniciarProtocolo(LocalTime horaInicio, FichaPaciente fichaPaciente) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
         atencionQuimioterapia.setHoraInicio(horaInicio);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
     public void finalizarProtocolo(LocalTime horaFin,FichaPaciente fichaPaciente) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
         atencionQuimioterapia.setHoraFin(horaFin);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
     public Boolean actualizar(AtencionQuimioterapiaDTO atencionQuimioterapiaDTO, FichaPaciente fichaPaciente, Medico medico, Cubiculo cubiculo, Enfermera enfermera) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
         atencionQuimioterapia.setMedico(medico);
         atencionQuimioterapia.setCubiculo(cubiculo);
         atencionQuimioterapia.setEnfermera(enfermera);

@@ -187,6 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 document.getElementById('datosModificablesPacienteFicha').classList.add('form-disabled');
                 document.getElementById('datosModificablesAtencionQuimioterapiaFicha').classList.add('form-disabled');
+                document.getElementById('datosModificablesFuncionesVitalesFicha').classList.add('form-disabled');
+                document.getElementById('datosModificablesDetalleQuimioterapiaFicha').classList.add('form-disabled');
+
 
                 document.getElementById('btnGuardarPacienteFicha').disabled = true;
                 document.getElementById('btnModificarPacienteFicha').disabled = false;
@@ -194,9 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('btnGuardarAtencionQuimioterapiaFicha').disabled = true;
                 document.getElementById('btnModificarAtencionQuimioterapiaFicha').disabled = false;
 
+                document.getElementById('btnGuardarDetalleQuimioterapiaFicha').disabled = true;
+                document.getElementById('btnModificarDetalleQuimioterapiaFicha').disabled = false;
+
+                document.getElementById('btnGuardarSignosVitalesFicha').disabled = true;
+                document.getElementById('btnModificarSignosVitalesFicha').disabled = false;
+
                 llenarFormularioFichaPaciente(data);
                 llenarFormularioFichaAtencionQuimioterapia(data);
                 llenarFormularioFichaFuncionesVitales(data)
+                llenarFormularioDetalleQuimioterapiaFicha(data);
             })
             .catch(err => {
                 console.error('Error al cargar ficha:', err);

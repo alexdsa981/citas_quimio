@@ -1,3 +1,19 @@
+
+function habilitarEdicionSignosVitalesFicha() {
+    document.getElementById('datosModificablesFuncionesVitalesFicha').classList.remove('form-disabled');
+    document.getElementById('btnGuardarSignosVitalesFicha').disabled = false;
+    document.getElementById('btnModificarSignosVitalesFicha').disabled = true;
+
+}
+
+function deshabilitarEdicionSignosVitalesFicha() {
+    document.getElementById('datosModificablesFuncionesVitalesFicha').classList.add('form-disabled');
+    document.getElementById('btnGuardarSignosVitalesFicha').disabled = true;
+    document.getElementById('btnModificarSignosVitalesFicha').disabled = false;
+}
+
+
+
 function guardarSignosVitalesFicha() {
     const presionSistolica = document.getElementById("presionSistolicaFicha").value.trim();
     const presionDiastolica = document.getElementById("presionDiastolicaFicha").value.trim();
@@ -69,6 +85,7 @@ function guardarSignosVitalesFicha() {
             timer: 2500,
             showConfirmButton: false
         });
+            deshabilitarEdicionSignosVitalesFicha();
     })
     .catch(error => {
         Swal.fire({

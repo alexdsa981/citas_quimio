@@ -39,6 +39,9 @@ public class ProtocoloController {
 
             citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
             atencionQuimioterapiaService.pendienteProtocolo(fichaPaciente);
+            if (fichaPaciente.getAtencionQuimioterapia().getEnfermera() == null || fichaPaciente.getAtencionQuimioterapia().getCubiculo() == null || fichaPaciente.getAtencionQuimioterapia().getDuracionMinutosProtocolo() == 0){
+                citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
+            }
 
             return ResponseEntity.ok(Map.of("message", "Protocolo regresado a Pendiente correctamente"));
         } catch (Exception e) {

@@ -33,7 +33,12 @@ public class FichaPaciente {
     @JoinColumn(name = "id_tipo_entrada")
     private TipoEntrada tipoEntrada;
 
-
+    @ManyToOne
+    @JoinColumn(name = "id_atencion_quimioterapia")
+    private AtencionQuimioterapia atencionQuimioterapia;
+    @ManyToOne
+    @JoinColumn(name = "id_detalle_quimioterapia")
+    private DetalleQuimioterapia detalleQuimioterapia;
 
     @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FuncionesVitales> funcionesVitales;
@@ -42,9 +47,6 @@ public class FichaPaciente {
     @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConjuntoCie> conjuntoCies;
 
-
-    @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AtencionQuimioterapia> atencionQuimioterapiaList;
 
 
 }

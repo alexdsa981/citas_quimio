@@ -11,6 +11,8 @@ function deshabilitarEdicionAtencionQuimioterapiaFicha() {
     document.getElementById('btnModificarAtencionQuimioterapiaFicha').disabled = false;
 }
 
+
+
 function guardarAtencionQuimioterapiaFicha() {
     const horas = parseInt(document.getElementById('horasProtocoloFicha').value) || 0;
     const minutos = parseInt(document.getElementById('minutosProtocoloFicha').value) || 0;

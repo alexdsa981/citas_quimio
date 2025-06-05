@@ -43,7 +43,8 @@ public class CitaController {
 
             Cita cita = citaService.crear(citaCreadaDTO);
             FichaPaciente fichaPaciente = fichaPacienteService.crear(cita, tipoEntrada);
-            atencionQuimioterapiaService.crear(fichaPaciente, medico);
+            fichaPaciente.setAtencionQuimioterapia(atencionQuimioterapiaService.crear(medico));
+            fichaPacienteService.guardar(fichaPaciente);
 
             return ResponseEntity.ok(Map.of("message", "Cita agendada correctamente"));
         } catch (Exception e) {
@@ -58,7 +59,7 @@ public class CitaController {
     public ResponseEntity<?> obtenerCitaPorFicha(@PathVariable Long idFicha) {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
-            AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapiaList().get(0);
+            AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapia();
             Cita cita = fichaPaciente.getCita();
             return ResponseEntity.ok(Map.of(
                     "success", true,

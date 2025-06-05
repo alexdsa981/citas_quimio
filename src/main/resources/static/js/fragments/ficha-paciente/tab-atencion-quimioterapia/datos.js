@@ -1,43 +1,26 @@
 function llenarFormularioFichaAtencionQuimioterapia(objetoFicha) {
-    const atencion = objetoFicha.atencionQuimioterapiaList?.[0] || {}; // Tomamos la primera atención, si existe
+    const atencion = objetoFicha.atencionQuimioterapia || {};
 
     // Enfermera
     const enfermeraSelect = document.getElementById('enfermeraFicha');
-    if (atencion.enfermera && atencion.enfermera.id) {
-        enfermeraSelect.value = atencion.enfermera.id;
-    } else {
-        enfermeraSelect.value = "";
-    }
+    enfermeraSelect.value = atencion.enfermera?.id || "";
 
     // Médico
     const medicoSelect = document.getElementById('medicoFicha');
-    if (atencion.medico && atencion.medico.id) {
-        medicoSelect.value = atencion.medico.id;
-    } else {
-        medicoSelect.value = "";
-    }
+    medicoSelect.value = atencion.medico?.id || "";
 
     // Cubículo
     const cubiculoSelect = document.getElementById('cubiculoSelectFicha');
-    if (atencion.cubiculo && atencion.cubiculo.id) {
-        cubiculoSelect.value = atencion.cubiculo.id;
-    } else {
-        cubiculoSelect.value = "";
-    }
+    cubiculoSelect.value = atencion.cubiculo?.id || "";
 
-    // Duración del protocolo
+    // Duración del protocolo (minutos a hh:mm)
     const totalMinutos = atencion.duracionMinutosProtocolo || 0;
-    const horas = Math.floor(totalMinutos / 60);
-    const minutos = totalMinutos % 60;
+    document.getElementById('horasProtocoloFicha').value = Math.floor(totalMinutos / 60);
+    document.getElementById('minutosProtocoloFicha').value = totalMinutos % 60;
 
-    document.getElementById('horasProtocoloFicha').value = horas;
-    document.getElementById('minutosProtocoloFicha').value = minutos;
+    // Hora de inicio
+    document.getElementById('horaInicioProtocolo').value = atencion.horaInicio?.substring(0, 5) || "";
 
-    // Hora inicio
-    const horaInicio = atencion.horaInicio ? atencion.horaInicio.substring(0, 5) : "";
-    document.getElementById('horaInicioProtocolo').value = horaInicio;
-
-    // Hora fin
-    const horaFin = atencion.horaFin ? atencion.horaFin.substring(0, 5) : "";
-    document.getElementById('horaFinProtocolo').value = horaFin;
+    // Hora de fin
+    document.getElementById('horaFinProtocolo').value = atencion.horaFin?.substring(0, 5) || "";
 }

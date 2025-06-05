@@ -63,18 +63,7 @@ public class AtencionQuimioterapiaController {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
 
-            if (fichaPaciente.getAtencionQuimioterapiaList().isEmpty()) {
-                return ResponseEntity.ok(Map.of(
-                        "success", true,
-                        "enfermeraId", null,
-                        "medicoId", null,
-                        "cubiculoId", null,
-                        "duracion", 0
-                ));
-            }
-
-            AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapiaList().get(0);
-
+            AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapia();
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "enfermeraId", atencion.getEnfermera() != null ? atencion.getEnfermera().getId() : "",

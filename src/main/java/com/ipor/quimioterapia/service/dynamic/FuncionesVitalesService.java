@@ -23,28 +23,21 @@ public class FuncionesVitalesService {
     @Autowired
     FichaPacienteRepository fichaPacienteRepository;
 
-    public void crear(FichaPaciente fichaPaciente) {
+    public FuncionesVitales crear(FichaPaciente fichaPaciente) {
         FuncionesVitales funcionesVitales = new FuncionesVitales();
         funcionesVitales.setHora(LocalTime.now());
         funcionesVitales.setFecha(LocalDate.now());
         funcionesVitales.setFichaPaciente(fichaPaciente);
         funcionesVitalesRepository.save(funcionesVitales);
+        return funcionesVitales;
     }
 
-    public void setDatoAFicha(FuncionesVitalesDTO dto, FichaPaciente fichaPaciente) {
+    public void setDatoAFicha(FuncionesVitalesDTO dto, FichaPaciente fichaPaciente, FuncionesVitales funcionesVitales) {
         List<FuncionesVitales> lista = fichaPaciente.getFuncionesVitales();
+        funcionesVitales.setFichaPaciente(fichaPaciente);
+        lista.add(funcionesVitales);
 
-        if (lista.isEmpty()) {
-            // Por seguridad, creamos uno por si acaso
-            FuncionesVitales nueva = new FuncionesVitales();
-            nueva.setFecha(LocalDate.now());
-            nueva.setHora(LocalTime.now());
-            nueva.setFichaPaciente(fichaPaciente);
-            lista.add(nueva); // Lo agregamos a la lista del paciente
-        }
-
-        FuncionesVitales fv = lista.get(0); // Seguro que existe en este punto
-
+        FuncionesVitales fv = lista.get(0);
         fv.setPesoKg(dto.getPeso());
         fv.setTallaCm(dto.getTalla());
         fv.setPresionSistolica(dto.getPresionSistolica());
@@ -54,7 +47,6 @@ public class FuncionesVitalesService {
         fv.setTemperatura(dto.getTemperatura());
         fv.setSaturacionOxigeno(dto.getSaturacionOxigeno());
         fv.setSuperficieCorporal(dto.getSuperficieCorporal());
-
         funcionesVitalesRepository.save(fv);
     }
 

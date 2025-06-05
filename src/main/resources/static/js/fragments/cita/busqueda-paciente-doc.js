@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const inputDocumento = document.getElementById("numeroDocumentoCita");
+    const btnBuscar = document.getElementById("btnBuscarPaciente");
+
+    if (inputDocumento && btnBuscar) {
+        inputDocumento.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnBuscar.click();
+            }
+        });
+    }
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const tipoDocSelect = document.getElementById('tipoDocIdentidadCita');
     const numeroDocInput = document.getElementById('numeroDocumentoCita');

@@ -3,7 +3,9 @@ package com.ipor.quimioterapia.controller.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
 import com.ipor.quimioterapia.model.dynamic.FuncionesVitales;
+import com.ipor.quimioterapia.model.other.DTO.DetalleQuimioterapiaDTO;
 import com.ipor.quimioterapia.model.other.DTO.FuncionesVitalesDTO;
+import com.ipor.quimioterapia.service.dynamic.DetalleQuimioterapiaService;
 import com.ipor.quimioterapia.service.dynamic.FichaPacienteService;
 import com.ipor.quimioterapia.service.dynamic.FuncionesVitalesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +20,21 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/app/funciones-vitales")
-public class FuncionesVitalesController {
+@RequestMapping("/app/detalle-quimioterapia")
+public class DetalleQuimioterapiaController {
 
     @Autowired
     FichaPacienteService fichaPacienteService;
     @Autowired
-    FuncionesVitalesService funcionesVitalesService;
+    DetalleQuimioterapiaService detalleQuimioterapiaService;
 
     @PostMapping("/guardar")
-    public ResponseEntity<Map<String, Object>> guardarSignosVitales(@RequestBody FuncionesVitalesDTO dto) {
+    public ResponseEntity<Map<String, Object>> guardarDetalleQuimioterapia(@RequestBody DetalleQuimioterapiaDTO dto) {
         FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
-        FuncionesVitales funcionesVitales;
-        if (fichaPaciente.getFuncionesVitales().isEmpty()) {
-            funcionesVitales = funcionesVitalesService.crear(fichaPaciente);
-        }else{
-            funcionesVitales = fichaPaciente.getFuncionesVitales().get(0);
-        }
 
-        funcionesVitalesService.setDatoAFicha(dto, fichaPaciente, funcionesVitales);
+        fichaPaciente.setDetalleQuimioterapia(detalleQuimioterapiaService.guardar(dto, fichaPaciente));
 
+        fichaPacienteService.guardar(fichaPaciente);
         Map<String, Object> response = new HashMap<>();
         response.put("mensaje", "Signos vitales guardados correctamente");
         return ResponseEntity.ok(response);

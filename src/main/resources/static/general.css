@@ -59,7 +59,7 @@ tr.fila-ficha.seleccionada td {
     user-select: none;
 }
 
-
+.form-disabled textarea,
 .form-disabled input,
 .form-disabled select {
     background-color: #e9ecef !important;

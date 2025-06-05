@@ -22,10 +22,6 @@ public class AtencionQuimioterapia {
     @JoinColumn(name = "id_cubiculo")
     private Cubiculo cubiculo;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "id_ficha_paciente")
-    private FichaPaciente fichaPaciente;
 
     @ManyToOne
     @JoinColumn(name = "id_enfermera")
