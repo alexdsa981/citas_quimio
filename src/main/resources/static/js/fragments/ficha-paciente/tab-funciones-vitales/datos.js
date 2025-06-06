@@ -1,3 +1,29 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const pesoInput = document.getElementById("pesoFicha");
+    const tallaInput = document.getElementById("tallaFicha");
+
+    pesoInput.addEventListener("input", calcularSuperficieCorporalMosteller);
+    tallaInput.addEventListener("input", calcularSuperficieCorporalMosteller);
+});
+function calcularSuperficieCorporalMosteller() {
+    const pesoInput = document.getElementById("pesoFicha");
+    const tallaInput = document.getElementById("tallaFicha");
+    const superficieCorporalInput = document.getElementById("superficieCorporalFicha");
+
+    const peso = parseFloat(pesoInput.value.trim());
+    const talla = parseFloat(tallaInput.value.trim());
+
+    if (!isNaN(peso) && !isNaN(talla) && peso > 0 && talla > 0) {
+        const sc = Math.sqrt((talla * peso) / 3600).toFixed(2);
+        superficieCorporalInput.value = sc;
+    } else {
+        superficieCorporalInput.value = "";
+    }
+}
+
+
+
+
 function llenarFormularioFichaFuncionesVitales(data) {
     const funcionesVitales = data.funcionesVitales;
 

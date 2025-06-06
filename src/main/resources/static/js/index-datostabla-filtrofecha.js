@@ -45,10 +45,12 @@ function cargarFichasEntreFechas(fechaInicio, fechaFin) {
 
 
 let fichasGlobal = [];
+
 function llenarTablaFichas(fichas) {
     fichasGlobal = fichas;
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = "";
+
     if (fichas.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -63,24 +65,26 @@ function llenarTablaFichas(fichas) {
         const paciente = cita.paciente || {};
         const contratante = paciente.contratante || {};
         const aseguradora = contratante.aseguradora || {};
-        const cubiculo = ficha.atencionQuimioterapiaList?.[0]?.cubiculo || {};
-        const atencion = ficha.atencionQuimioterapiaList?.[0] || {};
+        const cubiculo = ficha.atencionQuimioterapia?.cubiculo || {};
+        const atencion = ficha.atencionQuimioterapia || {};
         const estado = cita.estado || "";
 
         let claseEstado = "bg-secondary";
-            if (estado === "PENDIENTE") {
-                claseEstado = "bg-warning text-dark";
-            } else if (estado === "EN_PROCESO") {
-                claseEstado = "bg-info text-dark";
-            } else if (estado === "ATENDIDO") {
-                claseEstado = "bg-success";
-            } else if (estado === "NO_ASIGNADO") {
-                claseEstado = "bg-secondary text-white";
-            }
+        if (estado === "PENDIENTE") {
+            claseEstado = "bg-warning text-dark";
+        } else if (estado === "EN_PROCESO") {
+            claseEstado = "bg-info text-dark";
+        } else if (estado === "ATENDIDO") {
+            claseEstado = "bg-success";
+        } else if (estado === "NO_ASIGNADO") {
+            claseEstado = "bg-secondary text-white";
+        }
+
+        const esSeleccionada = ficha.id == idFichaSeleccionada ? 'seleccionada' : '';
 
         const fila = `
-            <tr class="fila-ficha" data-id-ficha="${ficha.id}">
-                <td><b>${paciente.tipoDocIdentidad.nombre || ""}</b> : ${paciente.numDocIdentidad || ""}</td>
+            <tr class="fila-ficha ${esSeleccionada}" data-id-ficha="${ficha.id}">
+                <td><b>${paciente.tipoDocIdentidad?.nombre || ""}</b> : ${paciente.numDocIdentidad || ""}</td>
                 <td>${paciente.apellidoP || ""} ${paciente.apellidoM || ""}, ${paciente.nombre || ""}</td>
                 <td>${cita.fecha || "n/d"}</td>
                 <td>${cubiculo.codigo || ""}</td>
@@ -95,7 +99,6 @@ function llenarTablaFichas(fichas) {
 
         tbody.insertAdjacentHTML("beforeend", fila);
     });
-
 }
 
 

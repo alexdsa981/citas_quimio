@@ -76,10 +76,10 @@
 
     <div class="row g-3 mb-3">
         <div class="col-md-3">
-            <input type="text" class="form-control" placeholder="Paciente">
+            <input type="text" id="filtroPaciente" class="form-control" placeholder="Paciente">
         </div>
         <div class="col-md-2">
-            <select class="form-select" name="estado">
+            <select class="form-select" id="filtroEstado">
                 <option value="">Estado: TODO</option>
                 <option th:each="estado : ${estadosCita}"
                         th:value="${estado}"
@@ -87,7 +87,7 @@
             </select>
         </div>
         <div class="col-md-2">
-            <select class="form-select" name="cubiculo">
+            <select class="form-select" id="filtroCubiculo">
                 <option value="">Cubículo: TODO</option>
                 <option th:each="c : ${Lista_Cubiculo_Activos}"
                         th:value="${c.id}"
@@ -95,6 +95,7 @@
                 </option>
             </select>
         </div>
+
 
         <div class="col-md-2">
             <input type="text" id="filtroFecha" class="form-control" placeholder="Seleccionar fecha(s)">
@@ -176,7 +177,7 @@
 <script src="/js/fragments/ficha-paciente/tab-detalle-quimioterapia/botones.js"></script>
 
 
-<script src="/js/fragments/ficha-paciente/modal.js"></script>
+<script src="/js/fragments/filtros.js"></script>
 
 
 <script src="/js/fragments/modal-busqueda-cie.js"></script>

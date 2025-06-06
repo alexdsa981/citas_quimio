@@ -19,9 +19,4 @@ public class ConjuntoCie {
     @JoinColumn(name = "id_cie")
     private Cie cie;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "id_ficha_paciente")
-    private FichaPaciente fichaPaciente;
-
 }
