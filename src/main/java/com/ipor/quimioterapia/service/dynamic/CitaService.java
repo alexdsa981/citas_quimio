@@ -1,19 +1,14 @@
 package com.ipor.quimioterapia.service.dynamic;
 
-import com.ipor.quimioterapia.model.dynamic.Cita;
-import com.ipor.quimioterapia.model.dynamic.EstadoCita;
-import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
-import com.ipor.quimioterapia.model.dynamic.Paciente;
+import com.ipor.quimioterapia.model.dynamic.*;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.repository.dynamic.CitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CitaService {
@@ -25,27 +20,18 @@ public class CitaService {
 
 
 
-    public Cita crear(CitaCreadaDTO citaCreadaDTO) {
+    public Cita crear(CitaCreadaDTO citaCreadaDTO, Medico medico, Paciente paciente) {
         Cita cita = new Cita();
         cita.setFecha(citaCreadaDTO.fechaCita);
+        cita.setMedicoConsulta(medico);
         cita.setHoraProgramada(citaCreadaDTO.horaProgramada);
         cita.setHoraCreacion(LocalTime.now());
         cita.setEstado(EstadoCita.NO_ASIGNADO);
-
-        //crear logica para verificar existencia de paciente
-        Optional<Paciente> optPaciente = pacienteService.getPorDocumento(
-                citaCreadaDTO.idTipoDocIdentidad,
-                citaCreadaDTO.numeroDocumento
-        );
-        if (optPaciente.isPresent()){
-            Paciente pacienteActual = optPaciente.get();
-            pacienteService.actualizar(citaCreadaDTO, pacienteActual);
-            cita.setPaciente(optPaciente.get());
-        }else{
-            Paciente paciente = pacienteService.crear(citaCreadaDTO);
-            cita.setPaciente(paciente);
-        }
-
+        cita.setNumPresupuesto(citaCreadaDTO.numeroPresupuesto);
+        cita.setContratante(citaCreadaDTO.contratante);
+        cita.setAseguradora(citaCreadaDTO.aseguradora);
+        cita.setTipoPaciente(citaCreadaDTO.tipoPaciente);
+        cita.setPaciente(paciente);
         citaRepository.save(cita);
         return cita;
     }

@@ -13,8 +13,14 @@ document.getElementById('btn-asignar').addEventListener('click', () => {
     })
     .then(response => response.json())
     .then(data => {
+        // Mostrar el modal siempre
+        const modalElement = document.getElementById('modalAsignar');
+        const modalAsignarInstance = new bootstrap.Modal(modalElement);
+        modalAsignarInstance.show();
+        window.modalAsignarInstance = modalAsignarInstance;
+
         if (data.success) {
-            // Verifica cada campo antes de asignar
+            // Si existe, llenar campos
             document.getElementById('modalEnfermera').value = data.enfermeraId ?? '';
             document.getElementById('modalMedico').value = data.medicoId ?? '';
             document.getElementById('modalCubiculo').value = data.cubiculoId ?? '';
@@ -25,19 +31,16 @@ document.getElementById('btn-asignar').addEventListener('click', () => {
 
             document.getElementById('modalHorasProtocolo').value = horas;
             document.getElementById('modalMinutosProtocolo').value = minutos;
-
-            const modalElement = document.getElementById('modalAsignar');
-            const modalAsignarInstance = new bootstrap.Modal(modalElement);
-            modalAsignarInstance.show();
-
-            window.modalAsignarInstance = modalAsignarInstance;
         } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al cargar',
-                text: data.message || 'No se pudo cargar la ficha seleccionada.',
-            });
+            // Si no hay datos, limpiar los campos
+            document.getElementById('modalEnfermera').value = '';
+            document.getElementById('modalMedico').value = '';
+            document.getElementById('modalCubiculo').value = '';
+            document.getElementById('modalHorasProtocolo').value = '';
+            document.getElementById('modalMinutosProtocolo').value = '';
         }
+
+
     })
     .catch(error => {
         console.error("Error en el fetch:", error);
@@ -51,15 +54,26 @@ document.getElementById('btn-asignar').addEventListener('click', () => {
 
 
 function guardarAsignacion() {
+    const horas = parseInt(document.getElementById('modalHorasProtocolo').value || 0);
+    const minutos = parseInt(document.getElementById('modalMinutosProtocolo').value || 0);
+    const duracionTotal = horas * 60 + minutos;
+
+    // Validación: al menos una duración válida
+    if (duracionTotal <= 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Duración inválida',
+            text: 'Debe ingresar al menos 1 minuto o 1 hora en el protocolo.'
+        });
+        return;
+    }
+
     const dto = {
         idFicha: idFichaSeleccionada,
         idEnfermera: document.getElementById('modalEnfermera').value,
         idMedico: document.getElementById('modalMedico').value,
         idCubiculo: document.getElementById('modalCubiculo').value,
-        duracionMinutos: (
-            parseInt(document.getElementById('modalHorasProtocolo').value || 0) * 60 +
-            parseInt(document.getElementById('modalMinutosProtocolo').value || 0)
-        )
+        duracionMinutos: duracionTotal
     };
 
     fetch('/app/atencion-quimioterapia/guardar', {

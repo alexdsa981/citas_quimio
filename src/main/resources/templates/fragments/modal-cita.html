@@ -16,11 +16,9 @@
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Fecha</label><span style="color:red;">*</span>
-                                <input type="date" id="fechaCitaSeleccionada" class="form-control"
+                                <input type="date" class="form-control"
                                        th:value="${fechaInputActual}"
-                                       autocomplete="off"
-                                       readonly
-                                       style="background-color: #e9ecef; pointer-events: none;">
+                                       autocomplete="off">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Hora Programada</label><span style="color:red;">*</span>
@@ -28,7 +26,7 @@
                                        autocomplete="off">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Médico</label><span style="color:red;">*</span>
+                                <label class="form-label">Médico Consulta</label><span style="color:red;">*</span>
                                 <select class="form-select" name="idMedico" id="idMedicoCita">
                                     <th:block th:each="medico : ${Lista_Medicos_Activos}">
                                         <option th:value="${medico.id}"
@@ -43,124 +41,90 @@
 
                         <div id="contenedorPacienteModalCita">
                             <div class="row g-3">
-                                <div class="col-md-3 mt-3">
-                                    <label class="form-label">Entrada</label><span style="color:red;">*</span>
-                                    <select class="form-select" name="tipoEntradaId" id="tipoEntradaCita">
-                                        <th:block th:each="entrada : ${Lista_TipoEntrada_Activos}">
-                                            <option th:value="${entrada.id}" th:text="${entrada.nombre}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">Doc. Identidad</label><span style="color:red;">*</span>
-                                    <select class="form-select" name="idTipoDocIdentidad" id="tipoDocIdentidadCita"
-                                            required>
-                                        <option value="">Seleccione:</option>
-                                        <th:block th:each="tipo : ${Lista_TipoDocIdentidad_Activos}">
-                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-
-                                <!-- Número Documento con botón Buscar integrado -->
+                                <!-- Número de presupuesto -->
                                 <div class="col-md-6">
-                                    <label class="form-label">Número Documento</label><span style="color:red;">*</span>
+                                    <label class="form-label">N° Presupuesto</label><span style="color:red;">*</span>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="numeroDocumentoCita"
-                                               autocomplete="off" required>
-                                        <button type="button" class="btn btn-outline-secondary" id="btnBuscarPaciente">
+                                        <input type="text" class="form-control" id="numeroPresupuestoCita" autocomplete="off" required>
+                                        <button type="button" class="btn btn-outline-secondary" id="btnBuscarPorPresupuesto">
                                             <i class="bi bi-search"></i>
                                         </button>
-
                                     </div>
                                 </div>
-
-
+                                <div class="col-md-3">
+                                    <label class="form-label">Tipo Documento</label>
+                                    <input type="text" id="tipoDocumentoCita" class="form-control bloqueable" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">N° Documento</label>
+                                    <input type="text" id="documentoCita" class="form-control bloqueable" readonly>
+                                </div>
                                 <hr>
 
                                 <!-- Apellidos y nombres -->
                                 <div class="col-md-3">
                                     <label class="form-label">Apellido Paterno</label>
-                                    <input type="text" id="apellidoPaternoCita" class="form-control bloqueable"
-                                           autocomplete="off">
+                                    <input type="text" id="apellidoPaternoCita" class="form-control bloqueable" readonly>
+                                    <input id="idPaciente" type="hidden">
+
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Apellido Materno</label>
-                                    <input type="text" id="apellidoMaternoCita" class="form-control bloqueable"
-                                           autocomplete="off">
+                                    <input type="text" id="apellidoMaternoCita" class="form-control bloqueable" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Nombres</label>
-                                    <input type="text" id="nombresCita" class="form-control bloqueable"
-                                           autocomplete="off">
+                                    <input type="text" id="nombresCita" class="form-control bloqueable" readonly>
                                 </div>
 
-                                <!-- Fecha nacimiento, edad y sexo -->
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-label">Fecha Nac.</label>
-                                    <input type="date" class="form-control bloqueable" id="fechaNacimientoCita"
-                                           autocomplete="off">
+                                    <input type="text" class="form-control bloqueable" id="fechaNacimientoCita" readonly>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <label class="form-label">Edad</label>
-                                    <input type="text" class="form-control" id="edadCita" readonly autocomplete="off">
+                                    <input type="text" class="form-control bloqueable" id="edadCita" readonly>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Sexo</label>
-                                    <select class="form-select bloqueable" id="sexoCita">
-                                        <option value="femenino">FEMENINO</option>
-                                        <option value="masculino">MASCULINO</option>
-                                    </select>
+                                    <input type="text" class="form-control bloqueable" id="sexoCita" readonly>
                                 </div>
 
-                                <!-- Teléfono -->
-                                <div class="col-md-4">
-                                    <label class="form-label">Teléfono / Celular</label>
-                                    <input type="text" class="form-control bloqueable" autocomplete="off"
-                                           id="telefonoCita">
+                                <div class="col-md-3">
+                                    <label class="form-label">Celular</label>
+                                    <input type="text" class="form-control bloqueable" id="celularCita" readonly>
                                 </div>
-
+                                <div class="col-md-3">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control bloqueable" id="telefonoCita" readonly>
+                                </div>
                                 <hr>
 
-                                <div class="col-md-4">
+                                <!-- Tipo paciente -->
+                                <div class="col-md-2">
                                     <label class="form-label">Tipo Paciente</label>
-                                    <select class="form-select bloqueable" name="idTipoPaciente" id="tipoPacienteCita">
-                                        <th:block th:each="tipo, tipoStat : ${Lista_TipoPaciente_Activos}">
-                                            <option th:value="${tipo.id}" th:text="${tipo.nombre}"
-                                                    th:selected="${tipoStat.index == 0}"></option>
-                                        </th:block>
-                                    </select>
+                                    <input type="text" class="form-control bloqueable" id="tipoPacienteCita" readonly>
                                 </div>
 
                                 <!-- Aseguradora -->
                                 <div class="col-md-4">
                                     <label class="form-label">Aseguradora</label>
-                                    <select class="form-select bloqueable" name="idAseguradora" id="aseguradoraCita">
-                                        <!-- Se llenará dinámicamente -->
-                                    </select>
+                                    <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
                                 </div>
 
                                 <!-- Contratante -->
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="form-label">Contratante</label>
-                                    <select class="form-select bloqueable" name="idContratante" id="contratanteCita">
-                                        <!-- Se llenará dinámicamente -->
-                                    </select>
+                                    <input type="text" class="form-control bloqueable" id="contratanteCita" readonly>
                                 </div>
-
-
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="btnLimpiarModalCita" class="btn btn-warning" disabled>Limpiar</button>
-                    <button type="button" id="btnModificarPacienteModalCita" class="btn btn-info" disabled>Modificar</button>
-                    <button id="btnGuardarCita" class="btn btn-primary" disabled>Guardar</button>
+                    <button id="btnGuardarCita" class="btn btn-primary" disabled>Agendar</button>
                 </div>
-
             </div>
         </div>
     </div>

@@ -6,7 +6,6 @@ import lombok.Setter;
 import java.time.LocalTime;
 
 @Getter
-@Setter
 public class AtencionQuimioterapiaDTO {
     private Long idEnfermera;
     private Long idMedico;

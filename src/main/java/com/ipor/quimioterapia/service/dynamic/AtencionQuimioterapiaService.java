@@ -7,7 +7,6 @@ import com.ipor.quimioterapia.model.dynamic.Medico;
 import com.ipor.quimioterapia.model.fixed.Cubiculo;
 import com.ipor.quimioterapia.model.other.DTO.AtencionQuimioterapiaDTO;
 import com.ipor.quimioterapia.repository.dynamic.AtencionQuimioterapiaRepository;
-import com.ipor.quimioterapia.service.fixed.CubiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +21,36 @@ public class AtencionQuimioterapiaService {
 
 
 
-    public AtencionQuimioterapia crear(Medico medico) {
-        AtencionQuimioterapia atencionQuimioterapia = new AtencionQuimioterapia();
-        atencionQuimioterapia.setMedico(medico);
-        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
-        return atencionQuimioterapia;
+    public AtencionQuimioterapia crearOActualizar(
+            AtencionQuimioterapiaDTO dto,
+            FichaPaciente fichaPaciente,
+            Medico medico,
+            Enfermera enfermera,
+            Cubiculo cubiculo
+    ) {
+        AtencionQuimioterapia atencion;
+
+        if (fichaPaciente.getAtencionQuimioterapia() != null) {
+            // Ya existe, actualizamos la existente
+            atencion = fichaPaciente.getAtencionQuimioterapia();
+        } else {
+            atencion = new AtencionQuimioterapia();
+        }
+
+        atencion.setMedico(medico);
+        atencion.setEnfermera(enfermera);
+        atencion.setCubiculo(cubiculo);
+        atencion.setHoraInicio(dto.getHoraInicio());
+        atencion.setHoraFin(dto.getHoraFin());
+        atencion.setDuracionMinutosProtocolo(dto.getDuracionMinutos());
+
+        // Guardamos (si es nuevo o modificado)
+        atencionQuimioterapiaRepository.save(atencion);
+        return atencion;
     }
+
+
+
 
     public List<AtencionQuimioterapia> getLista() {
         return atencionQuimioterapiaRepository.findAll();
@@ -64,18 +87,5 @@ public class AtencionQuimioterapiaService {
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 
-    public Boolean actualizar(AtencionQuimioterapiaDTO atencionQuimioterapiaDTO, FichaPaciente fichaPaciente, Medico medico, Cubiculo cubiculo, Enfermera enfermera) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
-        atencionQuimioterapia.setMedico(medico);
-        atencionQuimioterapia.setCubiculo(cubiculo);
-        atencionQuimioterapia.setEnfermera(enfermera);
-        atencionQuimioterapia.setDuracionMinutosProtocolo(atencionQuimioterapiaDTO.getDuracionMinutos());
-        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
-        if (atencionQuimioterapia.getEnfermera() != null && atencionQuimioterapia.getCubiculo() != null && atencionQuimioterapia.getDuracionMinutosProtocolo() != 0) {
-            return Boolean.TRUE;
-        } else {
-            return Boolean.FALSE;
-        }
-    }
 }
 

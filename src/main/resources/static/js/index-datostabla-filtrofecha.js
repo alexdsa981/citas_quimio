@@ -84,7 +84,7 @@ function llenarTablaFichas(fichas) {
 
         const fila = `
             <tr class="fila-ficha ${esSeleccionada}" data-id-ficha="${ficha.id}">
-                <td><b>${paciente.tipoDocIdentidad?.nombre || ""}</b> : ${paciente.numDocIdentidad || ""}</td>
+                <td><b>${paciente.tipoDocumentoNombre || ""}</b> : ${paciente.numDocIdentidad || ""}</td>
                 <td>${paciente.apellidoP || ""} ${paciente.apellidoM || ""}, ${paciente.nombre || ""}</td>
                 <td>${cita.fecha || "n/d"}</td>
                 <td>${cubiculo.codigo || ""}</td>

@@ -2,7 +2,6 @@ package com.ipor.quimioterapia.helper.model;
 
 import com.ipor.quimioterapia.model.dynamic.Enfermera;
 import com.ipor.quimioterapia.model.dynamic.Medico;
-import com.ipor.quimioterapia.model.fixed.Aseguradora;
 import com.ipor.quimioterapia.service.dynamic.EnfermeraService;
 import com.ipor.quimioterapia.service.dynamic.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;

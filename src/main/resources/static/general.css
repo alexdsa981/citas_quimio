@@ -68,3 +68,9 @@ tr.fila-ficha.seleccionada td {
     user-select: none;
     cursor: not-allowed;
 }
+
+
+#contenedorPacienteModalCita .bloqueable {
+    background-color: #e9ecef !important;
+    pointer-events: none;
+}

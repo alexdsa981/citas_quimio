@@ -28,13 +28,9 @@ public class WebController {
     @GetMapping("/inicio")
     public String redirigePaginaInicio(Model model) {
         clasificadoresModelBuilder.getListaEstadoCita(model);
-        clasificadoresModelBuilder.getListaAseguradorasActivos(model);
         clasificadoresModelBuilder.getListaCieActivos(model);
-        clasificadoresModelBuilder.getListaContratantesActivos(model);
         clasificadoresModelBuilder.getListaCubiculosActivos(model);
-        clasificadoresModelBuilder.getListaTipoDocIdentidadActivos(model);
-        clasificadoresModelBuilder.getListaTipoPacienteActivos(model);
-        clasificadoresModelBuilder.getListaTipoEntradaActivos(model);
+
 
 
         personalModelBuilder.getListaMedicosActivos(model);

@@ -1,7 +1,5 @@
 package com.ipor.quimioterapia.model.dynamic;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ipor.quimioterapia.model.fixed.TipoEntrada;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,10 +25,6 @@ public class FichaPaciente {
     @OneToOne
     @JoinColumn(name = "id_cita")
     private Cita cita;
-
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_entrada")
-    private TipoEntrada tipoEntrada;
 
     @ManyToOne
     @JoinColumn(name = "id_atencion_quimioterapia")

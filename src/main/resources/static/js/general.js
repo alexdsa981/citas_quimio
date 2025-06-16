@@ -31,3 +31,11 @@ function actualizarHora() {
 setInterval(actualizarHora, 1000);
 
 
+document.addEventListener('hide.bs.modal', function (event) {
+    const modal = event.target;
+    // Si el foco está dentro del modal
+    if (modal.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+});
+

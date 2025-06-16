@@ -1,6 +1,5 @@
 package com.ipor.quimioterapia.service.other;
 
-import com.ipor.quimioterapia.model.fixed.Aseguradora;
 import com.ipor.quimioterapia.model.other.RolUsuario;
 import com.ipor.quimioterapia.repository.other.RolUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
