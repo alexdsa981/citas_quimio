@@ -12,7 +12,7 @@ public class CieSpringService {
 
     private final RestTemplate restTemplate;
 
-    private final String baseUrl = "http://localhost:9001/api/cie";
+    private final String baseUrl = "http://localhost:90000/api/cie";
 
     @Autowired
     public CieSpringService(RestTemplate restTemplate) {

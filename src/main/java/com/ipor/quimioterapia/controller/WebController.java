@@ -51,9 +51,13 @@ public class WebController {
     }
     @GetMapping("/recursos/cubiculos")
     public String redirigePaginaRecursosCubiculos(Model model) {
-        clasificadoresModelBuilder.getListaCubiculos(model);
         model.addAttribute("Titulo", "Quimioterapia | Cubículos");
         return "recursos/cubiculos";
+    }
+    @GetMapping("/configuracion")
+    public String redirigePaginaConfiguracion(Model model) {
+        model.addAttribute("Titulo", "Quimioterapia | Configuración");
+        return "otros/configuracion";
     }
 
 }
