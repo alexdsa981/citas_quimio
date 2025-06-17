@@ -58,29 +58,5 @@ public class DataInitializer implements CommandLineRunner {
             rolUsuarioRepository.save(new RolUsuario("Admin"));
         }
 
-
-
-        if (cubiculoRepository.count() == 0) {
-            cubiculoService.crear("A");
-            cubiculoService.crear("B");
-            cubiculoService.crear("C");
-            cubiculoService.crear("D");
-            cubiculoService.crear("E");
-        }
-
-        if (medicoRepository.count() == 0) {
-            medicoService.crear("Juan", "Pérez", "Gómez");
-            medicoService.crear("María", "Rodríguez", "Flores");
-            medicoService.crear("Luis", "García", "Torres");
-        }
-
-        if (enfermeraRepository.count() == 0) {
-            enfermeraService.crear("Ana", "Ramírez", "Cruz");
-            enfermeraService.crear("Pedro", "Salas", "Mejía");
-            enfermeraService.crear("Lucía", "Vega", "Huamán");
-        }
-
-
-
     }
 }

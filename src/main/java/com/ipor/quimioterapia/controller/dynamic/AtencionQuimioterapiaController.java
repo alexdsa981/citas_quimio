@@ -43,7 +43,7 @@ public class AtencionQuimioterapiaController {
             fichaPacienteService.guardar(ficha);
 
             // Asume que si tiene valores completos, se pasa a pendiente
-            boolean estadoPendiente = resultado.getDuracionMinutosProtocolo() > 0 && resultado.getHoraInicio() != null;
+            boolean estadoPendiente = resultado.getDuracionMinutosProtocolo() != null && resultado.getDuracionMinutosProtocolo() > 0;
             if (estadoPendiente) {
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, ficha);
             } else {
@@ -73,13 +73,12 @@ public class AtencionQuimioterapiaController {
             AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapia();
             return ResponseEntity.ok(Map.of(
                     "success", true,
-                    "enfermeraId", atencion.getEnfermera() != null ? atencion.getEnfermera().getId() : "",
-                    "medicoId", atencion.getMedico() != null ? atencion.getMedico().getId() : "",
+                    "enfermeraId", atencion.getEnfermera() != null ? atencion.getEnfermera().getIdPersona() : "",
+                    "medicoId", atencion.getMedico() != null ? atencion.getMedico().getIdPersona() : "",
                     "cubiculoId", atencion.getCubiculo() != null ? atencion.getCubiculo().getId() : "",
                     "duracion", atencion.getDuracionMinutosProtocolo() != null ? atencion.getDuracionMinutosProtocolo() : 0
             ));
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Error: " + e.getMessage()));
         }

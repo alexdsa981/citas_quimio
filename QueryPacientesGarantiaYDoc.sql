@@ -1,4 +1,5 @@
-﻿SELECT 
+﻿
+SELECT 
     SS_AD_Garantia.IdGarantia AS NumeroPresupuesto,
     SS_AD_Garantia.IdPaciente,
     Paciente.ApellidoPaterno,

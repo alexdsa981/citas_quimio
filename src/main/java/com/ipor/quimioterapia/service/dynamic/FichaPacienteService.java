@@ -22,6 +22,7 @@ public class FichaPacienteService {
         fichaPaciente.setFechaCreacion(LocalDate.now());
         fichaPaciente.setHoraCreacion(LocalTime.now());
         fichaPaciente.setCita(cita);
+        fichaPaciente.setIsActive(Boolean.TRUE);
         fichaPacienteRepository.save(fichaPaciente);
         return fichaPaciente;
     }

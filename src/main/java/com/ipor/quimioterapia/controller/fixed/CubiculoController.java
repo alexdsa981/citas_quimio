@@ -1,9 +1,12 @@
 package com.ipor.quimioterapia.controller.fixed;
 
+import com.ipor.quimioterapia.model.fixed.Cubiculo;
 import com.ipor.quimioterapia.service.fixed.CubiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/app/clasificadores/cubiculo")
@@ -35,4 +38,10 @@ public class CubiculoController {
         cubiculoService.cambiarEstado(id, false);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<Cubiculo>> listar() {
+        return ResponseEntity.ok(cubiculoService.getLista());
+    }
+
 }

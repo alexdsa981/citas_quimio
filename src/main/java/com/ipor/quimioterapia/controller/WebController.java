@@ -17,15 +17,12 @@ public class WebController {
     @Autowired
     FichaPacienteModelBuilder fichaPacienteModelBuilder;
 
-    //redirige / a /login
     @GetMapping("/")
     public String redirectToInicio() {
-        return "redirect:/inicio";
+        return "redirect:/citas";
     }
 
-
-    // Método para manejar la vista de inicio y mostrar los tickets
-    @GetMapping("/inicio")
+    @GetMapping("/citas")
     public String redirigePaginaInicio(Model model) {
         clasificadoresModelBuilder.getListaEstadoCita(model);
         clasificadoresModelBuilder.getListaCieActivos(model);
@@ -39,9 +36,24 @@ public class WebController {
         fichaPacienteModelBuilder.getListaFichasPacienteDelDia(model);
 
         model.addAttribute("Titulo", "Quimioterapia | Principal");
-        return "index";
+        return "gestion-citas/inicio";
     }
 
-
+    @GetMapping("/recursos/medicos")
+    public String redirigePaginaRecursosMedicos(Model model) {
+        model.addAttribute("Titulo", "Quimioterapia | Personal Médico");
+        return "recursos/medicos";
+    }
+    @GetMapping("/recursos/enfermeras")
+    public String redirigePaginaRecursosEnfermeras(Model model) {
+        model.addAttribute("Titulo", "Quimioterapia | Personal Enfermería");
+        return "recursos/enfermeria";
+    }
+    @GetMapping("/recursos/cubiculos")
+    public String redirigePaginaRecursosCubiculos(Model model) {
+        clasificadoresModelBuilder.getListaCubiculos(model);
+        model.addAttribute("Titulo", "Quimioterapia | Cubículos");
+        return "recursos/cubiculos";
+    }
 
 }

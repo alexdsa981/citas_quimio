@@ -1,6 +1,5 @@
 package com.ipor.quimioterapia.service.dynamic;
 
-import com.ipor.quimioterapia.SpringDTO.PacienteDesdeGarantiaDTO;
 import com.ipor.quimioterapia.model.dynamic.Paciente;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.repository.dynamic.PacienteRepository;
@@ -48,12 +47,6 @@ public class PacienteService {
 
     public Paciente getPorID(Long id) {
         return pacienteRepository.findById(id).get();
-    }
-
-
-    public PacienteDesdeGarantiaDTO obtenerPacienteDesdeGarantia(Long idGarantia) {
-        String url = "http://localhost:9000/api/paciente/garantia/" + idGarantia;
-        return restTemplate.getForObject(url, PacienteDesdeGarantiaDTO.class);
     }
 
 }

@@ -15,14 +15,11 @@ import java.time.LocalDate;
 public class Enfermera {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+    private Long idPersona;
     private String nombre;
-    @Column(nullable = false)
     private String apellidoP;
-    @Column(nullable = false)
     private String apellidoM;
+    private String nombreCompleto;
     @Column(nullable = false)
     private Boolean isActive;
 

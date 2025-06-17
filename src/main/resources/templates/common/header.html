@@ -9,9 +9,61 @@
 
 <body>
 <header th:fragment="header">
+    <nav class="navbar navbar-expand-lg bg-light border-bottom shadow-sm">
+        <div class="container-fluid">
 
+            <!-- Título del sistema -->
+            <a class="navbar-brand" href="/citas" style="margin-right: 10px; display: flex; align-items: center;">
+                <img style="width:27px; margin-right:5px;" src="/images/IPOR.png" alt="logo">
+                <span>Gestor<span style="color: #2b93a6;">Quimioterapia</span></span>
+            </a>
 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navegación -->
+            <div class="collapse navbar-collapse justify-content-between" id="navbarContenido">
+                <!-- Secciones: Citas, Personal y Recursos -->
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           th:href="@{/citas}"
+                           th:classappend="${#strings.contains(currentPath, '/citas')} ? 'active bg-primary text-white rounded shadow-sm'">
+                            <i class="bi bi-calendar-check"></i> Citas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           th:href="@{/recursos/medicos}"
+                           th:classappend="${#strings.contains(currentPath, '/recursos')} ? 'active bg-primary text-white rounded  shadow-sm'">
+                            <i class="bi bi-person-gear"></i> Personal y Recursos
+                        </a>
+                    </li>
+
+                </ul>
+
+                <!-- Fecha/hora + Cerrar sesión -->
+                <div class="d-flex align-items-center gap-3">
+                    <small class="text-muted d-none d-lg-block">
+                        <i class="bi bi-calendar-event"></i>
+                        <span th:text="${fechaActual}"></span>
+                        <span id="horaActual" th:text="${horaActual}"></span>
+                    </small>
+                    <a class="btn btn-outline-danger" th:href="@{/logout}">
+                        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 </header>
+
+
+
+
+
 </body>
 
 </html>

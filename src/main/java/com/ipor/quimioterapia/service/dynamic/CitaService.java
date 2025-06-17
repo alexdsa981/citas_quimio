@@ -50,9 +50,10 @@ public class CitaService {
         cita.setEstado(estadoCita);
         citaRepository.save(cita);
     }
-    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion) {
+    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion, Medico medico) {
         citaActual.setFecha(fechaReprogramacion);
         citaActual.setHoraProgramada(horaReprogramacion);
+        citaActual.setMedicoConsulta(medico);
         citaRepository.save(citaActual);
     }
 

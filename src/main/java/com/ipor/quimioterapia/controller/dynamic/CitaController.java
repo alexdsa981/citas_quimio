@@ -56,7 +56,7 @@ public class CitaController {
                     "success", true,
                     "fechaCita", cita.getFecha(),
                     "HoraCita", cita.getHoraProgramada(),
-                    "medicoId", atencion.getMedico().getId()
+                    "medicoId", cita.getMedicoConsulta().getIdPersona()
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -68,12 +68,16 @@ public class CitaController {
     @PostMapping("/reprogramar")
     public ResponseEntity<?> reprogramarCita(@RequestBody ReprogramacionDTO dto) {
         try {
-            FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
             Medico medico = medicoService.getPorID(dto.getIdMedico());
-
+            FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
             Cita cita = fichaPaciente.getCita();
-            citaService.reprogramar(cita, dto.getFecha(), dto.getHora());
-            atencionQuimioterapiaService.reprogramarCita(fichaPaciente, medico);
+            citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico);
+
+            if (cita.getEstado() == EstadoCita.PENDIENTE){
+                atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
+            }
+
+            citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
 
             return ResponseEntity.ok(Map.of("message", "Cita reprogramada correctamente"));
         } catch (Exception e) {
@@ -82,6 +86,24 @@ public class CitaController {
                     .body(Map.of("message", "Error al reprogramar cita: " + e.getMessage()));
         }
     }
+
+    @PostMapping("/cancelar")
+    public ResponseEntity<?> cancelarCita(@RequestBody Long idficha) {
+        try {
+            FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idficha);
+            fichaPaciente.setIsActive(Boolean.FALSE);
+            citaService.cambiarEstado(EstadoCita.CANCELADO, fichaPaciente);
+            fichaPacienteService.guardar(fichaPaciente);
+            return ResponseEntity.ok(Map.of("message", "Cita cancelada correctamente"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Error al cancelar cita: " + e.getMessage()));
+        }
+    }
+
+
+
 
 
 

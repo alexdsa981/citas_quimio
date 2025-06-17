@@ -2,12 +2,14 @@ package com.ipor.quimioterapia.service.dynamic;
 
 import com.ipor.quimioterapia.model.dynamic.Enfermera;
 import com.ipor.quimioterapia.model.dynamic.Medico;
+import com.ipor.quimioterapia.model.other.DTO.EmpleadoCrearDTO;
 import com.ipor.quimioterapia.repository.dynamic.EnfermeraRepository;
 import com.ipor.quimioterapia.repository.dynamic.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EnfermeraService {
@@ -15,11 +17,20 @@ public class EnfermeraService {
     @Autowired
     EnfermeraRepository enfermeraRepository;
 
-    public void crear(String nombre, String apellidoP, String apellidoM) {
-        Enfermera entidad = new Enfermera();
-        entidad.setNombre(nombre);
-        entidad.setApellidoP(apellidoP);
-        entidad.setApellidoM(apellidoM);
+    public void crearOActualizar(EmpleadoCrearDTO dto) {
+        Optional<Enfermera> existente = enfermeraRepository.findById(dto.getId());
+        Enfermera entidad;
+        if (existente.isPresent()) {
+            entidad = existente.get();
+        } else {
+            entidad = new Enfermera();
+            entidad.setIdPersona(dto.getId());
+        }
+
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellidoP(dto.getApellidoP());
+        entidad.setApellidoM(dto.getApellidoM());
+        entidad.setNombreCompleto(dto.getNombreCompleto());
         entidad.setIsActive(Boolean.TRUE);
         enfermeraRepository.save(entidad);
     }

@@ -21,6 +21,7 @@ public class FichaPaciente {
     private LocalDate fechaCreacion;
     private LocalTime horaCreacion;
 
+    private Boolean isActive;
 
     @OneToOne
     @JoinColumn(name = "id_cita")

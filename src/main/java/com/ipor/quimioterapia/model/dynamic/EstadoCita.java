@@ -5,5 +5,6 @@ public enum EstadoCita {
     PENDIENTE,
     EN_PROCESO,
     ATENDIDO,
+    EN_CONFLICTO,
     CANCELADO
 }

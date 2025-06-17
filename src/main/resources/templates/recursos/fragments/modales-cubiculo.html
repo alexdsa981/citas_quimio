@@ -1,0 +1,49 @@
+<div th:fragment="modalCubiculo" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal fade" id="modalAgregarCubiculo" tabindex="-1" aria-labelledby="modalAgregarCubiculoLabel" aria-hidden="true">
+        <!-- Modal Crear Cubículo -->
+        <div class="modal-dialog">
+            <div class="modal-content border-warning">
+                <div class="modal-header bg-warning-subtle">
+                    <h5 class="modal-title" id="modalAgregarCubiculoLabel">
+                        <i class="bi bi-hospital"></i> Nuevo Cubículo
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="inputCodigoCubiculo" class="form-label">Código del cubículo</label>
+                    <input type="text" class="form-control" id="inputCodigoCubiculo" placeholder="Ej: CUB-01">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning" onclick="guardarCubiculo()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Editar Cubículo -->
+    <div class="modal fade" id="modalEditarCubiculo" tabindex="-1" aria-labelledby="modalEditarCubiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border-primary">
+                <div class="modal-header bg-primary-subtle">
+                    <h5 class="modal-title" id="modalEditarCubiculoLabel">
+                        <i class="bi bi-pencil-square"></i> Editar Cubículo
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idCubiculoEditar">
+                    <label for="inputEditarCodigoCubiculo" class="form-label">Nuevo código del cubículo</label>
+                    <input type="text" class="form-control" id="inputEditarCodigoCubiculo">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicionCubiculo()">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

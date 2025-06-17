@@ -43,6 +43,4 @@ public class Cita {
     @JoinColumn(name = "id_medico")
     private Medico medicoConsulta;
 
-
-
 }

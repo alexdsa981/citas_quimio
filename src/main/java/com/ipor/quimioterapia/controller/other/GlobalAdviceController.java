@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.controller.other;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class GlobalAdviceController {
 
     @ModelAttribute
-    public void datosTiempo(Model model) {
+    public void datosTiempo(Model model, HttpServletRequest request) {
         LocalDateTime now = LocalDateTime.now(); // Fecha y hora actual
 
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -21,6 +22,10 @@ public class GlobalAdviceController {
         model.addAttribute("horaActual", now.format(timeFormatter));
         model.addAttribute("fechaActual", now.format(dateFormatter));
         model.addAttribute("fechaInputActual", now.format(dateInputFormatter)); // Este lo usas en el input
+
+
+        model.addAttribute("currentPath", request.getRequestURI());
+
     }
 }
 
