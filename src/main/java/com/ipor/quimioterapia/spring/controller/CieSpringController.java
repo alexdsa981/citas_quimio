@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.spring.controller;
 
-import com.ipor.quimioterapia.spring.dto.CieDTO;
+import com.ipor.quimioterapia.spring.dto.CieSpringDTO;
 import com.ipor.quimioterapia.spring.service.CieSpringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class CieSpringController {
     @GetMapping("/externo/codigo/{codigo}")
     public ResponseEntity<?> obtenerPorCodigo(@PathVariable String codigo) {
         try {
-            CieDTO cie = cieSpringService.obtenerCieSpringPorCodigo(codigo);
+            CieSpringDTO cie = cieSpringService.obtenerCieSpringPorCodigo(codigo);
             if (cie != null) return ResponseEntity.ok(cie);
             else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No encontrado");
         } catch (Exception e) {

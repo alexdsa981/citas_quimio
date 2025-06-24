@@ -1,10 +1,6 @@
 package com.ipor.quimioterapia.spring.controller;
 
-import com.ipor.quimioterapia.model.dynamic.Enfermera;
-import com.ipor.quimioterapia.model.dynamic.Medico;
-import com.ipor.quimioterapia.repository.dynamic.EnfermeraRepository;
-import com.ipor.quimioterapia.repository.dynamic.MedicoRepository;
-import com.ipor.quimioterapia.spring.dto.EmpleadoDTO;
+import com.ipor.quimioterapia.spring.dto.EmpleadoSpringDTO;
 import com.ipor.quimioterapia.spring.service.EmpleadoSpringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +19,13 @@ public class EmpleadoSpringController {
 
     // Buscar empleados por texto (máximo 50)
     @GetMapping("/buscar/{texto}")
-    public List<EmpleadoDTO> buscarEmpleadoPorTexto(@PathVariable String texto) {
+    public List<EmpleadoSpringDTO> buscarEmpleadoPorTexto(@PathVariable String texto) {
         return empleadoSpringService.obtenerEmpleadoPorTexto(texto);
     }
 
     // Buscar empleado por ID (persona)
     @GetMapping("/{persona}")
-    public EmpleadoDTO obtenerEmpleadoPorId(@PathVariable Long persona) {
+    public EmpleadoSpringDTO obtenerEmpleadoPorId(@PathVariable Long persona) {
         return empleadoSpringService.obtenerEmpleadoPorId(persona);
     }
 }

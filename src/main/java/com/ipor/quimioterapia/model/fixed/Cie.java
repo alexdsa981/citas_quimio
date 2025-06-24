@@ -14,16 +14,7 @@ import java.time.LocalTime;
 @Entity
 public class Cie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private String codigo;
-    @Column(nullable = false)
     private String descripcion;
-    @Column(nullable = false)
-    private Boolean isActive;
-    @Column(nullable = false)
-    private LocalDate fechaActualizacion;
-    @Column(nullable = false)
-    private LocalTime horaActualizacion;
 }

@@ -25,7 +25,6 @@ public class WebController {
     @GetMapping("/citas")
     public String redirigePaginaInicio(Model model) {
         clasificadoresModelBuilder.getListaEstadoCita(model);
-        clasificadoresModelBuilder.getListaCieActivos(model);
         clasificadoresModelBuilder.getListaCubiculosActivos(model);
 
 

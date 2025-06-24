@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PacienteDesdeGarantiaDTO {
+public class PacienteDesdeGarantiaSpringDTO {
     private Long numeroPresupuesto;
     private Long idPaciente;
     private String apellidoPaterno;

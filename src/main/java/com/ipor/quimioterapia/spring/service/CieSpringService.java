@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.spring.service;
 
-import com.ipor.quimioterapia.spring.dto.CieDTO;
+import com.ipor.quimioterapia.spring.dto.CieSpringDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,40 +12,40 @@ public class CieSpringService {
 
     private final RestTemplate restTemplate;
 
-    private final String baseUrl = "http://localhost:90000/api/cie";
+    private final String baseUrl = "http://localhost:9000/api/cie";
 
     @Autowired
     public CieSpringService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public List<CieDTO> listarCieSpring() {
+    public List<CieSpringDTO> listarCieSpring() {
         String url = baseUrl;
-        return List.of(restTemplate.getForObject(url, CieDTO[].class));
+        return List.of(restTemplate.getForObject(url, CieSpringDTO[].class));
     }
 
-    public CieDTO obtenerCieSpringPorCodigo(String codigo) {
+    public CieSpringDTO obtenerCieSpringPorCodigo(String codigo) {
         String url = baseUrl + "/codigo/" + codigo;
-        return restTemplate.getForObject(url, CieDTO.class);
+        return restTemplate.getForObject(url, CieSpringDTO.class);
     }
 
-    public List<CieDTO> obtenerListaPorCodigoPadre(String codigoPadre) {
+    public List<CieSpringDTO> obtenerListaPorCodigoPadre(String codigoPadre) {
         String url = baseUrl + "/listaPadre/" + codigoPadre;
-        return List.of(restTemplate.getForObject(url, CieDTO[].class));
+        return List.of(restTemplate.getForObject(url, CieSpringDTO[].class));
     }
 
-    public List<CieDTO> buscarPorNombre(String nombre) {
+    public List<CieSpringDTO> buscarPorNombre(String nombre) {
         String url = baseUrl + "/buscar/nombre/" + nombre;
-        return List.of(restTemplate.getForObject(url, CieDTO[].class));
+        return List.of(restTemplate.getForObject(url, CieSpringDTO[].class));
     }
 
-    public List<CieDTO> buscarPorCodigo(String codigo) {
+    public List<CieSpringDTO> buscarPorCodigo(String codigo) {
         String url = baseUrl + "/buscar/codigo/" + codigo;
-        return List.of(restTemplate.getForObject(url, CieDTO[].class));
+        return List.of(restTemplate.getForObject(url, CieSpringDTO[].class));
     }
 
-    public List<CieDTO> buscarPorCodigoPadre(String padre) {
+    public List<CieSpringDTO> buscarPorCodigoPadre(String padre) {
         String url = baseUrl + "/buscar/padre/" + padre;
-        return List.of(restTemplate.getForObject(url, CieDTO[].class));
+        return List.of(restTemplate.getForObject(url, CieSpringDTO[].class));
     }
 }

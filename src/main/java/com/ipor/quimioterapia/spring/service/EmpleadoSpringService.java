@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.spring.service;
 
-import com.ipor.quimioterapia.spring.dto.EmpleadoDTO;
+import com.ipor.quimioterapia.spring.dto.EmpleadoSpringDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,13 +13,13 @@ public class EmpleadoSpringService {
     @Autowired
     RestTemplate restTemplate;
 
-    public List<EmpleadoDTO> obtenerEmpleadoPorTexto(String texto) {
+    public List<EmpleadoSpringDTO> obtenerEmpleadoPorTexto(String texto) {
         String url = "http://localhost:9000/api/empleado/lista/" + texto;
-        EmpleadoDTO[] empleados = restTemplate.getForObject(url, EmpleadoDTO[].class);
+        EmpleadoSpringDTO[] empleados = restTemplate.getForObject(url, EmpleadoSpringDTO[].class);
         return Arrays.asList(empleados);
     }
-    public EmpleadoDTO obtenerEmpleadoPorId(Long persona) {
+    public EmpleadoSpringDTO obtenerEmpleadoPorId(Long persona) {
         String url = "http://localhost:9000/api/empleado/" + persona;
-        return restTemplate.getForObject(url, EmpleadoDTO.class);
+        return restTemplate.getForObject(url, EmpleadoSpringDTO.class);
     }
 }

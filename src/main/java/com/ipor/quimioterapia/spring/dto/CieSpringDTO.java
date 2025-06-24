@@ -7,7 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CieDTO {
+public class CieSpringDTO {
     private Long id;
     private String codigoCiePadre;
     private String codigoCie;

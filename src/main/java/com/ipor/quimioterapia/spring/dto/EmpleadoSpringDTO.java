@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EmpleadoDTO {
+public class EmpleadoSpringDTO {
     private Long Persona;
     private String apellidoPaterno;
     private String apellidoMaterno;

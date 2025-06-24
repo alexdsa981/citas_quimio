@@ -29,12 +29,6 @@ public class ClasificadoresModelBuilder {
     //
 
 
-    public Model getListaCie(Model model) {
-        List<Cie> lista = cieService.getLista();
-        model.addAttribute("Lista_Cie", lista);
-        return model;
-    }
-
     public Model getListaCubiculos(Model model) {
         List<Cubiculo> lista = cubiculoService.getLista();
         model.addAttribute("Lista_Cubiculo", lista);
@@ -45,15 +39,6 @@ public class ClasificadoresModelBuilder {
     //
     // GET LISTA ACTIVOS
     //
-
-
-
-
-    public Model getListaCieActivos(Model model) {
-        List<Cie> lista = cieService.getListaActivos();
-        model.addAttribute("Lista_Cie_Activos", lista);
-        return model;
-    }
 
 
 

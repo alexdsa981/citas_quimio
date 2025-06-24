@@ -12,19 +12,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/app/clasificadores/cie")
 public class CieController {
 
-    @Autowired
-    CieService cieService;
-
-    @GetMapping("/local/activar/{id}")
-    public ResponseEntity<?> activar(@PathVariable Long id) {
-        cieService.cambiarEstado(id, true);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/local/desactivar/{id}")
-    public ResponseEntity<?> desactivar(@PathVariable Long id) {
-        cieService.cambiarEstado(id, false);
-        return ResponseEntity.ok().build();
-    }
 
 }

@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.spring.controller;
 
-import com.ipor.quimioterapia.spring.dto.PacienteDesdeGarantiaDTO;
+import com.ipor.quimioterapia.spring.dto.PacienteDesdeGarantiaSpringDTO;
 import com.ipor.quimioterapia.spring.service.PacienteSpringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +15,8 @@ public class PacienteSpringController {
 
 
     @GetMapping("/desde-garantia/{id}")
-    public ResponseEntity<PacienteDesdeGarantiaDTO> getPaciente(@PathVariable Long id) {
-        PacienteDesdeGarantiaDTO paciente = pacienteSpringService.obtenerPacienteDesdeGarantia(id);
+    public ResponseEntity<PacienteDesdeGarantiaSpringDTO> getPaciente(@PathVariable Long id) {
+        PacienteDesdeGarantiaSpringDTO paciente = pacienteSpringService.obtenerPacienteDesdeGarantia(id);
         if (paciente == null) {
             return ResponseEntity.notFound().build();
         }
