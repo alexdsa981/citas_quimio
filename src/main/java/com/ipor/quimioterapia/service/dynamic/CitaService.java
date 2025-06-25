@@ -27,10 +27,10 @@ public class CitaService {
         cita.setHoraProgramada(citaCreadaDTO.horaProgramada);
         cita.setHoraCreacion(LocalTime.now());
         cita.setEstado(EstadoCita.NO_ASIGNADO);
-        cita.setNumPresupuesto(citaCreadaDTO.numeroPresupuesto);
-        cita.setContratante(citaCreadaDTO.contratante);
-        cita.setAseguradora(citaCreadaDTO.aseguradora);
-        cita.setTipoPaciente(citaCreadaDTO.tipoPaciente);
+//        cita.setNumPresupuesto(citaCreadaDTO.numeroPresupuesto);
+//        cita.setContratante(citaCreadaDTO.contratante);
+//        cita.setAseguradora(citaCreadaDTO.aseguradora);
+//        cita.setTipoPaciente(citaCreadaDTO.tipoPaciente);
         cita.setPaciente(paciente);
         citaRepository.save(cita);
         return cita;

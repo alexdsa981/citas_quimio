@@ -14,7 +14,10 @@
   margin: 0.25rem;
 }
 
-#modalCie .modal-content {
+
+
+
+#modalCie .modal-content, #modalBuscarPaciente .modal-content{
     background-color: #e8f1fa; /* azul claro suave */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
     border-radius: 10px;
@@ -22,14 +25,17 @@
 
 
 /* Aumentamos ligeramente el z-index por si hay traslapes */
-#modalCie {
+#modalCie, #modalBuscarPaciente {
     z-index: 1056;
 }
+
 
 /* Opcional: más suavidad en la transición de aparición */
 .modal.fade .modal-dialog {
     transition: transform 0.3s ease-out;
 }
+
+
 
 .is-filled {
     border: 1.5px solid #0d6efd4d; /* Azul Bootstrap con opacidad */

@@ -1,39 +1,42 @@
 document.getElementById("btnGuardarCita").addEventListener("click", async function () {
+    const fechaCitaInput = document.querySelector("input[type='date']");
+    const fechaCita = fechaCitaInput ? fechaCitaInput.value : "";
+
+    const idPacienteRaw = document.getElementById("idPaciente").value;
+    const idPaciente = parseInt(idPacienteRaw);
+
     const dto = {
-        // Datos de la cita
-        fechaCita: document.querySelector("input[type='date']").value,
+        fechaCita: fechaCita,
         horaProgramada: document.getElementById("horaProgramadaCita").value,
         medicoId: parseInt(document.getElementById("idMedicoCita").value),
-        tipoPaciente: document.getElementById("tipoPacienteCita").value.trim(),
-        aseguradora: document.getElementById("aseguradoraCita").value.trim(),
-        contratante: document.getElementById("contratanteCita").value.trim(),
-        numeroPresupuesto: parseInt(document.getElementById("numeroPresupuestoCita").value),
 
-        // Datos del paciente
-        idPaciente: parseInt(document.getElementById("idPaciente").value),
+        idPaciente: idPaciente,
         tipoDocumento: document.getElementById("tipoDocumentoCita").value.trim(),
         numeroDocumento: document.getElementById("documentoCita").value.trim(),
-
         apellidoPaterno: document.getElementById("apellidoPaternoCita").value.trim(),
         apellidoMaterno: document.getElementById("apellidoMaternoCita").value.trim(),
         nombres: document.getElementById("nombresCita").value.trim(),
-
         fechaNacimiento: document.getElementById("fechaNacimientoCita").value.trim(),
         edad: parseInt(document.getElementById("edadCita").value),
         sexo: document.getElementById("sexoCita").value.trim(),
-
         celular: document.getElementById("celularCita").value.trim() || "No asignado",
-        telefono: document.getElementById("telefonoCita").value.trim() || "No asignado",
-
+        telefono: document.getElementById("telefonoCita").value.trim() || "No asignado"
     };
 
-    // Validación básica de campos obligatorios
-    if (!dto.fechaCita || !dto.horaProgramada || !dto.medicoId || !dto.numeroPresupuesto ||
-        !dto.idPaciente || !dto.numeroDocumento || !dto.apellidoPaterno || !dto.nombres || !dto.sexo) {
+    // Validación
+    if (!dto.fechaCita || !dto.horaProgramada || isNaN(dto.medicoId)) {
         return Swal.fire({
             icon: 'warning',
             title: 'Campos obligatorios faltantes',
-            text: 'Por favor, completa todos los campos requeridos antes de continuar.'
+            text: 'Debes ingresar fecha, hora y médico para la cita.'
+        });
+    }
+
+    if (isNaN(dto.idPaciente)) {
+        return Swal.fire({
+            icon: 'warning',
+            title: 'Paciente no seleccionado',
+            text: 'Debes seleccionar un paciente antes de agendar la cita.'
         });
     }
 
@@ -54,23 +57,26 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
                 title: "Cita agendada",
                 text: data.message || "Cita agendada correctamente."
             });
-            refrescarTablaSegunFiltro()
+
+            refrescarTablaSegunFiltro();
+
             const modal = bootstrap.Modal.getInstance(document.getElementById("modalAgendarCita"));
 
-            // LIMPIAR FORMULARIO
-            document.querySelector("input[type='date']").value = new Date().toISOString().split("T")[0]; // Hoy
+            // Limpiar formulario
+            fechaCitaInput.value = new Date().toISOString().split("T")[0];
             document.getElementById("horaProgramadaCita").value = "07:00";
-            document.getElementById("idMedicoCita").selectedIndex = 0; // Primer médico
+            document.getElementById("idMedicoCita").selectedIndex = 0;
+
             [
-                "tipoPacienteCita", "aseguradoraCita", "contratanteCita", "numeroPresupuestoCita",
                 "idPaciente", "tipoDocumentoCita", "documentoCita", "apellidoPaternoCita",
                 "apellidoMaternoCita", "nombresCita", "fechaNacimientoCita",
-                "edadCita", "sexoCita", "celularCita", "telefonoCita"
+                "edadCita", "sexoCita", "celularCita", "telefonoCita", "pacienteSeleccionadoCita"
             ].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.value = "";
             });
 
+            document.getElementById("btnGuardarCita").disabled = true;
 
             modal.hide();
         } else {

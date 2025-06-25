@@ -7,12 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PacienteDesdeGarantiaSpringDTO {
-    private Long numeroPresupuesto;
-    private Long idPaciente;
+public class PacienteSpringDTO {
+    private Long idPersona;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String nombres;
+    private String nombreCompleto;
     private String tipoDocumento;
     private String tipoDocumentoNombre;
     private String documento;
@@ -22,10 +22,5 @@ public class PacienteDesdeGarantiaSpringDTO {
     private String sexo;
     private String telefono;
     private String celular;
-    private Integer idTipoPaciente;
-    private String tipoPaciente;
-    private Long idEmpresaAseguradora;
-    private String empresaAseguradora;
-    private Long idEmpresaEmpleadora;
-    private String empresaEmpleadora;
+
 }

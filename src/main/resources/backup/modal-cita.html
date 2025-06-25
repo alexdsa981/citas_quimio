@@ -1,6 +1,5 @@
 <div th:fragment="modalCita" xmlns:th="http://www.thymeleaf.org">
-    <div class="modal fade" id="modalAgendarCita"
-         tabindex="-1" aria-labelledby="modalAgendarCitaLabel"
+    <div class="modal fade" id="modalAgendarCita" tabindex="-1" aria-labelledby="modalAgendarCitaLabel"
          aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
@@ -42,18 +41,16 @@
 
                         <div id="contenedorPacienteModalCita">
                             <div class="row g-3">
-                                <!-- Buscar Paciente por Nombre -->
+                                <!-- Número de presupuesto -->
                                 <div class="col-md-6">
-                                    <label class="form-label">Paciente</label><span style="color:red;">*</span>
+                                    <label class="form-label">N° Presupuesto</label><span style="color:red;">*</span>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="pacienteSeleccionadoCita" placeholder="Seleccione un paciente" readonly>
-                                        <button type="button" class="btn btn-primary" onclick="abrirModalBuscarPaciente()">
-                                            Buscar Paciente
+                                        <input type="text" class="form-control" id="numeroPresupuestoCita" autocomplete="off" required>
+                                        <button type="button" class="btn btn-outline-secondary" id="btnBuscarPorPresupuesto">
+                                            <i class="bi bi-search"></i>
                                         </button>
-
                                     </div>
                                 </div>
-
                                 <div class="col-md-3">
                                     <label class="form-label">Tipo Documento</label>
                                     <input type="text" id="tipoDocumentoCita" class="form-control bloqueable" readonly>
@@ -100,6 +97,25 @@
                                 <div class="col-md-3">
                                     <label class="form-label">Teléfono</label>
                                     <input type="text" class="form-control bloqueable" id="telefonoCita" readonly>
+                                </div>
+                                <hr>
+
+                                <!-- Tipo paciente -->
+                                <div class="col-md-2">
+                                    <label class="form-label">Tipo Paciente</label>
+                                    <input type="text" class="form-control bloqueable" id="tipoPacienteCita" readonly>
+                                </div>
+
+                                <!-- Aseguradora -->
+                                <div class="col-md-4">
+                                    <label class="form-label">Aseguradora</label>
+                                    <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
+                                </div>
+
+                                <!-- Contratante -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Contratante</label>
+                                    <input type="text" class="form-control bloqueable" id="contratanteCita" readonly>
                                 </div>
                             </div>
                         </div>

@@ -65,6 +65,8 @@ function llenarTablaFichas(fichas) {
     fichas.forEach(ficha => {
         const cita = ficha.cita || {};
         const paciente = cita.paciente || {};
+        const contratante = paciente.contratante || {};
+        const aseguradora = contratante.aseguradora || {};
         const cubiculo = ficha.atencionQuimioterapia?.cubiculo || {};
         const atencion = ficha.atencionQuimioterapia || {};
         const estado = cita.estado || "";
@@ -103,6 +105,7 @@ function llenarTablaFichas(fichas) {
                 ${tdConColor(formatearHora(atencion.horaFin) || "")}
                 ${tdConColor(`${atencion.horasProtocolo ?? 0} h ${atencion.minutosRestantesProtocolo ?? 0} min`)}
                 <td><span class="badge ${claseEstado}">${estado}</span></td>
+                ${tdConColor(cita.tipoPaciente || "")}
             </tr>
         `;
 

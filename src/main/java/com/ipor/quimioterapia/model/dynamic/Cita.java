@@ -24,10 +24,10 @@ public class Cita {
 
     private LocalTime horaCreacion;
 
-    private Long numPresupuesto;
-    private String tipoPaciente;
-    private String aseguradora;
-    private String contratante;
+//    private Long numPresupuesto;
+//    private String tipoPaciente;
+//    private String aseguradora;
+//    private String contratante;
 
 
     @Enumerated(EnumType.STRING)

@@ -18,7 +18,9 @@ public class Paciente {
     private String apellidoP;
     private String apellidoM;
     private String fechaNacimiento;
+
     private String sexo;
+
     private String numCelular;
     private String numTelefono;
 

@@ -1,0 +1,57 @@
+<div th:fragment="modalBusquedaPaciente" xmlns:th="http://www.thymeleaf.org">
+    <!-- Modal Buscar Paciente -->
+    <div class="modal fade" id="modalBuscarPaciente"
+         tabindex="-1" aria-labelledby="modalBuscarPacienteLabel"
+         aria-hidden="true" data-bs-backdrop="static">        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buscar Paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo de búsqueda</label>
+                            <select id="tipoBusquedaPaciente" class="form-select" onchange="cambiarModoBusquedaPaciente()">
+                                <option value="nombre" selected>Por Nombre</option>
+                                <option value="documento">Por Documento</option>
+                            </select>
+                        </div>
+
+                        <!-- Nombre -->
+                        <div class="col-md-8" id="campoBusquedaNombre">
+                            <label class="form-label">Nombre del Paciente</label>
+                            <input type="text" id="inputBuscarNombrePaciente" class="form-control" placeholder="Ingrese nombre del paciente">
+                        </div>
+
+                        <!-- Documento -->
+                        <div class="col-md-4 d-none" id="campoTipoDocumento">
+                            <label class="form-label">Tipo de Documento</label>
+                            <select class="form-select" id="selectTipoDocumento">
+                                <option value="D">D.N.I./Cédula/L.E.</option>
+                                <option value="X">Carnet Extranjería</option>
+                                <option value="P">Pasaporte</option>
+                                <option value="R">RUC / NIT</option>
+                                <option value="O">Otros</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-none" id="campoNumeroDocumento">
+                            <label class="form-label">N° Documento</label>
+                            <div class="input-group">
+                                <input type="text" id="inputNumeroDocumento" class="form-control" placeholder="Ingrese número">
+                                <button class="btn btn-outline-secondary" type="button" onclick="buscarPacientePorDocumento()">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="resultadoPacientes" class="list-group">
+                        <div class="text-muted">Ingrese un término para buscar.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

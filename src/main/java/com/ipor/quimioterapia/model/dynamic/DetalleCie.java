@@ -11,12 +11,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ConjuntoCie {
+public class DetalleCie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "id_cie")
     private Cie cie;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_ficha_paciente")
+    private FichaPaciente fichaPaciente;
 
 }

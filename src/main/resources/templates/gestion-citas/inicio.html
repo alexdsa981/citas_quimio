@@ -89,7 +89,6 @@
                 <th>Fin</th>
                 <th>Duración</th>
                 <th>Estado</th>
-                <th>Tipo Paciente</th>
             </tr>
             </thead>
             <tbody>
@@ -102,6 +101,9 @@
 
 
     <div th:replace="~{gestion-citas/fragments/modal-cita :: modalCita}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-busqueda-paciente :: modalBusquedaPaciente}"></div>
+
+
     <div th:replace="~{gestion-citas/fragments/modal-busqueda-cie :: modalBusquedaCie}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-iniciar :: modalIniciarProtocolo}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-atender :: modalFinalizarProtocolo}"></div>
@@ -118,8 +120,10 @@
 <div th:insert="~{common/footer :: footer}">
 </div>
 
-<script src="/js/gestion-citas/cita/busqueda-paciente-garantia.js"></script>
+<script src="/js/gestion-citas/cita/busqueda-paciente.js"></script>
 <script src="/js/gestion-citas/cita/agendar.js"></script>
+<script src="/js/gestion-citas/cita/modal.js"></script>
+
 
 <script src="/js/gestion-citas/botones/pendiente.js"></script>
 <script src="/js/gestion-citas/botones/cancelar.js"></script>
@@ -143,6 +147,8 @@
 <script src="/js/gestion-citas/ficha-paciente/tab-detalle-quimioterapia/botones.js"></script>
 
 <script src="/js/gestion-citas/ficha-paciente/tab-diagnostico/modal-busqueda-cie.js"></script>
+<script src="/js/gestion-citas/ficha-paciente/tab-diagnostico/guardar-conjunto-cie.js"></script>
+<script src="/js/gestion-citas/ficha-paciente/tab-diagnostico/datos.js"></script>
 
 
 <script src="/js/gestion-citas/filtrosdatos/filtros.js"></script>
