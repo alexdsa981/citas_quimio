@@ -1,14 +1,16 @@
 package com.ipor.quimioterapia.core.initializer;
 
-import com.ipor.quimioterapia.model.other.RolUsuario;
 import com.ipor.quimioterapia.repository.dynamic.EnfermeraRepository;
 import com.ipor.quimioterapia.repository.dynamic.MedicoRepository;
 import com.ipor.quimioterapia.repository.fixed.*;
-import com.ipor.quimioterapia.repository.other.RolUsuarioRepository;
 
 import com.ipor.quimioterapia.service.dynamic.EnfermeraService;
 import com.ipor.quimioterapia.service.dynamic.MedicoService;
 import com.ipor.quimioterapia.service.fixed.*;
+import com.ipor.quimioterapia.usuario.Usuario;
+import com.ipor.quimioterapia.usuario.UsuarioRepository;
+import com.ipor.quimioterapia.usuario.rol.RolUsuario;
+import com.ipor.quimioterapia.usuario.rol.RolUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,31 +24,8 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     RolUsuarioRepository rolUsuarioRepository;
-
-
-
     @Autowired
-    CieService cieService;
-    @Autowired
-    CieRepository cieRepository;
-
-
-    @Autowired
-    CubiculoService cubiculoService;
-    @Autowired
-    CubiculoRepository cubiculoRepository;
-
-
-
-    @Autowired
-    MedicoService medicoService;
-    @Autowired
-    MedicoRepository medicoRepository;
-
-    @Autowired
-    EnfermeraService enfermeraService;
-    @Autowired
-    EnfermeraRepository enfermeraRepository;
+    UsuarioRepository usuarioRepository;
 
 
     @Override
@@ -56,6 +35,20 @@ public class DataInitializer implements CommandLineRunner {
             rolUsuarioRepository.save(new RolUsuario("General"));
             rolUsuarioRepository.save(new RolUsuario("Supervisor"));
             rolUsuarioRepository.save(new RolUsuario("Admin"));
+        }
+
+        if (usuarioRepository.count() == 0) {
+            RolUsuario rolAdmin = rolUsuarioRepository.findByNombre("Admin");
+            Usuario admin = new Usuario();
+            admin.setNombre("ADMINISTRADOR");
+            admin.setUsername("ADMIN");
+            admin.setPassword("$2a$12$7SW6dd16qcrYSdV0L4Uzp.qzCEe6ricYOH9fdr1r/bGlF2ItBun4a");
+            admin.setRolUsuario(rolAdmin);
+            admin.setIsActive(true);
+            admin.setChangedPass(false);
+            admin.setIsSpringUser(false);
+            usuarioRepository.save(admin);
+
         }
 
     }

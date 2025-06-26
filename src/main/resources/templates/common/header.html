@@ -15,7 +15,7 @@
             <!-- Título del sistema -->
             <a class="navbar-brand" href="/citas" style="margin-right: 10px; display: flex; align-items: center;">
                 <img style="width:27px; margin-right:5px;" src="/images/IPOR.png" alt="logo">
-                <span>Gestor<span style="color: #2b93a6;">Quimioterapia</span></span>
+                <span>Gestor<span style="color: #2b93a6;">ClínicaDeDía</span></span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark"
-                           th:href="@{/configuracion}"
+                           th:href="@{/configuracion/usuarios}"
                            th:classappend="${#strings.contains(currentPath, '/configuracion')} ? 'active bg-primary text-white rounded  shadow-sm'">
                             <i class="bi bi-gear"></i> Configuración
                         </a>
@@ -58,9 +58,9 @@
                         <span th:text="${fechaActual}"></span>
                         <span id="horaActual" th:text="${horaActual}"></span>
                     </small>
-                    <a class="btn btn-outline-danger" th:href="@{/logout}">
-                        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-                    </a>
+                    <form action="/app/logout" method="POST">
+                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</button>
+                    </form>
                 </div>
             </div>
         </div>

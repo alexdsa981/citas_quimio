@@ -1,9 +1,7 @@
 package com.ipor.quimioterapia.helper.model;
 
-import com.ipor.quimioterapia.model.fixed.*;
-import com.ipor.quimioterapia.model.other.RolUsuario;
-import com.ipor.quimioterapia.service.fixed.*;
 import com.ipor.quimioterapia.service.other.RolUsuarioService;
+import com.ipor.quimioterapia.usuario.rol.RolUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;

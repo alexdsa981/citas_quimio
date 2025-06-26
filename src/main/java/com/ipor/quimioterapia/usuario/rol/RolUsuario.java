@@ -1,6 +1,7 @@
-package com.ipor.quimioterapia.model.other;
+package com.ipor.quimioterapia.usuario.rol;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ipor.quimioterapia.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

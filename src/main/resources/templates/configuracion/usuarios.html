@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{common/imports :: headImports}">
+</head>
+<body>
+<div th:replace="~{common/header :: header}">
+</div>
+<main class="content-wrapper">
+    <div class="container border shadow p-3 px-4 mb-5 bg-body rounded">
+        <form class="mb-3" id="filtroUsuarios">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="filtroNombre" class="form-label">Buscar por nombre</label>
+                    <input type="text" class="form-control" id="filtroNombre" placeholder="Nombre del usuario">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="filtroSpring" class="form-label">Usuario Spring</label>
+                    <select class="form-select" id="filtroSpring">
+                        <option value="">Todos</option>
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="filtroRol" class="form-label">Rol</label>
+                    <select class="form-select" id="filtroRol">
+                        <option value="">Todos</option>
+                        <option th:each="rol : ${ListaRoles}" th:value="${rol.nombre}" th:text="${rol.nombre}">Rol</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-secondary w-100" onclick="limpiarFiltros()">Limpiar</button>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="card  border-0 mb-4">
+            <div class="card-header bg-white text-success fw-bold">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        Usuarios Activos
+                    </div>
+                    <button id="buscadorUsuario" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
+                        <i class="bi bi-plus-lg"></i> Nuevo Usuario
+                    </button>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-light table-hover text-center mb-0">
+                        <thead class="table-success text-dark">
+                        <tr>
+                            <th>N°</th>
+                            <th>Username</th>
+                            <th>SPRING</th>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="usuario, iter : ${ListaUsuariosActivos}">
+                            <td th:text="${iter.count}">#</td>
+                            <td th:text="${usuario.username}">Username</td>
+                            <td th:text="${usuario.isSpringUser} ? 'Sí' : 'No'">Sí/No</td>
+                            <td th:text="${usuario.nombre}">Nombre</td>
+                            <td th:text="${usuario.rolUsuario.nombre}">Rol</td>
+                            <td class="fw-bold">Activo</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-edit-user"
+                                        data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                        th:data-usuario-id="${usuario.id}"
+                                        th:data-usuario-username="${usuario.username}"
+                                        th:data-usuario-nombre="${usuario.nombre}"
+                                        th:data-usuario-rol="${usuario.rolUsuario.nombre}"
+                                        th:data-usuario-spring="${usuario.isSpringUser}">
+                                    Editar
+                                </button>
+
+                                <a style="width: 120px;" class="btn btn-danger btn-active-user"
+                                   th:href="@{'/app/usuarios/desactivar/' + ${usuario.id}}"
+                                   onclick="return confirmAction(this.href, '¿Estás seguro de deactivar este usuario? Esta acción desestimará sus tickets pendientes.');">
+                                    Desactivar
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{configuracion/fragments/modal-usuario :: modalUsuario}"></div>
+
+    <script src="/js/configuracion/usuario/filtro.js"></script>
+    <script src="/js/configuracion/usuario/modal-usuario.js"></script>
+
+    <div th:insert="~{common/imports :: bodyImports}">
+    </div>
+    <div th:insert="~{common/footer :: footer}">
+    </div>
+</main>
+</body>
+
+</html>
