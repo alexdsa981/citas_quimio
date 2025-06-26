@@ -3,6 +3,9 @@ package com.ipor.quimioterapia.controller.dynamic;
 import com.ipor.quimioterapia.model.dynamic.*;
 import com.ipor.quimioterapia.model.fixed.Cubiculo;
 import com.ipor.quimioterapia.model.other.DTO.AtencionQuimioterapiaDTO;
+import com.ipor.quimioterapia.restricciones.HorarioOcupadoDTO;
+import com.ipor.quimioterapia.restricciones.HorariosOcupadosDTORepository;
+import com.ipor.quimioterapia.restricciones.RestriccionService;
 import com.ipor.quimioterapia.service.dynamic.*;
 import com.ipor.quimioterapia.service.fixed.CubiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/app/atencion-quimioterapia")
@@ -28,38 +33,35 @@ public class AtencionQuimioterapiaController {
     AtencionQuimioterapiaService atencionQuimioterapiaService;
     @Autowired
     CitaService citaService;
+    @Autowired
+    HorariosOcupadosDTORepository horariosOcupadosDTORepository;
+    @Autowired
+    RestriccionService restriccionService;
 
-    @PostMapping("/guardar")
+    @PostMapping("/asignar")
     public ResponseEntity<?> guardarAtencionQuimioterapia(@RequestBody AtencionQuimioterapiaDTO dto) {
         try {
-            FichaPaciente ficha = fichaPacienteService.getPorID(dto.getIdFicha());
+            FichaPaciente fichaAsignacion = fichaPacienteService.getPorID(dto.getIdFicha());
             Medico medico = medicoService.getPorID(dto.getIdMedico());
             Enfermera enfermera = enfermeraService.getPorID(dto.getIdEnfermera());
             Cubiculo cubiculo = cubiculoService.getPorID(dto.getIdCubiculo());
+            AtencionQuimioterapia resultado = atencionQuimioterapiaService.crearOActualizar(dto, fichaAsignacion, medico, enfermera, cubiculo);
+            fichaAsignacion.setAtencionQuimioterapia(resultado);
+            fichaPacienteService.guardar(fichaAsignacion);
 
-            AtencionQuimioterapia resultado = atencionQuimioterapiaService.crearOActualizar(dto, ficha, medico, enfermera, cubiculo);
-
-            ficha.setAtencionQuimioterapia(resultado);
-            fichaPacienteService.guardar(ficha);
-
-            // Asume que si tiene valores completos, se pasa a pendiente
-            boolean estadoPendiente = resultado.getDuracionMinutosProtocolo() != null && resultado.getDuracionMinutosProtocolo() > 0;
-            if (estadoPendiente) {
-                citaService.cambiarEstado(EstadoCita.PENDIENTE, ficha);
-            } else {
-                citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, ficha);
-            }
+            restriccionService.camillaOcupada(fichaAsignacion);
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
-                    "message", ficha.getAtencionQuimioterapia() != null ? "Protocolo actualizado correctamente" : "Protocolo creado correctamente"
+                    "message", fichaAsignacion.getAtencionQuimioterapia() != null ? "Protocolo actualizado correctamente" : "Protocolo creado correctamente"
             ));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", "Error al guardar Protocolo Atención: " + "Debe completar todos los campos"));
+                    .body(Map.of("message", "Error al guardar Protocolo Atención: Debe completar todos los campos"));
         }
     }
+
 
 
 

@@ -1,8 +1,11 @@
 function abrirModalBuscarPaciente() {
-    const modal = new bootstrap.Modal(document.getElementById('modalBuscarPaciente'));
+    const modalElement = document.getElementById('modalBuscarPaciente');
+    const modal = new bootstrap.Modal(modalElement);
     modal.show();
+    modalElement.addEventListener('shown.bs.modal', function () {
+        document.getElementById('inputBuscarNombrePaciente').focus();
+    }, { once: true });
 }
-
 
 function cambiarModoBusquedaPaciente() {
     const tipo = document.getElementById("tipoBusquedaPaciente").value;

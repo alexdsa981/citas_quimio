@@ -76,7 +76,7 @@ function guardarAsignacion() {
         duracionMinutos: duracionTotal
     };
 
-    fetch('/app/atencion-quimioterapia/guardar', {
+    fetch('/app/atencion-quimioterapia/asignar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ function guardarAsignacion() {
                 icon: 'success',
                 title: 'Guardado',
                 text: 'La asignación se guardó correctamente.',
-                timer: 1500,
+                timer: 1000,
                 showConfirmButton: false
             });
 

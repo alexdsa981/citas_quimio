@@ -6,7 +6,6 @@ function guardarCieSeleccionados() {
         ids.push(parseInt(input.value));
     });
 
-    // Asegúrate de que idFichaSeleccionada esté definido en el scope global
     const payload = {
         idFicha: idFichaSeleccionada,
         cieIds: ids
@@ -24,10 +23,21 @@ function guardarCieSeleccionados() {
         return response.text();
     })
     .then(data => {
-        alert(data);
+        Swal.fire({
+            icon: 'success',
+            title: 'Guardado exitosamente',
+            text: data,
+            timer: 1000,
+            showConfirmButton: false
+        });
     })
     .catch(error => {
         console.error(error);
-        alert("Ocurrió un error al guardar los CIE10.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al guardar',
+            text: 'Ocurrió un error al guardar los CIE10.',
+            confirmButtonText: 'Aceptar'
+        });
     });
 }

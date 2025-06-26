@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.initializer;
+package com.ipor.quimioterapia.core.initializer;
 
 import com.ipor.quimioterapia.model.other.RolUsuario;
 import com.ipor.quimioterapia.repository.dynamic.EnfermeraRepository;

@@ -3,6 +3,7 @@ package com.ipor.quimioterapia.controller.dynamic;
 import com.ipor.quimioterapia.model.dynamic.*;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.model.other.DTO.ReprogramacionDTO;
+import com.ipor.quimioterapia.restricciones.RestriccionService;
 import com.ipor.quimioterapia.service.dynamic.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,8 @@ public class CitaController {
     AtencionQuimioterapiaService atencionQuimioterapiaService;
     @Autowired
     PacienteService pacienteService;
+    @Autowired
+    RestriccionService restriccionService;
 
     @PostMapping("/agendar")
     public ResponseEntity<?> guardarCita(@RequestBody CitaCreadaDTO citaCreadaDTO) {
@@ -73,8 +76,9 @@ public class CitaController {
             Cita cita = fichaPaciente.getCita();
             citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico);
 
-            if (cita.getEstado() == EstadoCita.PENDIENTE){
+            if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO){
                 atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
+                restriccionService.camillaOcupada(fichaPaciente);
             }
 
             citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);

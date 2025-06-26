@@ -5,6 +5,7 @@ import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
 import com.ipor.quimioterapia.model.dynamic.Medico;
 import com.ipor.quimioterapia.model.other.DTO.FinalizarProtocoloDTO;
 import com.ipor.quimioterapia.model.other.DTO.IniciarProtocoloDTO;
+import com.ipor.quimioterapia.restricciones.RestriccionService;
 import com.ipor.quimioterapia.service.dynamic.AtencionQuimioterapiaService;
 import com.ipor.quimioterapia.service.dynamic.CitaService;
 import com.ipor.quimioterapia.service.dynamic.FichaPacienteService;
@@ -30,6 +31,8 @@ public class ProtocoloController {
     AtencionQuimioterapiaService atencionQuimioterapiaService;
     @Autowired
     MedicoService medicoService;
+    @Autowired
+    RestriccionService restriccionService;
 
     @PostMapping("/pendiente")
     public ResponseEntity<?> regresarProtocoloPendiente(@RequestBody Map<String, Long> body) {
@@ -39,9 +42,8 @@ public class ProtocoloController {
 
             citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
             atencionQuimioterapiaService.pendienteProtocolo(fichaPaciente);
-            if (fichaPaciente.getAtencionQuimioterapia().getEnfermera() == null || fichaPaciente.getAtencionQuimioterapia().getCubiculo() == null || fichaPaciente.getAtencionQuimioterapia().getDuracionMinutosProtocolo() == 0){
-                citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
-            }
+            restriccionService.camillaOcupada(fichaPaciente);
+
 
             return ResponseEntity.ok(Map.of("message", "Protocolo regresado a Pendiente correctamente"));
         } catch (Exception e) {

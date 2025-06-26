@@ -11,8 +11,7 @@ function llenarVisualFichaPaciente(objetoFicha) {
     document.getElementById('numeroDocumentoPacienteFicha').textContent = paciente.numDocIdentidad || '';
     document.getElementById('fechaNacimientoPacienteFicha').textContent = paciente.fechaNacimiento || '';
     document.getElementById('sexoPacienteFicha').textContent = paciente.sexo || '';
-    document.getElementById('celularPacienteFicha').textContent = paciente.numCelular || 'No asignado';
-    document.getElementById('telefonoPacienteFicha').textContent = paciente.telefono || 'No asignado';
+    document.getElementById('telefonoPacienteFicha').textContent = paciente.numCelular || paciente.telefono || 'No asignado';
 
     // Edad
     document.getElementById('edadPacienteFicha').textContent = paciente.edad || calcularEdadTexto(paciente.fechaNacimiento);
@@ -20,9 +19,12 @@ function llenarVisualFichaPaciente(objetoFicha) {
     // Cita
     document.getElementById('fechaCitaFicha').textContent = cita.fecha || '';
     document.getElementById('horaCitaFicha').textContent = cita.horaProgramada || '';
+    document.getElementById('presupuestoCitaFicha').textContent = cita.numPresupuesto || '';
+    document.getElementById('tipoPacienteFicha').textContent = cita.tipoPaciente || '';
+    document.getElementById('aseguradoraCitaFicha').textContent = cita.aseguradora || '';
+    document.getElementById('contratanteCitaFicha').textContent = cita.contratante || '';
     document.getElementById('estadoCitaFicha').textContent = cita.estado || '';
     document.getElementById('medicoCitaFicha').textContent = medico ? `${medico.nombre || ''} ${medico.apellidoP || ''} ${medico.apellidoM || ''}` : '';
-
 }
 
 // Si no tienes edad directa, puedes calcularla:

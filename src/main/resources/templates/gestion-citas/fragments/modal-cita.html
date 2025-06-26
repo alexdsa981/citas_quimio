@@ -46,7 +46,14 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Paciente</label><span style="color:red;">*</span>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="pacienteSeleccionadoCita" placeholder="Seleccione un paciente" readonly>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="pacienteSeleccionadoCita"
+                                               placeholder="Seleccione un paciente"
+                                               readonly
+                                               tabindex="-1"
+                                               onfocus="this.blur()"
+                                               style="user-select: none; pointer-events: none;">
                                         <button type="button" class="btn btn-primary" onclick="abrirModalBuscarPaciente()">
                                             Buscar Paciente
                                         </button>

@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.config;
+package com.ipor.quimioterapia.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
