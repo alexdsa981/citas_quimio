@@ -58,6 +58,10 @@
                         <span th:text="${fechaActual}"></span>
                         <span id="horaActual" th:text="${horaActual}"></span>
                     </small>
+                    <small class="text-muted d-none d-lg-block">
+                        <i class="bi bi-person"></i>
+                        <span th:text="${nombreUsuario}"></span>
+                    </small>
                     <form action="/app/logout" method="POST">
                         <button type="submit" class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</button>
                     </form>

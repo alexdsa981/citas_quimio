@@ -42,7 +42,7 @@ public class LoginService {
         try {
             System.out.println("Iniciando login para usuario: " + username);
 
-            // Verifica si el usuario está registrado en la BD local
+            // 1. Verificar si el usuario existe localmente
             Optional<Usuario> optionalUsuario = usuarioService.getUsuarioPorUsername(username.toUpperCase());
 
             if (optionalUsuario.isEmpty()) {
@@ -54,41 +54,57 @@ public class LoginService {
             Usuario usuarioLocal = optionalUsuario.get();
             System.out.println("Usuario encontrado localmente: " + usuarioLocal.getUsername());
 
-            // Si no está activo, bloquear acceso
+            // 2. Verificar si está activo
             if (!usuarioLocal.getIsActive()) {
                 System.out.println("Usuario inactivo: " + username);
                 response.sendRedirect("/login?error=inactive&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8));
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            // Validar las credenciales contra el sistema externo (Spring)
-            System.out.println("Validando credenciales contra sistema Spring externo...");
-            Boolean credencialesValidas = springUserService.obtenerValidacionLoginSpring(username, password);
+            boolean credencialesValidas;
 
-            if (credencialesValidas == null || !credencialesValidas) {
-                System.out.println("Credenciales inválidas para usuario: " + username);
-                response.sendRedirect("/login?error=badCredentials&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8));
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            if (usuarioLocal.getIsSpringUser()) {
+                // 3.1 Validar credenciales con Spring si es usuario de Spring
+                System.out.println("Validando credenciales contra sistema Spring externo...");
+                credencialesValidas = Boolean.TRUE.equals(springUserService.obtenerValidacionLoginSpring(username, password));
+
+                if (!credencialesValidas) {
+                    System.out.println("Credenciales inválidas para usuario Spring: " + username);
+                    response.sendRedirect("/login?error=badCredentials&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8));
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
+
+                // 3.2 Actualizar datos locales con info de Spring
+                UsuarioSpringDTO usuarioSpringDTO = springUserService.obtenerUsuarioSpring(username);
+                usuarioLocal.setChangedPass(true);
+                usuarioLocal.setNombre(usuarioSpringDTO.getNombre().toUpperCase());
+                usuarioLocal.asignarYEncriptarPassword(password); // actualizar contraseña local
+                usuarioService.guardarUsuario(usuarioLocal);
+                System.out.println("Datos del usuario actualizados desde Spring");
+
+            } else {
+                // 4. Validar solo localmente (intenta autenticar con la contraseña local)
+                try {
+                    Authentication authentication = authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(username, password)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    credencialesValidas = true;
+                } catch (BadCredentialsException e) {
+                    System.out.println("Credenciales inválidas localmente para usuario no-Spring: " + username);
+                    response.sendRedirect("/login?error=badCredentials&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8));
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
             }
 
-            // Obtener datos actualizados desde Spring
-            UsuarioSpringDTO usuarioSpringDTO = springUserService.obtenerUsuarioSpring(username);
-            usuarioLocal.setChangedPass(true);
-            usuarioLocal.setIsSpringUser(true);
-            usuarioLocal.setNombre(usuarioSpringDTO.getNombre().toUpperCase());
-            usuarioLocal.asignarYEncriptarPassword(password);
-            usuarioService.guardarUsuario(usuarioLocal);
-            System.out.println("Datos del usuario actualizados desde Spring");
-
-            // Autenticación local
-            System.out.println("Autenticando contra sistema local...");
+            // 5. Autenticación local final (para ambos tipos de usuario, ya con datos validados)
+            System.out.println("Autenticando contra sistema local (post-validación)...");
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Generar token JWT
+            // 6. Generar JWT
             System.out.println("Generando JWT...");
             String token = jwtTokenProvider.generarToken(authentication);
             Cookie jwtCookie = new Cookie("JWT", token);
@@ -97,15 +113,15 @@ public class LoginService {
             jwtCookie.setPath("/");
             response.addCookie(jwtCookie);
 
-            // Redirección final
+            // 7. Redirección final
             if (!usuarioLocal.getChangedPass()) {
                 System.out.println("Redirigiendo a /citas?changePassword");
                 response.sendRedirect("/citas?changePassword");
-                return ResponseEntity.ok().build();
+            } else {
+                System.out.println("Redirigiendo a /citas");
+                response.sendRedirect("/citas");
             }
 
-            System.out.println("Redirigiendo a /citas (login exitoso)");
-            response.sendRedirect("/citas");
             return ResponseEntity.ok().build();
 
         } catch (BadCredentialsException e) {
@@ -120,6 +136,7 @@ public class LoginService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
 
