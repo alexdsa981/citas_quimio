@@ -46,9 +46,10 @@
                     <div th:if="${error == 'unknown'}" style="color: red;">
                         Ocurrió un error inesperado. Intenta de nuevo más tarde.
                     </div>
+                    <div th:if="${error == 'unregistered'}" style="color: red;">
+                        Usuario no registrado en el sistema.
+                    </div>
                 </div>
-
-
 
 
                 <div class="form-outline mb-3">

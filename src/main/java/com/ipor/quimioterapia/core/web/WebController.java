@@ -3,6 +3,7 @@ package com.ipor.quimioterapia.core.web;
 import com.ipor.quimioterapia.helper.model.ClasificadoresModelBuilder;
 import com.ipor.quimioterapia.helper.model.FichaPacienteModelBuilder;
 import com.ipor.quimioterapia.helper.model.PersonalModelBuilder;
+import com.ipor.quimioterapia.helper.model.UsuarioModelBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,8 @@ public class WebController {
     PersonalModelBuilder personalModelBuilder;
     @Autowired
     FichaPacienteModelBuilder fichaPacienteModelBuilder;
+    @Autowired
+    UsuarioModelBuilder usuarioModelBuilder;
 
     //redirige / a /login
     @GetMapping("/")
@@ -76,6 +79,7 @@ public class WebController {
     }
     @GetMapping("/configuracion/usuarios")
     public String redirigePaginaConfiguracion(Model model) {
+        usuarioModelBuilder.getListaRoles(model);
         model.addAttribute("Titulo", "ClínicaDeDía | Usuarios");
         return "configuracion/usuarios";
     }

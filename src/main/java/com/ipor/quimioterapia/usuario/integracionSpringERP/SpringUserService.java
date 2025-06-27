@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SpringUserService {
@@ -23,6 +24,17 @@ public class SpringUserService {
             return null;
         }
     }
+    public List<UsuarioSpringDTO> buscarUsuariosPorNombre(String nombreUsuario) {
+        String url = "http://localhost:9000/api/usuarios/buscar?nombre=" + nombreUsuario;
+        try {
+            ResponseEntity<UsuarioSpringDTO[]> response = restTemplate.getForEntity(url, UsuarioSpringDTO[].class);
+            return Arrays.asList(Objects.requireNonNull(response.getBody()));
+        } catch (Exception e) {
+            System.out.println("Error al buscar usuarios por nombre: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
 
     public UsuarioSpringDTO obtenerUsuarioSpring(String nombreUsuario) {
         String url = "http://localhost:9000/api/usuarios/" + nombreUsuario;

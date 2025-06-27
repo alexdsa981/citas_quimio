@@ -94,3 +94,7 @@ tr.no-click {
     color: #fff;
     border-color: #343a40;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

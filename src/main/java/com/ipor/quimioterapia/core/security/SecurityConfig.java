@@ -69,8 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/error/**").permitAll()
                         //permiso para todos
-                        .requestMatchers("/app/usuarios/rol").permitAll()
-                        .requestMatchers("/app/usuarios/id").permitAll()
+                        .requestMatchers("/app/usuarios/").permitAll()
                         .requestMatchers("/common/**").permitAll()
 
                         .anyRequest().authenticated())

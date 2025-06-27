@@ -4,7 +4,6 @@ package com.ipor.quimioterapia.usuario;
 import com.ipor.quimioterapia.usuario.integracionSpringERP.SpringUserService;
 import com.ipor.quimioterapia.usuario.integracionSpringERP.UsuarioSpringDTO;
 import com.ipor.quimioterapia.usuario.rol.RolUsuario;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,9 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/app/usuarios")
@@ -31,11 +30,22 @@ public class UsuariosController {
     private SpringUserService springUserService;
 
     // Mostrar la lista de usuarios
-    public Model listarUsuariosActivos(Model model) {
-        List<Usuario> listaUsuariosActivos = usuarioService.getListaUsuariosActivos();
-        model.addAttribute("ListaUsuariosActivos", listaUsuariosActivos);
-        return model;
+    @GetMapping("/activos")
+    @ResponseBody
+    public List<UsuarioDTO> listarUsuariosActivos() {
+        List<Usuario> listaUsuarios = usuarioService.getListaUsuariosActivos();
+        return listaUsuarios.stream().map(usuario -> {
+            UsuarioDTO dto = new UsuarioDTO();
+            dto.setId(usuario.getId());
+            dto.setUsername(usuario.getUsername());
+            dto.setSpringUser(usuario.getIsSpringUser());
+            dto.setNombre(usuario.getNombre());
+            dto.setRol(usuario.getRolUsuario().getNombre());
+            dto.setIsActive(usuario.getIsActive());
+            return dto;
+        }).toList();
     }
+
 
     public Model listarRoles(Model model){
         List<RolUsuario> listaRoles = usuarioService.getListaRoles();
@@ -43,96 +53,112 @@ public class UsuariosController {
         return model;
     }
 
-    @PostMapping("/nuevo")
-    public ResponseEntity<String> crearUsuario(
+    @PostMapping("/spring/nuevo")
+    public ResponseEntity<String> crearOActualizarUsuario(
             @RequestParam("username") String username,
-            @RequestParam("password") String password,
             @RequestParam("nombre") String nombre,
-            @RequestParam("rolUsuario") Long rolId,
-            HttpServletResponse response) throws IOException {
+            @RequestParam("rolUsuario") Long rolId) {
 
         try {
-            // Lógica para crear el usuario
-            Usuario usuario = new Usuario();
-            usuario.setRolUsuario(usuarioService.getRolPorId(rolId));
-            usuario.asignarYEncriptarPassword(password);
-            usuario.setNombre(nombre.toUpperCase());
-            usuario.setUsername(username.toUpperCase());
-            usuario.setIsSpringUser(Boolean.FALSE);
-            usuario.setIsActive(Boolean.TRUE);
-            usuario.setChangedPass(Boolean.FALSE);
+            // Obtener datos desde el sistema externo (incluye clave)
+            UsuarioSpringDTO usuarioSpringDTO = springUserService.obtenerUsuarioSpring(username);
+            String claveSpring = usuarioSpringDTO.getClave();
 
-            // Guardar usuario
-            usuarioService.guardarUsuario(usuario);
+            Optional<Usuario> optionalUsuario = usuarioService.getUsuarioPorUsername(username.toUpperCase());
+            Usuario usuario;
 
-            // Redirigir a la página de usuarios con mensaje de éxito
-            response.sendRedirect("/admin/Usuarios?successful=newUser");
-            return ResponseEntity.ok("Usuario creado correctamente");
+            if (optionalUsuario.isPresent()) {
+                usuario = optionalUsuario.get();
+                usuario.setRolUsuario(usuarioService.getRolPorId(rolId));
 
-        } catch (DataIntegrityViolationException e) {
-            // Error por duplicado (usuario ya existe)
-            response.sendRedirect("/admin/Usuarios?error=duplicated-user");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: El usuario ya existe.");
+                usuario.asignarYEncriptarPassword(claveSpring);
+
+
+                usuario.setNombre(nombre.toUpperCase());
+                usuario.setIsSpringUser(Boolean.TRUE);
+                usuario.setIsActive(Boolean.TRUE);
+                usuario.setChangedPass(Boolean.FALSE);
+
+                usuarioService.guardarUsuario(usuario);
+                return ResponseEntity.ok("Usuario actualizado correctamente");
+            } else {
+                usuario = new Usuario();
+                usuario.setRolUsuario(usuarioService.getRolPorId(rolId));
+
+
+                usuario.asignarYEncriptarPassword(claveSpring);
+
+
+                usuario.setNombre(nombre.toUpperCase());
+                usuario.setUsername(username.toUpperCase());
+                usuario.setIsSpringUser(Boolean.TRUE);
+                usuario.setIsActive(Boolean.TRUE);
+                usuario.setChangedPass(Boolean.FALSE);
+
+                usuarioService.guardarUsuario(usuario);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado correctamente");
+            }
+
 
         } catch (Exception e) {
-            // Error general
-            response.sendRedirect("/admin/Usuarios?error=general-user");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el usuario.");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear o actualizar el usuario.");
         }
     }
+
+
 
 
 
     @PostMapping("/actualizar/{id}")
-    public String actualizarUsuario(@PathVariable Long id,
-                                    @RequestParam("username") String username,
-                                    @RequestParam("password") String password,
-                                    @RequestParam("nombre") String nombre,
-                                    @RequestParam("rol") Long rolId) {
-        try {
-            // Lógica para actualizar el usuario
+    public ResponseEntity<String> actualizarUsuario(
+            @PathVariable Long id,
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("rol") Long rolId) {
 
+        try {
             Usuario usuario = new Usuario();
             usuario.setUsername(username.toUpperCase());
+
             if (password != null && !password.isEmpty()) {
                 usuario.setPassword(password);
             }
+
             usuario.setNombre(nombre.toUpperCase());
             usuario.setRolUsuario(usuarioService.getRolPorId(rolId));
             usuario.setIsActive(Boolean.TRUE);
 
-            // Actualizar el usuario en la base de datos
             usuarioService.actualizarUsuario(id, usuario);
 
-            // Redirigir a la página de usuarios con mensaje de éxito
-            return "redirect:/admin/Usuarios?successfull=updateUser";
-
+            return ResponseEntity.ok("Usuario actualizado correctamente");
         } catch (DataIntegrityViolationException e) {
-            // Error por duplicado (usuario ya existe)
-            return "redirect:/admin/Usuarios?error=duplicated-user";
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nombre de usuario duplicado");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error general al actualizar usuario");
+        }
+    }
+
+
+
+    @PostMapping("/desactivar/{id}")
+    public ResponseEntity<String> desactivarUsuario(@PathVariable Long id) {
+        try {
+            Long idUsuarioLogeado = usuarioService.getIDdeUsuarioLogeado();
+
+            if (!Objects.equals(idUsuarioLogeado, id) && id != 1) {
+                usuarioService.desactivarUsuario(id);
+                return ResponseEntity.ok("Usuario desactivado correctamente");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No puedes desactivarte a ti mismo o al usuario admin");
+            }
 
         } catch (Exception e) {
-            // Error general
-            return "redirect:/admin/Usuarios?error=general-user";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al desactivar el usuario");
         }
-    }
-
-
-    // desactivar un usuario
-    @GetMapping("/desactivar/{id}")
-    public String desactivarUsuario(@PathVariable Long id) {
-        if (!Objects.equals(usuarioService.getIDdeUsuarioLogeado(), id) && id !=1) {
-            usuarioService.desactivarUsuario(id);
-        }
-        return "redirect:/admin/Usuarios";
-    }
-    // activar un usuario
-    @GetMapping("/activar/{id}")
-    public String activarUsuario(@PathVariable Long id) {
-        if (!Objects.equals(usuarioService.getIDdeUsuarioLogeado(), id)) {
-            usuarioService.activarUsuario(id);
-        }
-        return "redirect:/admin/Usuarios";
     }
 
 
@@ -155,11 +181,18 @@ public class UsuariosController {
         return ResponseEntity.ok(id);
     }
 
-    @GetMapping("/lista")
-    public ResponseEntity<List<UsuarioSpringDTO>> listarUsuarios() {
-        List<UsuarioSpringDTO> lista = springUserService.obtenerTodosLosUsuarios();
+
+
+
+
+
+
+    @GetMapping("/spring/buscar")
+    public ResponseEntity<List<UsuarioSpringDTO>> buscarUsuariosPorNombre(@RequestParam String nombre) {
+        List<UsuarioSpringDTO> lista = springUserService.buscarUsuariosPorNombre(nombre);
         return ResponseEntity.ok(lista);
     }
+
 
 
 }
