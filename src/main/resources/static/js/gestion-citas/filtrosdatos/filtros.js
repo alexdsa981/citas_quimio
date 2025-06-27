@@ -23,7 +23,7 @@ function aplicarFiltrosOtros() {
     filas.forEach(fila => {
         const columnas = fila.querySelectorAll('td');
 
-        const textoPaciente = (columnas[0]?.textContent + ' ' + columnas[1]?.textContent).toLowerCase();
+        const textoPaciente = (columnas[3]?.textContent + ' ' + columnas[3]?.textContent).toLowerCase();
         const textoEstado = columnas[8]?.textContent.toLowerCase();
         const textoCubiculo = columnas[4]?.textContent.toLowerCase();
 

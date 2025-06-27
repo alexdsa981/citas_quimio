@@ -3,6 +3,7 @@ package com.ipor.quimioterapia.service.dynamic;
 import com.ipor.quimioterapia.model.dynamic.*;
 import com.ipor.quimioterapia.model.other.DTO.CitaCreadaDTO;
 import com.ipor.quimioterapia.repository.dynamic.CitaRepository;
+import com.ipor.quimioterapia.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,8 @@ public class CitaService {
     CitaRepository citaRepository;
     @Autowired
     PacienteService pacienteService;
-
+    @Autowired
+    UsuarioService usuarioService;
 
 
     public Cita crear(CitaCreadaDTO citaCreadaDTO, Medico medico, Paciente paciente) {
@@ -25,8 +27,8 @@ public class CitaService {
         cita.setFecha(citaCreadaDTO.fechaCita);
         cita.setMedicoConsulta(medico);
         cita.setHoraProgramada(citaCreadaDTO.horaProgramada);
-        cita.setHoraCreacion(LocalTime.now());
         cita.setEstado(EstadoCita.NO_ASIGNADO);
+        cita.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
 //        cita.setNumPresupuesto(citaCreadaDTO.numeroPresupuesto);
 //        cita.setContratante(citaCreadaDTO.contratante);
 //        cita.setAseguradora(citaCreadaDTO.aseguradora);

@@ -94,6 +94,8 @@ function llenarTablaFichas(fichas) {
 
         const fila = `
             <tr class="${claseFila}" data-id-ficha="${bloqueaClick ? '' : ficha.id}">
+                ${tdConColor(`${ficha.fechaCreacion || ""} ${ficha.horaCreacion?.split(":").slice(0, 2).join(":") || ""}`)}
+                ${tdConColor(cita.usuarioCreacion.username || "")}
                 ${tdConColor(`<b>${paciente.tipoDocumentoNombre || ""}</b> : ${paciente.numDocIdentidad || ""}`)}
                 ${tdConColor(`${paciente.apellidoP || ""} ${paciente.apellidoM || ""}, ${paciente.nombre || ""}`)}
                 ${tdConColor(cita.fecha || "")}

@@ -20,6 +20,7 @@ public class Usuario {
 
     @Column(unique = true, nullable = false)
     private String username;
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)

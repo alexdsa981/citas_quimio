@@ -1,6 +1,7 @@
 package com.ipor.quimioterapia.model.dynamic;
 
 
+import com.ipor.quimioterapia.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,9 @@ public class Cita {
     //@Column(nullable = false)
     private LocalTime horaProgramada;
 
-    private LocalTime horaCreacion;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_creador", nullable = false)
+    private Usuario usuarioCreacion;
 
 //    private Long numPresupuesto;
 //    private String tipoPaciente;
