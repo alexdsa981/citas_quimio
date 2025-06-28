@@ -54,7 +54,7 @@ function guardarReprogramacion() {
         idMedico: document.getElementById('modalMedicoCita').value
     };
 
-    fetch('/app/cita/reprogramar', {
+    fetch('/app/gestion-citas/boton/reprogramar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

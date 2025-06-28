@@ -22,37 +22,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    document.querySelector('.btn-confirmar-inicio').addEventListener('click', function () {
-        const horaInicio = document.getElementById('horaInicio').value;
+document.querySelector('.btn-confirmar-inicio').addEventListener('click', function () {
+    const horaInicio = document.getElementById('horaInicio').value;
 
-        if (!horaInicio) {
-            Swal.fire("Hora inválida", "Por favor, ingresa una hora válida", "error");
-            return;
+    if (!horaInicio) {
+        Swal.fire("Hora inválida", "Por favor, ingresa una hora válida", "error");
+        return;
+    }
+
+    console.log(`Iniciando protocolo para ficha ${idFichaSeleccionada} a las ${horaInicio}`);
+
+    fetch('/app/gestion-citas/boton/iniciar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            idFicha: idFichaSeleccionada,
+            horaInicio: horaInicio
+        })
+    })
+    .then(async res => {
+        const data = await res.json();
+
+        if (res.ok) {
+            Swal.fire({
+                title: '✅ Protocolo iniciado',
+                text: data.message,
+                icon: 'success'
+            }).then(() => {
+                refrescarTablaSegunFiltro();
+            });
+        } else if (res.status === 409) {
+            Swal.fire({
+                title: '⛔ Atención en curso',
+                text: data.message,
+                icon: 'warning'
+            });
+        } else {
+            Swal.fire({
+                title: '❌ Error',
+                text: data.message,
+                icon: 'error'
+            });
         }
-
-        console.log(`Iniciando protocolo para ficha ${idFichaSeleccionada} a las ${horaInicio}`);
-
-        fetch('/app/protocolo/iniciar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                idFicha: idFichaSeleccionada,
-                horaInicio: horaInicio
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            Swal.fire('✅ Éxito', data.message, 'success');
-            refrescarTablaSegunFiltro();
-        })
-        .catch(err => {
-            Swal.fire('❌ Error', 'No se pudo iniciar el protocolo', 'error');
-            console.error(err);
+    })
+    .catch(err => {
+        Swal.fire({
+            title: '🚨 Error inesperado',
+            text: 'No se pudo iniciar el protocolo. Intenta nuevamente.',
+            icon: 'error'
         });
-
-        modal.hide();
+        console.error(err);
     });
+
+    modal.hide();
+});
+
 
 });

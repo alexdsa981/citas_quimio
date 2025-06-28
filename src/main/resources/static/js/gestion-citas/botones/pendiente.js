@@ -20,7 +20,7 @@ document.addEventListener('click', function (e) {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch('/app/protocolo/pendiente', {
+                fetch('/app/gestion-citas/boton/pendiente', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

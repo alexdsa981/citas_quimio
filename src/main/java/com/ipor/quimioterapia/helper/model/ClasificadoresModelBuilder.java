@@ -1,8 +1,9 @@
 package com.ipor.quimioterapia.helper.model;
 
-import com.ipor.quimioterapia.model.dynamic.EstadoCita;
-import com.ipor.quimioterapia.model.fixed.*;
-import com.ipor.quimioterapia.service.fixed.*;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.cie.CieService;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.EstadoCita;
+import com.ipor.quimioterapia.recursos.cubiculo.Cubiculo;
+import com.ipor.quimioterapia.recursos.cubiculo.CubiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;

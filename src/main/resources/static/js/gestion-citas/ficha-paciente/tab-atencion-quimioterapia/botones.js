@@ -26,7 +26,7 @@ function guardarAtencionQuimioterapiaFicha() {
         idFicha: idFichaSeleccionada,
     };
 
-    fetch('/app/atencion-quimioterapia/guardar', {
+    fetch('/app/gestion-citas/boton/guardar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

@@ -76,7 +76,7 @@ function guardarAsignacion() {
         duracionMinutos: duracionTotal
     };
 
-    fetch('/app/atencion-quimioterapia/asignar', {
+    fetch('/app/gestion-citas/boton/asignar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

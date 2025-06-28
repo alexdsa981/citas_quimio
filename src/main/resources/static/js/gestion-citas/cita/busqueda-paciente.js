@@ -74,6 +74,7 @@ function seleccionarPacienteDesdeModal(paciente) {
     document.getElementById("sexoCita").value = paciente.sexo;
     document.getElementById("celularCita").value = paciente.celular;
     document.getElementById("telefonoCita").value = paciente.telefono;
+    document.getElementById("aseguradoraCita").value = paciente.aseguradora;
 
     // ✅ Habilita el botón de agendar
     document.getElementById("btnGuardarCita").disabled = false;

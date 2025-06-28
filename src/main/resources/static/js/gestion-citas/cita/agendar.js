@@ -20,7 +20,8 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
         edad: parseInt(document.getElementById("edadCita").value),
         sexo: document.getElementById("sexoCita").value.trim(),
         celular: document.getElementById("celularCita").value.trim() || "No asignado",
-        telefono: document.getElementById("telefonoCita").value.trim() || "No asignado"
+        telefono: document.getElementById("telefonoCita").value.trim() || "No asignado",
+        aseguradora: document.getElementById("aseguradoraCita").value.trim()
     };
 
     // Validación
@@ -41,7 +42,7 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
     }
 
     try {
-        const response = await fetch("/app/cita/agendar", {
+        const response = await fetch("/app/gestion-citas/boton/agendar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

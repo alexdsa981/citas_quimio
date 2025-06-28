@@ -34,7 +34,7 @@ document.addEventListener('click', function (e) {
         }
 
 
-        fetch('/app/protocolo/atender', {
+        fetch('/app/gestion-citas/boton/atender', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

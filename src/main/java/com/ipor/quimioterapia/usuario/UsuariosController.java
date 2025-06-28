@@ -1,8 +1,8 @@
 package com.ipor.quimioterapia.usuario;
 
 
-import com.ipor.quimioterapia.usuario.integracionSpringERP.SpringUserService;
-import com.ipor.quimioterapia.usuario.integracionSpringERP.UsuarioSpringDTO;
+import com.ipor.quimioterapia.spring.usuario.SpringUserService;
+import com.ipor.quimioterapia.spring.usuario.UsuarioSpringDTO;
 import com.ipor.quimioterapia.usuario.rol.RolUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -182,13 +182,6 @@ public class UsuariosController {
         return ResponseEntity.ok(id);
     }
 
-
-    @PreAuthorize("hasAuthority('Admin')")
-    @GetMapping("/spring/buscar")
-    public ResponseEntity<List<UsuarioSpringDTO>> buscarUsuariosPorNombre(@RequestParam String nombre) {
-        List<UsuarioSpringDTO> lista = springUserService.buscarUsuariosPorNombre(nombre);
-        return ResponseEntity.ok(lista);
-    }
 
 
 

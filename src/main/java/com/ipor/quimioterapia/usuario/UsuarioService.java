@@ -3,7 +3,7 @@ package com.ipor.quimioterapia.usuario;
 
 import com.ipor.quimioterapia.core.security.JwtAuthenticationFilter;
 import com.ipor.quimioterapia.core.security.JwtTokenProvider;
-import com.ipor.quimioterapia.usuario.integracionSpringERP.SpringUserService;
+import com.ipor.quimioterapia.spring.usuario.SpringUserService;
 import com.ipor.quimioterapia.usuario.rol.RolUsuario;
 import com.ipor.quimioterapia.usuario.rol.RolUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

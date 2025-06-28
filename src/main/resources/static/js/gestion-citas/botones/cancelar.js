@@ -19,7 +19,7 @@ document.addEventListener('click', function (e) {
             cancelButtonText: 'No, mantener',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch('/app/cita/cancelar', {
+                fetch('/app/gestion-citas/boton/cancelar', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

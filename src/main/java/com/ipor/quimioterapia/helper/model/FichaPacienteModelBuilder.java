@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.helper.model;
 
-import com.ipor.quimioterapia.model.dynamic.FichaPaciente;
-import com.ipor.quimioterapia.service.dynamic.FichaPacienteService;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;

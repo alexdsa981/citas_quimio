@@ -1,12 +1,5 @@
 package com.ipor.quimioterapia.core.initializer;
 
-import com.ipor.quimioterapia.repository.dynamic.EnfermeraRepository;
-import com.ipor.quimioterapia.repository.dynamic.MedicoRepository;
-import com.ipor.quimioterapia.repository.fixed.*;
-
-import com.ipor.quimioterapia.service.dynamic.EnfermeraService;
-import com.ipor.quimioterapia.service.dynamic.MedicoService;
-import com.ipor.quimioterapia.service.fixed.*;
 import com.ipor.quimioterapia.usuario.Usuario;
 import com.ipor.quimioterapia.usuario.UsuarioRepository;
 import com.ipor.quimioterapia.usuario.rol.RolUsuario;
