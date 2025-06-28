@@ -26,7 +26,11 @@ document.querySelector('.btn-confirmar-inicio').addEventListener('click', functi
     const horaInicio = document.getElementById('horaInicio').value;
 
     if (!horaInicio) {
-        Swal.fire("Hora inválida", "Por favor, ingresa una hora válida", "error");
+        Swal.fire({
+            icon: 'error',
+            title: 'Hora inválida',
+            text: 'Por favor, ingresa una hora válida'
+        });
         return;
     }
 
@@ -45,26 +49,49 @@ document.querySelector('.btn-confirmar-inicio').addEventListener('click', functi
     .then(async res => {
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                title: '✅ Protocolo iniciado',
-                text: data.message,
-                icon: 'success'
-            }).then(() => {
-                refrescarTablaSegunFiltro();
-            });
-        } else if (res.status === 409) {
-            Swal.fire({
-                title: '⛔ Atención en curso',
-                text: data.message,
-                icon: 'warning'
-            });
-        } else {
-            Swal.fire({
-                title: '❌ Error',
-                text: data.message,
-                icon: 'error'
-            });
+        switch (data.status) {
+            case 'INICIO_OK':
+                Swal.fire({
+                    title: '✅ Protocolo iniciado',
+                    text: data.message,
+                    icon: 'success'
+                }).then(() => {
+                    refrescarTablaSegunFiltro();
+                });
+                break;
+
+            case 'NO_ASIGNADO':
+                Swal.fire({
+                    title: '⚠️ Atención no asignada',
+                    text: data.message,
+                    icon: 'warning'
+                });
+                break;
+
+            case 'YA_ATENDIDO':
+                Swal.fire({
+                    title: 'ℹ️ Atención ya registrada',
+                    text: data.message,
+                    icon: 'info'
+                });
+                break;
+
+            case 'EN_CURSO':
+                Swal.fire({
+                    title: '⛔ Atención en curso',
+                    text: data.message,
+                    icon: 'warning'
+                });
+                break;
+
+            case 'ERROR':
+            default:
+                Swal.fire({
+                    title: '❌ Error',
+                    text: data.message,
+                    icon: 'error'
+                });
+                break;
         }
     })
     .catch(err => {
@@ -78,6 +105,7 @@ document.querySelector('.btn-confirmar-inicio').addEventListener('click', functi
 
     modal.hide();
 });
+
 
 
 });

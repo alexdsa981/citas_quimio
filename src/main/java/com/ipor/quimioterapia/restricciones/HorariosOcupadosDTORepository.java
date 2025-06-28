@@ -22,7 +22,9 @@ public interface HorariosOcupadosDTORepository extends JpaRepository<FichaPacien
     INNER JOIN cita ci ON ci.id = fp.id_cita
     INNER JOIN atencion_quimioterapia aq ON aq.id = fp.id_atencion_quimioterapia
     INNER JOIN cubiculo cu ON cu.id = aq.id_cubiculo
-    WHERE ci.estado != 'CANCELADO' AND fp.is_active != 0 AND ci.fecha = :fecha
+    WHERE ci.estado != 'CANCELADO'
+    AND ci.estado != 'ATENDIDO'
+    AND fp.is_active != 0 AND ci.fecha = :fecha
 
     """, nativeQuery = true)
     List<HorarioOcupadoDTO> buscarHorarioPorFecha(@Param("fecha") LocalDate fecha);

@@ -142,9 +142,40 @@ public class RestriccionService {
             }
         }
 
-        return true; // no hay conflictos con fichas en proceso
+        return true;
     }
 
+    public void comprobarDespuesDeAtendido(FichaPaciente fichaActual) {
+        Cita citaActual = fichaActual.getCita();
+        LocalDate fechaProtocolo = citaActual.getFecha();
+
+        if (citaActual.getEstado() == EstadoCita.ATENDIDO) {
+
+            List<HorarioOcupadoDTO> listaHorarios = horariosOcupadosDTORepository.buscarHorarioPorFecha(fechaProtocolo);
+
+            for (HorarioOcupadoDTO horarioOcupadoA : listaHorarios) {
+                FichaPaciente fichaEvaluada = fichaPacienteService.getPorID(horarioOcupadoA.getIdFichaPaciente());
+                // Verificamos si esta ficha sigue en conflicto con otra
+                boolean sigueEnConflicto = false;
+                for (HorarioOcupadoDTO horarioOcupadoB : listaHorarios) {
+                    if (horarioOcupadoB.getIdFichaPaciente().equals(fichaEvaluada.getId())) continue;
+                    if (seSuperpone(horarioOcupadoA, horarioOcupadoB)) {
+                        sigueEnConflicto = true;
+                        break;
+                    }
+                }
+
+                if (!sigueEnConflicto) {
+                    // Si ya no tiene conflictos, cambia estado
+                    if (fichaEvaluada.getAtencionQuimioterapia().getHoraInicio() != null) {
+                        citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaEvaluada);
+                    } else {
+                        citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaEvaluada);
+                    }
+                }
+            }
+        }
+    }
 
 
     private boolean seSuperpone(HorarioOcupadoDTO a, HorarioOcupadoDTO b) {

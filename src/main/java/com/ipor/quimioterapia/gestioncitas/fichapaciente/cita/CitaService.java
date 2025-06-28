@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.cita;
 
+import com.ipor.quimioterapia.dto.DuplicarCitaDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.*;
 import com.ipor.quimioterapia.dto.CitaCreadaDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
@@ -59,6 +60,18 @@ public class CitaService {
         citaActual.setHoraProgramada(horaReprogramacion);
         citaActual.setMedicoConsulta(medico);
         citaRepository.save(citaActual);
+    }
+    public Cita duplicar (DuplicarCitaDTO duplicarCitaDTO, Cita citaActual){
+        Cita citaNueva = new Cita();
+        citaNueva.setAseguradora(citaActual.getAseguradora());
+        citaNueva.setPaciente(citaActual.getPaciente());
+        citaNueva.setEstado(EstadoCita.NO_ASIGNADO);
+        citaNueva.setHoraProgramada(duplicarCitaDTO.getHoraProgramada());
+        citaNueva.setFecha(duplicarCitaDTO.getFecha());
+        citaNueva.setMedicoConsulta(citaActual.getMedicoConsulta());
+        citaNueva.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
+        citaRepository.save(citaNueva);
+        return citaActual;
     }
 
 

@@ -29,7 +29,33 @@ document.addEventListener('click', function (e) {
                 })
                 .then(res => res.json())
                 .then(data => {
-                    Swal.fire('✅ Éxito', data.message, 'success');
+                    let icono = 'success';
+                    let titulo = '✅ Éxito';
+
+                    switch (data.status) {
+                        case 'YA_ATENDIDO':
+                            icono = 'info';
+                            titulo = 'ℹ️ Atención ya realizada';
+                            break;
+                        case 'NO_ASIGNADO':
+                            icono = 'warning';
+                            titulo = '⚠️ Atención no asignada';
+                            break;
+                        case 'ERROR':
+                            icono = 'error';
+                            titulo = '❌ Error';
+                            break;
+                        case 'CAMBIO_OK':
+                            icono = 'success';
+                            titulo = '✅ Éxito';
+                            break;
+                        default:
+                            icono = 'info';
+                            titulo = 'ℹ️ Estado desconocido';
+                            break;
+                    }
+
+                    Swal.fire(titulo, data.message, icono);
                     refrescarTablaSegunFiltro();
                 })
                 .catch(err => {

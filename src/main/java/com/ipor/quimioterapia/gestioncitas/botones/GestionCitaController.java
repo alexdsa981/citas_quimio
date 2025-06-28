@@ -17,7 +17,9 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.A
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.CitaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.recursos.personal.medico.MedicoService;
+import com.ipor.quimioterapia.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 //@RequestMapping("/app/protocolo")
 
@@ -47,6 +51,8 @@ public class GestionCitaController {
     EnfermeraService enfermeraService;
     @Autowired
     PacienteService pacienteService;
+    @Autowired
+    UsuarioService usuarioService;
 
     @PostMapping("/agendar")
     public ResponseEntity<?> guardarCita(@RequestBody CitaCreadaDTO citaCreadaDTO) {
@@ -97,23 +103,43 @@ public class GestionCitaController {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(iniciarProtocoloDTO.getIdFicha());
 
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.NO_ASIGNADO) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "NO_ASIGNADO",
+                        "message", "No se puede iniciar el protocolo. El paciente aún no ha sido asignado a una atención."
+                ));
+            }
+
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.ATENDIDO) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "YA_ATENDIDO",
+                        "message", "La atención para este paciente ya ha sido registrada previamente."
+                ));
+            }
+
             if (restriccionService.sePuedeIniciar(fichaPaciente)) {
                 citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
                 atencionQuimioterapiaService.iniciarProtocolo(iniciarProtocoloDTO.getHoraInicio(), fichaPaciente);
 
-                return ResponseEntity.ok(Map.of("message", "Protocolo iniciado correctamente"));
+                return ResponseEntity.ok(Map.of(
+                        "status", "INICIO_OK",
+                        "message", "La atención ha sido iniciada correctamente."
+                ));
             } else {
-                return ResponseEntity
-                        .status(HttpStatus.CONFLICT)
-                        .body(Map.of("message", "Ya existe una atención en curso para este horario y cubículo. No se puede iniciar el protocolo."));
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                        "status", "EN_CURSO",
+                        "message", "Ya existe una atención en curso en el mismo horario y cubículo. No se puede iniciar el protocolo."
+                ));
             }
 
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", "Error al iniciar protocolo: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "status", "ERROR",
+                    "message", "Error al iniciar el protocolo: " + e.getMessage()
+            ));
         }
     }
+
 
 
 
@@ -122,9 +148,14 @@ public class GestionCitaController {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(finalizarProtocoloDTO.getIdFicha());
 
-            citaService.cambiarEstado(EstadoCita.ATENDIDO, fichaPaciente);
-            atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), fichaPaciente);
-            return ResponseEntity.ok(Map.of("message", "Protocolo Iniciado correctamente"));
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.EN_PROCESO){
+                citaService.cambiarEstado(EstadoCita.ATENDIDO, fichaPaciente);
+                atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), fichaPaciente);
+                restriccionService.comprobarDespuesDeAtendido(fichaPaciente);
+                return ResponseEntity.ok(Map.of("message", "Protocolo Iniciado correctamente"));
+            }
+            return ResponseEntity.ok(Map.of("message", "No se puede atender sin antes estar En Proceso"));
+
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -141,18 +172,39 @@ public class GestionCitaController {
             Long idFicha = body.get("idFicha");
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
 
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.ATENDIDO) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "YA_ATENDIDO",
+                        "message", "La atención para este paciente ya ha sido registrada."
+                ));
+            }
+
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.NO_ASIGNADO) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "NO_ASIGNADO",
+                        "message", "El paciente aún no ha sido asignado a una atención. No es posible regresar a estado pendiente."
+                ));
+            }
+
             citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
             atencionQuimioterapiaService.pendienteProtocolo(fichaPaciente);
-
             restriccionService.restriccionesAsignar(fichaPaciente);
 
-            return ResponseEntity.ok(Map.of("message", "Protocolo regresado a Pendiente correctamente"));
+            return ResponseEntity.ok(Map.of(
+                    "status", "CAMBIO_OK",
+                    "message", "La atención fue regresada al estado 'Pendiente' exitosamente."
+            ));
+
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", "Error al regresar protocolo a Pendiente: " + e.getMessage()));
+                    .body(Map.of(
+                            "status", "ERROR",
+                            "message", "Error al regresar protocolo a Pendiente: " + e.getMessage()
+                    ));
         }
     }
+
 
 
     @PostMapping("/reprogramar")
@@ -190,6 +242,27 @@ public class GestionCitaController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Error al cancelar cita: " + e.getMessage()));
+        }
+    }
+
+
+    @PostMapping("/duplicar")
+    public ResponseEntity<?> duplicarCita(@RequestBody DuplicarCitaDTO duplicarCitaDTO) {
+        try {
+            FichaPaciente fichaActual = fichaPacienteService.getPorID(duplicarCitaDTO.getIdFichaPaciente());
+            Cita citaActual = fichaActual.getCita();
+
+
+            Cita citaNueva = citaService.duplicar(duplicarCitaDTO, citaActual);
+
+            fichaPacienteService.crear(citaNueva);
+
+
+            return ResponseEntity.ok(Map.of("message", "Cita duplicada correctamente"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Error al duplicar cita: " + e.getMessage()));
         }
     }
 

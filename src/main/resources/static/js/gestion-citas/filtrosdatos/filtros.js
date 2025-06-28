@@ -23,9 +23,9 @@ function aplicarFiltrosOtros() {
     filas.forEach(fila => {
         const columnas = fila.querySelectorAll('td');
 
-        const textoPaciente = (columnas[3]?.textContent + ' ' + columnas[3]?.textContent).toLowerCase();
-        const textoEstado = columnas[8]?.textContent.toLowerCase();
-        const textoCubiculo = columnas[4]?.textContent.toLowerCase();
+        const textoPaciente = (columnas[4]?.textContent + ' ' + columnas[3]?.textContent).toLowerCase();
+        const textoEstado = columnas[11]?.textContent.toLowerCase();
+        const textoCubiculo = columnas[7]?.textContent.toLowerCase();
 
         const coincidePaciente = !pacienteValor || textoPaciente.includes(pacienteValor);
         const coincideEstado = !estadoValor || textoEstado === estadoValor;
