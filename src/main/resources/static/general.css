@@ -13,6 +13,31 @@
 .actions button {
   margin: 0.25rem;
 }
+/*INICIO*/
+.btn-clinico-verde {
+    background-color: #78c2a4;
+    color: #104c3c;
+    border: none;
+}
+
+.btn-clinico-azul {
+    background-color: #74a9f0;
+    color: #0b2f56;
+    border: none;
+}
+
+.btn-clinico-gris {
+    background-color: #c5cbd3;
+    color: #212529;
+    border: none;
+}
+
+.btn-clinico-verde:hover,
+.btn-clinico-azul:hover,
+.btn-clinico-gris:hover {
+    filter: brightness(0.92);
+}
+
 
 
 

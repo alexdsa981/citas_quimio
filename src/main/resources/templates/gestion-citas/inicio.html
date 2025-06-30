@@ -12,67 +12,54 @@
 
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
-            <!-- Título -->
+            <!-- Encabezado: solo el título -->
             <div class="mb-3">
                 <h3 class="fw-bold d-flex align-items-center mb-0">
                     <i class="bi bi-calendar-check text-primary me-2 fs-3"></i> Gestión de Citas
                 </h3>
-                <small class="text-muted">Administra el estado y acciones disponibles para cada cita</small>
             </div>
 
-            <!-- Contenido principal sin huecos -->
-            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
-                <!-- Acciones -->
-                <div class="flex-grow-1">
-                    <div class="d-flex flex-column gap-3">
+            <!-- Acciones -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <!-- Botones de acciones -->
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <span class="fw-semibold text-muted me-2">Flujo principal:</span>
 
-                        <!-- 🔹 Flujo principal -->
-                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                            <span class="fw-semibold text-muted me-2">Flujo principal:</span>
+                    <button id="btn-atendido" class="btn btn-sm btn-clinico-verde">
+                        <i class="bi bi-clipboard-check"></i> Atendido
+                    </button>
 
-                            <button id="btn-atendido" class="btn btn-sm btn-success text-dark">
-                                <i class="bi bi-check2-circle"></i> Atendido
-                            </button>
+                    <button id="btn-iniciar" class="btn btn-sm btn-clinico-azul">
+                        <i class="bi bi-play-circle-fill"></i> Iniciar
+                    </button>
 
-                            <button id="btn-iniciar" class="btn btn-sm btn-info text-dark">
-                                <i class="bi bi-play-circle-fill"></i> Iniciar
-                            </button>
+                    <button id="btn-asignar" class="btn btn-sm btn-clinico-gris">
+                        <i class="bi bi-pencil-square"></i> Asignar
+                    </button>
 
-                            <button id="btn-asignar" class="btn btn-sm btn-warning text-dark">
-                                <i class="bi bi-pencil-square"></i> Asignar
-                            </button>
-                        </div>
+                    <span class="fw-semibold text-muted ms-4 me-2">Otros:</span>
 
-                        <!-- 🔸 Acciones especiales -->
-                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                            <span class="fw-semibold text-muted me-2">Otros:</span>
+                    <button id="btn-retroceso" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i> Retroceso
+                    </button>
 
-                            <button id="btn-retroceso" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-arrow-counterclockwise"></i> Retroceso
-                            </button>
+                    <button id="btn-transferir" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-arrow-left-right"></i> Reprogramar
+                    </button>
 
-                            <button id="btn-transferir" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-arrow-left-right"></i> Reprogramar
-                            </button>
+                    <button id="btn-duplicar" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-copy"></i> Duplicar Cita
+                    </button>
 
-                            <button id="btn-duplicar" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-copy"></i> Duplicar Cita
-                            </button>
-
-                            <button id="btn-cancelar" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-x-circle"></i> Cancelar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Botón agendar -->
-                <div style="min-width: 200px;">
-                    <button type="button" class="btn btn-primary btn-sm w-100 h-100 py-2" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
-                        <i class="bi bi-plus-circle"></i><br>
-                        Agendar<br>Cita
+                    <button id="btn-cancelar" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-x-circle"></i> Cancelar
                     </button>
                 </div>
+
+                <!-- Botón agendar a la derecha -->
+                <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
+                    <i class="bi bi-plus-circle"></i> Agendar Cita
+                </button>
             </div>
         </div>
     </div>
