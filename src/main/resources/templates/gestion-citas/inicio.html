@@ -4,38 +4,80 @@
 <head th:insert="~{common/imports :: headImports}">
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
 <div th:replace="~{common/header :: header}">
 </div>
-<main class="container-fluid py-4">
-    <!-- Título -->
-    <div class="mb-4">
-        <h3 class="fw-bold">
-            <i class="bi bi-calendar-check text-primary"></i> Gestión de Citas
-        </h3>
-    </div>
+<main class="container-fluid py-4 flex-fill">
 
-    <!-- Acciones generales -->
+
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-md-9 d-flex flex-wrap gap-2 justify-content-start">
-                    <button id="btn-atendido" class="btn btn-success"><i class="bi bi-check2-circle"></i> Atendido</button>
-                    <button id="btn-iniciar" class="btn btn-secondary"><i class="bi bi-check-circle"></i> Iniciar</button>
-                    <button id="btn-asignar" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Asignar</button>
-                    <button id="btn-pendiente" class="btn btn-warning"><i class="bi bi-hourglass-split"></i> Pendiente</button>
-                    <button id="btn-transferir" class="btn btn-info text-white"><i class="bi bi-arrow-left-right"></i> Reprogramar</button>
-                    <button id="btn-cancelar" class="btn btn-danger"><i class="bi bi-trash"></i> Cancelar</button>
-                    <button id="btn-duplicar" class="btn btn-outline-secondary"><i class="bi bi-copy"></i> Duplicar Sesión</button>
+            <!-- Título -->
+            <div class="mb-3">
+                <h3 class="fw-bold d-flex align-items-center mb-0">
+                    <i class="bi bi-calendar-check text-primary me-2 fs-3"></i> Gestión de Citas
+                </h3>
+                <small class="text-muted">Administra el estado y acciones disponibles para cada cita</small>
+            </div>
+
+            <!-- Contenido principal sin huecos -->
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
+                <!-- Acciones -->
+                <div class="flex-grow-1">
+                    <div class="d-flex flex-column gap-3">
+
+                        <!-- 🔹 Flujo principal -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                            <span class="fw-semibold text-muted me-2">Flujo principal:</span>
+
+                            <button id="btn-atendido" class="btn btn-sm btn-success text-dark">
+                                <i class="bi bi-check2-circle"></i> Atendido
+                            </button>
+
+                            <button id="btn-iniciar" class="btn btn-sm btn-info text-dark">
+                                <i class="bi bi-play-circle-fill"></i> Iniciar
+                            </button>
+
+                            <button id="btn-asignar" class="btn btn-sm btn-warning text-dark">
+                                <i class="bi bi-pencil-square"></i> Asignar
+                            </button>
+                        </div>
+
+                        <!-- 🔸 Acciones especiales -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                            <span class="fw-semibold text-muted me-2">Otros:</span>
+
+                            <button id="btn-retroceso" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-arrow-counterclockwise"></i> Retroceso
+                            </button>
+
+                            <button id="btn-transferir" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-arrow-left-right"></i> Reprogramar
+                            </button>
+
+                            <button id="btn-duplicar" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-copy"></i> Duplicar Cita
+                            </button>
+
+                            <button id="btn-cancelar" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-3 mt-3 mt-md-0">
-                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
-                        <i class="bi bi-plus-circle"></i> Agendar Cita
+
+                <!-- Botón agendar -->
+                <div style="min-width: 200px;">
+                    <button type="button" class="btn btn-primary btn-sm w-100 h-100 py-2" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
+                        <i class="bi bi-plus-circle"></i><br>
+                        Agendar<br>Cita
                     </button>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <!-- Filtros -->
     <div class="card shadow-sm border-0 mb-2">
@@ -64,10 +106,10 @@
                     <input type="text" id="filtroFecha" class="form-control" placeholder="Seleccionar fecha(s)" autocomplete="off">
                 </div>
                 <div class="col-md-2 d-flex gap-2">
-                    <button class="btn btn-dark w-50" title="Reporte">
+                    <button class="btn btn-dark w-50" title="Reporte" disabled>
                         <i class="bi bi-file-earmark-text"></i>
                     </button>
-                    <button class="btn btn-outline-dark w-50" title="Exportar">
+                    <button class="btn btn-outline-dark w-50" title="Exportar" disabled>
                         <i class="bi bi-download"></i>
                     </button>
                 </div>
@@ -76,8 +118,8 @@
     </div>
 
     <!-- Tabla -->
-    <div class="table-responsive shadow-sm rounded overflow-hidden">
-        <table class="table table-bordered table-hover align-middle mb-0">
+    <div class="table-responsive shadow-sm rounded overflow-auto">
+        <table class="table table-bordered table-hover align-middle mb-0 ">
             <thead class="table-primary text-center">
             <tr>
                 <th>Fecha Registro</th>
@@ -99,6 +141,7 @@
             </tbody>
         </table>
     </div>
+
 </main>
 
 
@@ -112,6 +155,7 @@
     <div th:replace="~{gestion-citas/fragments/modal-atender :: modalFinalizarProtocolo}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-asignar :: modalAsignarAtencion}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-reprogramar :: modalReprogramarCita}"></div>
+    <div th:replace="~{gestion-citas/fragments/modal-duplicar :: modalDuplicarCita}"></div>
 
     <div th:replace="~{gestion-citas/fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
 
@@ -128,13 +172,14 @@
 <script src="/js/gestion-citas/cita/modal.js"></script>
 
 
-<script src="/js/gestion-citas/botones/pendiente.js"></script>
+<script src="/js/gestion-citas/botones/retroceso.js"></script>
 <script src="/js/gestion-citas/botones/cancelar.js"></script>
 <script src="/js/gestion-citas/botones/modal-iniciar.js"></script>
 <script src="/js/gestion-citas/botones/modal-atender.js"></script>
 <script src="/js/gestion-citas/botones/seleccion-ficha.js"></script>
 <script src="/js/gestion-citas/botones/modal-asignar.js"></script>
 <script src="/js/gestion-citas/botones/modal-reprogramar.js"></script>
+<script src="/js/gestion-citas/botones/modal-duplicar.js"></script>
 
 
 
@@ -157,6 +202,7 @@
 <script src="/js/gestion-citas/filtrosdatos/filtros.js"></script>
 <script src="/js/gestion-citas/filtrosdatos/index-datostabla-filtrofecha.js"></script>
 
+<script src="/js/gestion-citas/wsInicio.js"></script>
 
 </body>
 

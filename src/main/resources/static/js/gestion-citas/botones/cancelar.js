@@ -28,18 +28,31 @@ document.addEventListener('click', function (e) {
                 })
                 .then(resp => resp.json())
                 .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Cancelado',
-                        text: data.message
-                    });
-                refrescarTablaSegunFiltro();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cancelado',
+                            text: data.message
+                        });
+
+                        // Limpiar la selección para evitar acciones posteriores
+                        idFichaSeleccionada = null;
+
+                        refrescarTablaSegunFiltro();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al cancelar',
+                            text: data.message || 'No se pudo cancelar la cita.'
+                        });
+                    }
                 })
                 .catch(err => {
+                    console.error('Error al cancelar:', err);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'No se pudo cancelar la cita. Inténtalo nuevamente.'
+                        text: 'Ocurrió un error inesperado. Inténtalo nuevamente.'
                     });
                 });
             }

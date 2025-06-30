@@ -47,6 +47,10 @@ public class AtencionQuimioterapiaService {
         return atencion;
     }
 
+    public void save(AtencionQuimioterapia atencionQuimioterapia){
+        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
+    }
+
 
 
 

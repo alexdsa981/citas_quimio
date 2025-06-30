@@ -45,7 +45,7 @@ public class CieService {
 
 
     @Transactional
-    public void guardarListaDetalleCie(FichaPaciente fichaPaciente, List<Long> listaCie) {
+    public List<DetalleCie> guardarListaDetalleCie(FichaPaciente fichaPaciente, List<Long> listaCie) {
         List<DetalleCie> actuales = detalleCieRepository.findByFichaPacienteId(fichaPaciente.getId());
 
         Set<Long> idsActuales = actuales.stream()
@@ -72,6 +72,7 @@ public class CieService {
             // Si no se envió ninguno, borra todos los existentes
             detalleCieRepository.deleteAll(actuales);
         }
+        return fichaPaciente.getDetalleCies();
     }
 
 

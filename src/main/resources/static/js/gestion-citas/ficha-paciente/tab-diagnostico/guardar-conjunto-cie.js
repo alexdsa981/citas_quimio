@@ -20,13 +20,17 @@ function guardarCieSeleccionados() {
     })
     .then(response => {
         if (!response.ok) throw new Error('Error al guardar');
-        return response.text();
+        return response.json(); // Aquí asumimos que devuelve los cie guardados
     })
     .then(data => {
+        // Recargar lista limpia
+        llenarDetalleCieDesdeFicha(data); // <- Reutilizas la función con los datos actualizados
+        deshabilitarModificacionCieFicha();
+
         Swal.fire({
             icon: 'success',
             title: 'Guardado exitosamente',
-            text: data,
+            text: 'Se actualizaron los diagnósticos CIE10.',
             timer: 1000,
             showConfirmButton: false
         });

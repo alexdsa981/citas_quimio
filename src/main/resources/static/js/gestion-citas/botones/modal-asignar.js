@@ -52,18 +52,16 @@ document.getElementById('btn-asignar').addEventListener('click', () => {
     });
 });
 
-
 function guardarAsignacion() {
     const horas = parseInt(document.getElementById('modalHorasProtocolo').value || 0);
     const minutos = parseInt(document.getElementById('modalMinutosProtocolo').value || 0);
     const duracionTotal = horas * 60 + minutos;
 
-    // Validación: al menos una duración válida
     if (duracionTotal <= 0) {
         Swal.fire({
             icon: 'warning',
-            title: 'Duración inválida',
-            text: 'Debe ingresar duración de protocolo.'
+            title: 'Duración no válida',
+            text: 'Por favor, indique una duración válida para el protocolo.'
         });
         return;
     }
@@ -88,23 +86,22 @@ function guardarAsignacion() {
         if (data.success) {
             Swal.fire({
                 icon: 'success',
-                title: 'Guardado',
-                text: 'La asignación se guardó correctamente.',
-                timer: 1000,
+                title: 'Asignación registrada',
+                text: data.message || 'La asignación fue guardada exitosamente.',
+                timer: 1500,
                 showConfirmButton: false
             });
 
             refrescarTablaSegunFiltro();
 
-            // Cerrar el modal si existe
             if (window.modalAsignarInstance) {
                 window.modalAsignarInstance.hide();
             }
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Error al guardar',
-                text: data.message || 'No se pudo guardar la asignación.',
+                title: 'No se pudo completar la asignación',
+                text: data.message || 'Ocurrió un inconveniente al intentar registrar la asignación.'
             });
         }
     })
@@ -112,8 +109,8 @@ function guardarAsignacion() {
         console.error("Error en el guardado:", error);
         Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'Ocurrió un error al guardar los datos.',
+            title: 'Error inesperado',
+            text: 'Se produjo un error al guardar los datos. Intente nuevamente o contacte con soporte.'
         });
     });
 }

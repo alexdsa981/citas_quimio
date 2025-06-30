@@ -19,14 +19,7 @@
                     <ul class="nav nav-tabs" id="fichaTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="cita-tab" data-bs-toggle="tab"
-                                    data-bs-target="#citaFicha" type="button" role="tab">Paciente
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="atencion-quimioterapia-tab" data-bs-toggle="tab"
-                                    data-bs-target="#atencionQuimioterapiaFicha" type="button" role="tab">Atención
-                                Quimioterapia
+                                    data-bs-target="#citaFicha" type="button" role="tab">Cita
                             </button>
                         </li>
 
@@ -53,13 +46,21 @@
 
                     <!-- Tab Content -->
                     <div class="tab-content mt-3">
-                        <div id="citaFicha" class="tab-pane fade show active" role="tabpanel" aria-labelledby="cita-tab">
-                            <div class="row g-3">
 
-                                <!-- Paciente -->
+
+
+
+
+                        <div id="citaFicha" class="tab-pane fade show active" role="tabpanel" aria-labelledby="cita-tab">
+                            <div class="row g-4">
+
+                                <!-- Columna Paciente -->
                                 <div class="col-md-6">
-                                    <div class="card border-primary shadow-sm">
-                                        <div class="card-header bg-primary text-white">Datos del Paciente</div>
+                                    <!-- Datos del Paciente -->
+                                    <div class="card border-0 shadow-sm rounded-4">
+                                        <div class="card-header bg-light text-secondary fw-bold border-bottom border-2 border-primary">
+                                            <i class="bi bi-person-vcard-fill me-2"></i>Datos del Paciente
+                                        </div>
                                         <div class="card-body">
                                             <p><strong>Nombre:</strong> <span id="nombrePacienteFicha"></span></p>
                                             <p><strong>Tipo Documento:</strong> <span id="tipoDocumentoPacienteFicha"></span></p>
@@ -70,295 +71,245 @@
                                             <p><strong>Teléfono:</strong> <span id="telefonoPacienteFicha"></span></p>
                                         </div>
                                     </div>
+
+                                    <!-- Otros -->
+                                    <div class="card border-0 shadow-sm rounded-4 mt-3">
+                                        <div class="card-header bg-light text-secondary fw-bold border-bottom border-2 border-secondary">
+                                            <i class="bi bi-briefcase-medical-fill me-2"></i>Otros
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Aseguradora:</strong> <span id="aseguradoraCitaFicha"></span></p>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Cita -->
+                                <!-- Columna Cita + Atención -->
                                 <div class="col-md-6">
-                                    <div class="card border-success shadow-sm">
-                                        <div class="card-header bg-success text-white">Datos de la Cita</div>
+                                    <!-- Datos de la Cita -->
+                                    <div class="card border-0 shadow-sm rounded-4">
+                                        <div class="card-header bg-light text-secondary fw-bold border-bottom border-2 border-success">
+                                            <i class="bi bi-calendar-check-fill me-2"></i>Datos de la Cita
+                                        </div>
                                         <div class="card-body">
                                             <p><strong>Fecha Programada:</strong> <span id="fechaCitaFicha"></span> | <span id="horaCitaFicha"></span></p>
                                             <p><strong>Estado:</strong> <span id="estadoCitaFicha"></span></p>
-                                            <p style="margin-bottom: 8px;"><strong>Médico:</strong> <span id="medicoCitaFicha"></span></p>
+                                            <p><strong>Médico:</strong> <span id="medicoCitaFicha"></span></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Atención de Quimioterapia -->
+                                    <div class="card border-0 shadow-sm rounded-4 mt-3">
+                                        <div class="card-header bg-light text-secondary fw-bold border-bottom border-2 border-info">
+                                            <i class="bi bi-capsule-pill me-2"></i>Atención de Quimioterapia
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Enfermera:</strong> <span id="enfermeraFichaTexto"></span></p>
+                                            <p><strong>Médico:</strong> <span id="medicoFichaTexto"></span></p>
+                                            <p><strong>Cubículo:</strong> <span id="cubiculoFichaTexto"></span></p>
+                                            <p><strong>Duración del Protocolo:</strong> <span id="duracionFichaTexto"></span></p>
+                                            <p><strong>Hora Inicio:</strong> <span id="horaInicioFichaTexto"></span></p>
+                                            <p><strong>Hora Fin:</strong> <span id="horaFinFichaTexto"></span></p>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
 
 
-                        <div class="tab-pane fade" id="signos-vitalesFicha" role="tabpanel"
-                             aria-labelledby="signos-vitales-tab">
-                            <div class="row g-3 form-disabled" id="datosModificablesFuncionesVitalesFicha">
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Presión Arterial<span style="color:red;">*</span> <small
-                                            class="text-muted">(mmHg)</small>
-                                    </label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" placeholder="Sistólica"
-                                               autocomplete="off" id="presionSistolicaFicha">
-                                        <span class="input-group-text">/</span>
-                                        <input type="number" class="form-control" placeholder="Diastólica"
-                                               autocomplete="off" id="presionDiastolicaFicha">
-                                    </div>
+
+
+
+
+
+
+
+
+
+                        <div class="tab-pane fade" id="signos-vitalesFicha" role="tabpanel" aria-labelledby="signos-vitales-tab">
+                            <div class="card shadow-sm rounded-4 border-0">
+                                <div class="card-header bg-light text-dark fw-bold border-bottom">
+                                    <i class="bi bi-heart-pulse-fill text-danger me-2"></i>Signos Vitales y Datos Antropométricos
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Frecuencia Respiratoria<span style="color:red;">*</span> <small
-                                            class="text-muted">(x Min)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 18" autocomplete="off"
-                                           id="frecuenciaRespiratoriaFicha">
-                                </div>
+                                <div class="card-body row g-3 form-disabled" id="datosModificablesFuncionesVitalesFicha">
 
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Frecuencia Cardíaca<span style="color:red;">*</span> <small
-                                            class="text-muted">(x Min)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 72" autocomplete="off"
-                                           id="frecuenciaCardiacaFicha">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Temperatura<span style="color:red;">*</span> <small
-                                            class="text-muted">(°C)</small>
-                                    </label>
-                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 36.5"
-                                           autocomplete="off" id="temperaturaFicha">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Saturación<span style="color:red;">*</span> <small
-                                            class="text-muted">(%)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 98" autocomplete="off"
-                                           id="saturacionOxigenoFicha">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Peso <small class="text-muted">(kg)</small>
-                                    </label>
-                                    <input type="number" step="0.1" class="form-control" placeholder="Ej. 70.5"
-                                           autocomplete="off" id="pesoFicha">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Talla <small class="text-muted">(cm)</small>
-                                    </label>
-                                    <input type="number" class="form-control" placeholder="Ej. 172" autocomplete="off"
-                                           id="tallaFicha">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        Sup. Corporal <small class="text-muted">(m²)</small>
-                                    </label>
-                                    <input type="text" id="superficieCorporalFicha" class="form-control" readonly
-                                           style="background-color: #e9ecef; pointer-events: none; cursor: not-allowed;">
-
-                                </div>
-                                <div class="mt-4 d-flex justify-content-end gap-2">
-                                    <label for="selectSignosVitalesFicha" class="form-label">Cargar</label>
-                                    <select id="selectSignosVitalesFicha" class="form-select">
-                                        <option value="">-- Seleccione una fecha --</option>
-
-
-                                        <!-- Aquí se llenarán las fechas con JS dinámicamente -->
-
-
-                                    </select>
-                                    <button type="button" class="btn btn-info" id="btnModificarSignosVitalesFicha"
-                                            onclick="habilitarEdicionSignosVitalesFicha()">Modificar</button>
-                                    <button type="button" class="btn btn-success" id="btnGuardarSignosVitalesFicha"
-                                            onclick="guardarSignosVitalesFicha()">Guardar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="atencionQuimioterapiaFicha" role="tabpanel"
-                             aria-labelledby="atencion-quimioterapia-tab">
-                            <div class="row g-3">
-                                <div id="datosModificablesAtencionQuimioterapiaFicha" class="row g-3 form-disabled">
-                                    <!-- Select Enfermera -->
-                                    <div class="col-md-6">
-                                        <label for="enfermeraFicha" class="form-label">Enfermera</label><span
-                                            style="color:red;">*</span>
-                                        <select id="enfermeraFicha" name="enfermera" class="form-select">
-                                            <option value="">Seleccionar enfermera</option>
-                                            <th:block th:each="enfermera : ${Lista_Enfermeras_Activos}">
-                                                <option th:value="${enfermera.idPersona}"
-                                                        th:text="${enfermera.apellidoP + ' ' + enfermera.apellidoM + ' ' + enfermera.nombre}">
-                                                </option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                    <!-- Select Médico -->
-
-                                    <div class="col-md-6">
-                                        <label for="medicoFicha" class="form-label">Medico</label><span
-                                            style="color:red;">*</span>
-                                        <select id="medicoFicha" name="medico" class="form-select" required>
-                                            <option value="">Seleccionar Médico</option>
-                                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                                                <option th:value="${medico.idPersona}"
-                                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}">
-                                                </option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label class="form-label">Cubículo</label><span style="color:red;">*</span>
-                                        <select class="form-select" name="idCubiculo" id="cubiculoSelectFicha">
-                                            <option value="">Seleccione:</option>
-                                            <th:block th:each="cubiculo : ${Lista_Cubiculo_Activos}">
-                                                <option th:value="${cubiculo.id}" th:text="${cubiculo.codigo}"></option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Tiempo Protocolo</label>
+                                    <!-- Signos Vitales -->
+                                    <div class="col-md-3">
+                                        <label class="form-label">Presión Arterial <span style="color:red;">*</span> <small>(mmHg)</small></label>
                                         <div class="input-group">
-                                            <select class="form-select" id="horasProtocoloFicha">
-                                                <option value="0">0 h</option>
-                                                <option value="1">1 h</option>
-                                                <option value="2">2 h</option>
-                                                <option value="3">3 h</option>
-                                                <option value="4">4 h</option>
-                                                <option value="5">5 h</option>
-                                                <option value="6">6 h</option>
-                                                <option value="7">7 h</option>
-                                                <option value="8">8 h</option>
-                                                <option value="9">9 h</option>
-                                                <option value="10">10 h</option>
-
-                                            </select>
-                                            <select class="form-select" id="minutosProtocoloFicha">
-                                                <option value="0">0 min</option>
-                                                <option value="15">15 min</option>
-                                                <option value="30">30 min</option>
-                                                <option value="45">45 min</option>
-                                            </select>
+                                            <input type="number" class="form-control" placeholder="Sistólica" id="presionSistolicaFicha">
+                                            <span class="input-group-text">/</span>
+                                            <input type="number" class="form-control" placeholder="Diastólica" id="presionDiastolicaFicha">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <label class="form-label">Hora Inicio</label>
-                                        <input type="time" class="form-control" id="horaInicioProtocolo"
-                                               name="horaInicioProtocolo" disabled>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Frecuencia Respiratoria <span style="color:red;">*</span> <small>(x min)</small></label>
+                                        <input type="number" class="form-control" placeholder="--" id="frecuenciaRespiratoriaFicha">
                                     </div>
-                                    <div class="col-md-2">
-                                        <label class="form-label">Hora Fin</label>
-                                        <input type="time" class="form-control" id="horaFinProtocolo"
-                                               name="horaFinProtocolo" disabled>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Frecuencia Cardíaca <span style="color:red;">*</span> <small>(x min)</small></label>
+                                        <input type="number" class="form-control" placeholder="--" id="frecuenciaCardiacaFicha">
                                     </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Temperatura <span style="color:red;">*</span> <small>(°C)</small></label>
+                                        <input type="number" step="0.1" class="form-control" placeholder="--" id="temperaturaFicha">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Saturación <span style="color:red;">*</span> <small>(%)</small></label>
+                                        <input type="number" class="form-control" placeholder="--" id="saturacionOxigenoFicha">
+                                    </div>
+
+                                    <!-- Datos Antropométricos -->
+                                    <div class="col-md-3">
+                                        <label class="form-label">Peso <small>(kg)</small></label>
+                                        <input type="number" step="0.1" class="form-control" placeholder="--" id="pesoFicha">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Talla <small>(cm)</small></label>
+                                        <input type="number" class="form-control" placeholder="--" id="tallaFicha">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Sup. Corporal <small>(m²)</small></label>
+                                        <input type="text" class="form-control" id="superficieCorporalFicha" readonly
+                                               style="background-color: #e9ecef; cursor: not-allowed;" placeholder="Formula de Mosteller">
+                                    </div>
+
+                                    <!-- Botones -->
                                     <div class="mt-4 d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-info"
-                                                id="btnModificarAtencionQuimioterapiaFicha"
-                                                onclick="habilitarEdicionAtencionQuimioterapiaFicha()">Modificar</button>
-                                        <button type="button" class="btn btn-success"
-                                                id="btnGuardarAtencionQuimioterapiaFicha"
-                                                onclick="guardarAtencionQuimioterapiaFicha()" disabled>Guardar</button>
+                                        <button type="button" class="btn btn-outline-primary" id="btnModificarSignosVitalesFicha"
+                                                onclick="habilitarEdicionSignosVitalesFicha()">Modificar</button>
+                                        <button type="button" class="btn btn-success" id="btnGuardarSignosVitalesFicha"
+                                                onclick="guardarSignosVitalesFicha()">Guardar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="detalleQuimioterapiaFicha" role="tabpanel"
-                             aria-labelledby="detalle-quimioterapia-tab">
-                            <div class="row g-3 form-disabled" id="datosModificablesDetalleQuimioterapiaFicha">
-                                <div class="col-md-6">
-                                    <label for="medicinasFicha" class="form-label">Medicinas</label>
-                                    <textarea id="medicinasFicha" name="medicinas" class="form-control"
-                                              rows="2"></textarea>
+
+
+
+
+
+
+
+
+
+                        <div class="tab-pane fade" id="detalleQuimioterapiaFicha" role="tabpanel" aria-labelledby="detalle-quimioterapia-tab">
+                            <div class="card shadow-sm border-0 rounded-4">
+                                <div class="card-header bg-light fw-bold text-dark border-bottom">
+                                    <i class="bi bi-journal-medical me-2 text-info"></i>Detalle Clínico de Quimioterapia
+                                </div>
+                                <div class="card-body row g-3 form-disabled" id="datosModificablesDetalleQuimioterapiaFicha">
+
+                                    <!-- Medicinas y Observaciones -->
+                                    <div class="col-md-6">
+                                        <label for="medicinasFicha" class="form-label">Medicinas</label>
+                                        <textarea id="medicinasFicha" name="medicinas" class="form-control" rows="2"
+                                                  placeholder="Ej. Doxorrubicina 50mg, Ciclofosfamida 500mg..."></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="observacionesFicha" class="form-label">Observaciones</label>
+                                        <textarea id="observacionesFicha" name="observaciones" class="form-control" rows="2"
+                                                  placeholder="Observaciones generales del paciente o sesión..."></textarea>
+                                    </div>
+
+                                    <!-- Anamnesis -->
+                                    <div class="col-md-6">
+                                        <label for="anamnesisFicha" class="form-label">Anamnesis</label>
+                                        <textarea id="anamnesisFicha" name="anamnesis" class="form-control" rows="3"
+                                                  placeholder="Descripción subjetiva del paciente sobre sus síntomas, antecedentes, etc."></textarea>
+                                    </div>
+
+                                    <!-- Examen Físico -->
+                                    <div class="col-md-6">
+                                        <label for="examenFisicoFicha" class="form-label">Examen Físico</label>
+                                        <textarea id="examenFisicoFicha" name="examenFisico" class="form-control" rows="3"
+                                                  placeholder="Ej. Estado general, peso, signos vitales, hallazgos..."></textarea>
+                                    </div>
+
+                                    <!-- Exámenes Auxiliares -->
+                                    <div class="col-md-6">
+                                        <label for="examenesAuxiliaresFicha" class="form-label">Exámenes Auxiliares</label>
+                                        <textarea id="examenesAuxiliaresFicha" name="examenesAuxiliares" class="form-control" rows="2"
+                                                  placeholder="Resultados relevantes de laboratorio o imágenes..."></textarea>
+                                    </div>
+
+                                    <!-- Tratamiento -->
+                                    <div class="col-md-6">
+                                        <label for="tratamientoFicha" class="form-label">Tratamiento</label>
+                                        <textarea id="tratamientoFicha" name="tratamiento" class="form-control" rows="2"
+                                                  placeholder="Intervenciones realizadas durante la sesión..."></textarea>
+                                    </div>
+
+                                    <!-- Evolución -->
+                                    <div class="col-md-12">
+                                        <label for="evolucionFicha" class="form-label">Evolución</label>
+                                        <textarea id="evolucionFicha" name="evolucion" class="form-control" rows="4"
+                                                  placeholder="Narrativa sobre el progreso, complicaciones o respuesta al tratamiento..."></textarea>
+                                    </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label for="observacionesFicha" class="form-label">Observaciones</label>
-                                    <textarea id="observacionesFicha" name="observaciones" class="form-control"
-                                              rows="2"></textarea>
+                                <div class="card-footer bg-white border-top mt-3 d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-primary" id="btnModificarDetalleQuimioterapiaFicha"
+                                            onclick="habilitarEdicionDetalleQuimioterapiaFicha()">Modificar</button>
+                                    <button type="button" class="btn btn-success" id="btnGuardarDetalleQuimioterapiaFicha"
+                                            onclick="guardarDetalleQuimioterapiaFicha()" disabled>Guardar</button>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="anamnesisFicha" class="form-label">Anamnesis</label>
-                                    <textarea id="anamnesisFicha" name="anamnesis" class="form-control"
-                                              rows="2"></textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="examenFisicoFicha" class="form-label">Examen Físico</label>
-                                    <textarea id="examenFisicoFicha" name="examenFisico" class="form-control"
-                                              rows="2"></textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="examenesAuxiliaresFicha" class="form-label">Exámenes
-                                        Auxiliares</label>
-                                    <textarea id="examenesAuxiliaresFicha" name="examenesAuxiliares"
-                                              class="form-control" rows="2"></textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="tratamientoFicha" class="form-label">Tratamiento</label>
-                                    <textarea id="tratamientoFicha" name="tratamiento" class="form-control"
-                                              rows="2"></textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="evolucionFicha" class="form-label">Evolución</label>
-                                    <textarea id="evolucionFicha" name="evolucion" class="form-control"
-                                              rows="2"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-12 text-end">
-                                <button type="button" class="btn btn-outline-primary" style="display:none;">
-                                    Agregar esquema
-                                </button>
-                            </div>
-                            <div class="mt-4 d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-info" id="btnModificarDetalleQuimioterapiaFicha"
-                                        onclick="habilitarEdicionDetalleQuimioterapiaFicha()">Modificar</button>
-                                <button type="button" class="btn btn-success" id="btnGuardarDetalleQuimioterapiaFicha"
-                                        onclick="guardarDetalleQuimioterapiaFicha()" disabled>Guardar</button>
                             </div>
                         </div>
+
+
+
+
+
+
 
                         <div class="tab-pane fade" id="cie10Ficha" role="tabpanel" aria-labelledby="cie10-tab">
-                            <div class="row g-3">
-                                <!-- Buscar CIE10 -->
-                                <div class="col-md-12">
-                                    <label class="form-label">Buscar CIE10</label>
-                                    <div class="input-group">
-                                    <span class="form-control" style="background-color: #e9ecef;">
-                                        Haz clic en Buscar para seleccionar un CIE10
-                                    </span>
-                                        <button class="btn btn-outline-primary" type="button"
-                                                onclick="abrirModalCie()">Buscar
-                                        </button>
+                            <div class="card shadow-sm border-0 rounded-4">
+                                <div class="card-header bg-warning-subtle text-dark fw-bold">
+                                    <i class="bi bi-clipboard-pulse me-2 text-warning"></i> Diagnóstico CIE10
+                                </div>
+
+                                <div class="card-body">
+                                    <!-- Mensaje si no hay CIE -->
+                                    <div id="mensajeCieNoDiagnostico" class="text-muted mb-3">
+                                        <i class="bi bi-info-circle-fill"></i> No se han registrado diagnósticos CIE10 aún.
+                                    </div>
+
+                                    <!-- Campo de búsqueda oculto por defecto -->
+                                    <div class="row g-3 mb-3" id="busquedaCieContainer" style="display: none;">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Buscar CIE10</label>
+                                            <div class="input-group">
+                                                <span class="form-control" style="background-color: #e9ecef;">
+                                                    Haz clic en Buscar para seleccionar un CIE10
+                                                </span>
+                                                <button id="btnBuscarCie" class="btn btn-outline-primary" type="button" onclick="abrirModalCie()" disabled>Buscar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lista de CIE10 -->
+                                    <div class="col-md-12">
+                                        <label class="form-label">Lista de CIE10 diagnosticados:</label>
+                                        <ul id="lista-cie-seleccionados" class="list-group mt-2"></ul>
                                     </div>
                                 </div>
 
-                                <!-- Lista CIE10 -->
-                                <div class="col-md-12 mt-3">
-                                    <label class="form-label">Lista CIE10 seleccionados:</label>
-                                    <ul id="lista-cie-seleccionados" class="list-group mt-2">
-                                        <!-- Aquí se agregan dinámicamente los CIE10 seleccionados -->
-                                    </ul>
+                                <div class="card-footer bg-white d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-info" id="btnModificarCieFicha"
+                                            onclick="habilitarModificacionCieFicha()">Modificar</button>
+                                    <button id="btnGuardarCie" class="btn btn-success" type="button"
+                                            onclick="guardarCieSeleccionados()" disabled>Guardar CIE10</button>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end mt-3">
-                                <button class="btn btn-success" type="button" onclick="guardarCieSeleccionados()">Guardar CIE10</button>
-                            </div>
-
                         </div>
+
+
+
+
+
+
 
                     </div>
                 </div>

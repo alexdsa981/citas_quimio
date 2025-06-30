@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RestriccionService {
@@ -172,6 +173,112 @@ public class RestriccionService {
                     } else {
                         citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaEvaluada);
                     }
+                }
+            }
+        }
+    }
+
+    public void comprobarDespuesDeRetroceso(FichaPaciente fichaActual) {
+        Cita citaActual = fichaActual.getCita();
+        LocalDate fechaProtocolo = citaActual.getFecha();
+        Long idFichaActual = fichaActual.getId();
+
+        List<HorarioOcupadoDTO> listaHorarios = horariosOcupadosDTORepository.buscarHorarioPorFecha(fechaProtocolo);
+
+        HorarioOcupadoDTO horarioActual = listaHorarios.stream()
+                .filter(h -> h.getIdFichaPaciente().equals(idFichaActual))
+                .findFirst()
+                .orElse(null);
+
+        if (horarioActual != null) {
+            boolean tieneConflicto = listaHorarios.stream()
+                    .filter(h -> !h.getIdFichaPaciente().equals(idFichaActual))
+                    .anyMatch(h -> Objects.equals(h.getIdCubiculo(), horarioActual.getIdCubiculo()) &&
+                            seSuperpone(horarioActual, h));
+
+            if (tieneConflicto) {
+                // Solo cambiar si no está en proceso
+                if (citaActual.getEstado() != EstadoCita.EN_PROCESO) {
+                    citaService.cambiarEstado(EstadoCita.EN_CONFLICTO, fichaActual);
+                }
+            } else {
+                AtencionQuimioterapia atencion = fichaActual.getAtencionQuimioterapia();
+                if (atencion != null && atencion.getHoraInicio() != null) {
+                    if (citaActual.getEstado() != EstadoCita.EN_PROCESO) {
+                        citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaActual);
+                    }
+                } else {
+                    citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaActual);
+                }
+            }
+        }
+
+        // 2. Verificar si otras fichas siguen en conflicto o ya no
+        for (HorarioOcupadoDTO horarioEvaluado : listaHorarios) {
+            Long idEvaluado = horarioEvaluado.getIdFichaPaciente();
+            if (idEvaluado.equals(idFichaActual)) continue;
+
+            FichaPaciente fichaEvaluada = fichaPacienteService.getPorID(idEvaluado);
+            Cita citaEvaluada = fichaEvaluada.getCita();
+
+            if (citaEvaluada.getEstado() == EstadoCita.CANCELADO || citaEvaluada.getEstado() == EstadoCita.ATENDIDO)
+                continue;
+
+            boolean tieneConflicto = listaHorarios.stream()
+                    .filter(h -> !h.getIdFichaPaciente().equals(idEvaluado))
+                    .anyMatch(h -> Objects.equals(h.getIdCubiculo(), horarioEvaluado.getIdCubiculo()) &&
+                            seSuperpone(horarioEvaluado, h));
+
+            if (tieneConflicto) {
+                if (citaEvaluada.getEstado() != EstadoCita.EN_PROCESO) {
+                    citaService.cambiarEstado(EstadoCita.EN_CONFLICTO, fichaEvaluada);
+                }
+            } else {
+                AtencionQuimioterapia atencion = fichaEvaluada.getAtencionQuimioterapia();
+                if (atencion != null && atencion.getHoraInicio() != null) {
+                    if (citaEvaluada.getEstado() != EstadoCita.EN_PROCESO) {
+                        citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaEvaluada);
+                    }
+                } else {
+                    citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaEvaluada);
+                }
+            }
+        }
+    }
+
+
+
+    public void comprobarDespuesDeCancelacion(FichaPaciente fichaCancelada) {
+        LocalDate fecha = fichaCancelada.getCita().getFecha();
+
+        // Obtener la nueva lista ya sin la ficha cancelada
+        List<HorarioOcupadoDTO> listaHorarios = horariosOcupadosDTORepository.buscarHorarioPorFecha(fecha);
+
+        for (HorarioOcupadoDTO horario : listaHorarios) {
+            Long idFicha = horario.getIdFichaPaciente();
+            FichaPaciente ficha = fichaPacienteService.getPorID(idFicha);
+            Cita cita = ficha.getCita();
+
+            if (cita.getEstado() == EstadoCita.CANCELADO || cita.getEstado() == EstadoCita.ATENDIDO)
+                continue;
+
+            boolean tieneConflicto = listaHorarios.stream()
+                    .filter(h -> !h.getIdFichaPaciente().equals(idFicha))
+                    .anyMatch(h -> Objects.equals(h.getIdCubiculo(), horario.getIdCubiculo()) &&
+                            seSuperpone(horario, h));
+
+            if (tieneConflicto) {
+                if (cita.getEstado() != EstadoCita.EN_PROCESO) {
+                    citaService.cambiarEstado(EstadoCita.EN_CONFLICTO, ficha);
+                }
+            } else {
+                AtencionQuimioterapia atencion = ficha.getAtencionQuimioterapia();
+                if (atencion != null && atencion.getHoraInicio() != null) {
+                    if (cita.getEstado() != EstadoCita.EN_PROCESO) {
+                        citaService.cambiarEstado(EstadoCita.EN_PROCESO, ficha);
+                    }
+                } else {
+                    citaService.cambiarEstado(EstadoCita.PENDIENTE, ficha);
                 }
             }
         }

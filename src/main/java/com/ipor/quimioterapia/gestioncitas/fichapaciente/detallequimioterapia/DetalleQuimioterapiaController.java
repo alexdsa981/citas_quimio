@@ -30,7 +30,7 @@ public class DetalleQuimioterapiaController {
 
         fichaPaciente.setDetalleQuimioterapia(detalleQuimioterapiaService.guardar(dto, fichaPaciente));
 
-        fichaPacienteService.guardar(fichaPaciente);
+        fichaPacienteService.save(fichaPaciente);
         Map<String, Object> response = new HashMap<>();
         response.put("mensaje", "Signos vitales guardados correctamente");
         return ResponseEntity.ok(response);

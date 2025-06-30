@@ -12,5 +12,5 @@ public class DuplicarCitaDTO {
     Long idFichaPaciente;
     LocalDate fecha;
     LocalTime HoraProgramada;
-
+    Long idMedico;
 }

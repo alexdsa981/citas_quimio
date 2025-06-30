@@ -97,10 +97,10 @@ function llenarTablaFichas(fichas) {
                 ${tdConColor(`${ficha.fechaCreacion || ""} ${ficha.horaCreacion?.split(":").slice(0, 2).join(":") || ""}`)}
                 ${tdConColor(cita.usuarioCreacion.username || "")}
                 ${tdConColor(cita.aseguradora || "")}
-                ${tdConColor(`<b>${paciente.tipoDocumentoNombre || ""}</b> : ${paciente.numDocIdentidad || ""}`)}
+                ${tdConColor(`<b>${(paciente.tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (paciente.tipoDocumentoNombre || "")}</b>: ${paciente.numDocIdentidad || ""}`)}
                 ${tdConColor(`${paciente.apellidoP || ""} ${paciente.apellidoM || ""}, ${paciente.nombre || ""}`)}
                 ${tdConColor(cita.fecha || "")}
-                ${tdConColor(formatearHora(cita.horaProgramada) || "")}
+                ${tdConColor(calcularRangoHora(cita.horaProgramada, atencion.horasProtocolo, atencion.minutosRestantesProtocolo))}
                 ${tdConColor(cubiculo.codigo || "")}
                 ${tdConColor(formatearHora(atencion.horaInicio) || "")}
                 ${tdConColor(formatearHora(atencion.horaFin) || "")}
@@ -121,6 +121,30 @@ function tdConColor(valor) {
     const esVacio = limpio === "" || limpio === "0 h 0 min";
     const clase = esVacio ? 'bg-light-danger' : '';
     return `<td class="${clase}">${limpio}</td>`;
+}
+
+
+function calcularRangoHora(horaInicio, horasDuracion, minutosDuracion) {
+    if (!horaInicio) return "";
+
+    const [h, m] = horaInicio.split(":").map(Number);
+    const inicio = new Date(0, 0, 0, h, m);
+
+    const pad = (num) => String(num).padStart(2, '0');
+    const inicioStr = `${pad(inicio.getHours())}:${pad(inicio.getMinutes())}`;
+
+    const duracionTotal = (horasDuracion || 0) * 60 + (minutosDuracion || 0);
+
+    // Si no hay duración, mostrar solo la hora programada
+    if (duracionTotal === 0) {
+        return inicioStr;
+    }
+
+    const fin = new Date(inicio);
+    fin.setMinutes(fin.getMinutes() + duracionTotal);
+    const finStr = `${pad(fin.getHours())}:${pad(fin.getMinutes())}`;
+
+    return `${inicioStr} - ${finStr}`;
 }
 
 
@@ -212,13 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 console.log('Datos ficha:', data);
 
-                document.getElementById('datosModificablesAtencionQuimioterapiaFicha').classList.add('form-disabled');
                 document.getElementById('datosModificablesFuncionesVitalesFicha').classList.add('form-disabled');
                 document.getElementById('datosModificablesDetalleQuimioterapiaFicha').classList.add('form-disabled');
-
-
-                document.getElementById('btnGuardarAtencionQuimioterapiaFicha').disabled = true;
-                document.getElementById('btnModificarAtencionQuimioterapiaFicha').disabled = false;
 
                 document.getElementById('btnGuardarDetalleQuimioterapiaFicha').disabled = true;
                 document.getElementById('btnModificarDetalleQuimioterapiaFicha').disabled = false;

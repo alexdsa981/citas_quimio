@@ -24,7 +24,7 @@ public class FichaPacienteService {
         fichaPacienteRepository.save(fichaPaciente);
         return fichaPaciente;
     }
-    public void guardar(FichaPaciente fichaPaciente){
+    public void save(FichaPaciente fichaPaciente){
         fichaPacienteRepository.save(fichaPaciente);
     }
 

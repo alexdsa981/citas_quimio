@@ -28,7 +28,7 @@ public class GlobalAdviceController {
         DateTimeFormatter dateInputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Para input type="date"
         model.addAttribute("horaActual", now.format(timeFormatter));
         model.addAttribute("fechaActual", now.format(dateFormatter));
-        model.addAttribute("fechaInputActual", now.format(dateInputFormatter)); // Este lo usas en el input
+        model.addAttribute("fechaInputActual", now.format(dateInputFormatter));
 
     }
 

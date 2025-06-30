@@ -64,7 +64,6 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
             const modal = bootstrap.Modal.getInstance(document.getElementById("modalAgendarCita"));
 
             // Limpiar formulario
-            fechaCitaInput.value = new Date().toISOString().split("T")[0];
             document.getElementById("horaProgramadaCita").value = "07:00";
             document.getElementById("idMedicoCita").selectedIndex = 0;
 

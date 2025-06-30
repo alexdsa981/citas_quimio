@@ -11,11 +11,29 @@ document.getElementById("inputBuscarNombrePaciente").addEventListener("input", f
         return;
     }
 
-    timeoutId = setTimeout(() => {
-        fetch(`/app/paciente/buscar?nombre=${encodeURIComponent(valor)}`)
-            .then(res => res.ok ? res.json() : [])
-            .then(data => mostrarResultadosPacientes(data));
-    }, 400);
+timeoutId = setTimeout(() => {
+    fetch(`/app/paciente/buscar?nombre=${encodeURIComponent(valor)}`)
+        .then(async res => {
+            if (!res.ok) {
+                return [];
+            }
+            try {
+                return await res.json();
+            } catch (e) {
+                console.warn("Respuesta sin JSON válido");
+                return [];
+            }
+        })
+        .then(data => mostrarResultadosPacientes(data))
+        .catch(err => {
+            console.error("Error al buscar pacientes:", err);
+            document.getElementById("resultadoPacientes").innerHTML = `
+                <div class="text-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Error al procesar la búsqueda.
+                </div>`;
+        });
+}, 400);
+
 });
 
 function buscarPacientePorDocumento() {

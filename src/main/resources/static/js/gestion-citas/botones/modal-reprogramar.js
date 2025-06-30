@@ -11,9 +11,7 @@ document.getElementById('btn-transferir').addEventListener('click', () => {
         return;
     }
 
-    fetch(`/app/cita/ficha/${idFichaSeleccionada}`, {
-        method: 'POST'
-    })
+    fetch(`/app/cita/ficha/${idFichaSeleccionada}`)
     .then(response => response.json())
     .then(data => {
         if (data.success) {
@@ -64,29 +62,28 @@ function guardarReprogramacion() {
     .then(async response => {
         const data = await response.json();
 
-        if (response.ok) {
+        if (response.ok && data.success) {
             Swal.fire({
                 icon: 'success',
-                title: 'Reprogramada',
+                title: 'Reprogramación exitosa',
                 text: data.message,
                 timer: 1500,
                 showConfirmButton: false
             });
 
-            // Refrescar tabla si aplica
             if (typeof refrescarTablaSegunFiltro === 'function') {
                 refrescarTablaSegunFiltro();
             }
 
-            // Cerrar modal
             if (modalReprogramarInstance) {
                 modalReprogramarInstance.hide();
             }
+
         } else {
             Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.message || 'No se pudo reprogramar la cita.',
+                icon: 'warning',
+                title: 'No fue posible reprogramar',
+                text: data.message || 'No se pudo completar la reprogramación de la cita.',
             });
         }
     })
@@ -94,8 +91,8 @@ function guardarReprogramacion() {
         console.error("Error al guardar:", error);
         Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'Ocurrió un error al reprogramar la cita.',
+            title: 'Error inesperado',
+            text: 'Se produjo un error al intentar reprogramar la cita. Por favor, intente nuevamente.'
         });
     });
 }

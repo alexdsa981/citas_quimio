@@ -1,26 +1,21 @@
 function llenarFormularioFichaAtencionQuimioterapia(objetoFicha) {
     const atencion = objetoFicha.atencionQuimioterapia || {};
 
-    // Enfermera
-    const enfermeraSelect = document.getElementById('enfermeraFicha');
-    enfermeraSelect.value = atencion.enfermera?.idPersona || "";
+    const mostrarTexto = (valor) => valor || "No asignado";
 
-    // Médico
-    const medicoSelect = document.getElementById('medicoFicha');
-    medicoSelect.value = atencion.medico?.idPersona || "";
+    document.getElementById('enfermeraFichaTexto').textContent = mostrarTexto(atencion.enfermera?.nombreCompleto);
+    document.getElementById('medicoFichaTexto').textContent = mostrarTexto(atencion.medico?.nombreCompleto);
+    document.getElementById('cubiculoFichaTexto').textContent = mostrarTexto(atencion.cubiculo?.codigo);
 
-    // Cubículo
-    const cubiculoSelect = document.getElementById('cubiculoSelectFicha');
-    cubiculoSelect.value = atencion.cubiculo?.id || "";
+    const totalMin = atencion.duracionMinutosProtocolo;
+    if (totalMin != null) {
+        const horas = Math.floor(totalMin / 60);
+        const minutos = totalMin % 60;
+        document.getElementById('duracionFichaTexto').textContent = `${horas} h ${minutos} min`;
+    } else {
+        document.getElementById('duracionFichaTexto').textContent = "No asignado";
+    }
 
-    // Duración del protocolo (minutos a hh:mm)
-    const totalMinutos = atencion.duracionMinutosProtocolo || 0;
-    document.getElementById('horasProtocoloFicha').value = Math.floor(totalMinutos / 60);
-    document.getElementById('minutosProtocoloFicha').value = totalMinutos % 60;
-
-    // Hora de inicio
-    document.getElementById('horaInicioProtocolo').value = atencion.horaInicio?.substring(0, 5) || "";
-
-    // Hora de fin
-    document.getElementById('horaFinProtocolo').value = atencion.horaFin?.substring(0, 5) || "";
+    document.getElementById('horaInicioFichaTexto').textContent = mostrarTexto(atencion.horaInicio?.substring(0, 5));
+    document.getElementById('horaFinFichaTexto').textContent = mostrarTexto(atencion.horaFin?.substring(0, 5));
 }

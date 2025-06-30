@@ -1,0 +1,49 @@
+<div th:fragment="modalDuplicarCita" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="modal fade" id="modalDuplicarSesion" tabindex="-1" aria-labelledby="tituloDuplicarSesion" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloDuplicarSesion">Duplicar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formDuplicarSesion">
+                        <div class="mb-3">
+                            <label class="form-label">Paciente</label>
+                            <input type="text" class="form-control" id="nombrePacienteDuplicar" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fechaDuplicada" class="form-label">Fecha de la nueva cita</label>
+                            <input type="date" class="form-control" id="fechaDuplicada" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="horaDuplicada" class="form-label">Hora programada</label>
+                            <input type="time" class="form-control" id="horaDuplicada" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="medicoFicha" class="form-label">Médico</label><span style="color:red;">*</span>
+                            <select id="medicoFicha" name="medico" class="form-select" required>
+                                <option value="">Seleccionar Médico</option>
+                                <!-- Este bloque se completa en el backend con Thymeleaf -->
+                                <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                                    <option th:value="${medico.idPersona}"
+                                            th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}">
+                                    </option>
+                                </th:block>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-confirmar-duplicar">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

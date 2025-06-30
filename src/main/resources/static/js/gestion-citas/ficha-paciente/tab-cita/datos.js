@@ -23,6 +23,9 @@ function llenarVisualFichaPaciente(objetoFicha) {
     document.getElementById('estadoCitaFicha').textContent = cita.estado || '';
     document.getElementById('medicoCitaFicha').textContent = medico ? `${medico.nombre || ''} ${medico.apellidoP || ''} ${medico.apellidoM || ''}` : '';
 
+    //Otros
+    document.getElementById('aseguradoraCitaFicha').textContent = cita.aseguradora || '';
+
 }
 
 // Si no tienes edad directa, puedes calcularla:

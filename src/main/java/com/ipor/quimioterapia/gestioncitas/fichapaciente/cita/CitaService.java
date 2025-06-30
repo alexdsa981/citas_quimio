@@ -41,6 +41,9 @@ public class CitaService {
         return cita;
     }
 
+    public void save(Cita cita){
+        citaRepository.save(cita);
+    }
     public List<Cita> getLista() {
         return citaRepository.findAll();
     }
@@ -61,17 +64,17 @@ public class CitaService {
         citaActual.setMedicoConsulta(medico);
         citaRepository.save(citaActual);
     }
-    public Cita duplicar (DuplicarCitaDTO duplicarCitaDTO, Cita citaActual){
+    public Cita duplicar (DuplicarCitaDTO duplicarCitaDTO, Cita citaActual, Medico medico){
         Cita citaNueva = new Cita();
         citaNueva.setAseguradora(citaActual.getAseguradora());
         citaNueva.setPaciente(citaActual.getPaciente());
         citaNueva.setEstado(EstadoCita.NO_ASIGNADO);
         citaNueva.setHoraProgramada(duplicarCitaDTO.getHoraProgramada());
         citaNueva.setFecha(duplicarCitaDTO.getFecha());
-        citaNueva.setMedicoConsulta(citaActual.getMedicoConsulta());
+        citaNueva.setMedicoConsulta(medico);
         citaNueva.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
         citaRepository.save(citaNueva);
-        return citaActual;
+        return citaNueva;
     }
 
 

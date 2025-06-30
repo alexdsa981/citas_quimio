@@ -26,17 +26,19 @@ public class CitaController {
 
 
 
-    @PostMapping("/ficha/{idFicha}")
+    @GetMapping("/ficha/{idFicha}")
     public ResponseEntity<?> obtenerCitaPorFicha(@PathVariable Long idFicha) {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
-            AtencionQuimioterapia atencion = fichaPaciente.getAtencionQuimioterapia();
             Cita cita = fichaPaciente.getCita();
+            Paciente paciente = cita.getPaciente();
+            String nombrePaciente = paciente.getApellidoP() + " " + paciente.getApellidoM() + ",  "+ paciente.getNombre();
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "fechaCita", cita.getFecha(),
                     "HoraCita", cita.getHoraProgramada(),
-                    "medicoId", cita.getMedicoConsulta().getIdPersona()
+                    "medicoId", cita.getMedicoConsulta().getIdPersona(),
+                    "nombrePaciente", nombrePaciente
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
