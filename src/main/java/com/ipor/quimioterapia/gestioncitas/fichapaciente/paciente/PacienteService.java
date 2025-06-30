@@ -26,6 +26,7 @@ public class PacienteService {
         paciente.setNombre(citaCreadaDTO.nombres);
         paciente.setApellidoP(citaCreadaDTO.apellidoPaterno);
         paciente.setApellidoM(citaCreadaDTO.apellidoMaterno);
+        paciente.setNombreCompleto(citaCreadaDTO.nombreCompleto);
         paciente.setTipoDocumentoNombre(citaCreadaDTO.tipoDocumento);
         paciente.setNumDocIdentidad(citaCreadaDTO.numeroDocumento);
         paciente.setFechaNacimiento(citaCreadaDTO.fechaNacimiento);

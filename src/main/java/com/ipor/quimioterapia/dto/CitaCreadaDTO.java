@@ -22,6 +22,7 @@ public class CitaCreadaDTO {
     public String apellidoPaterno;
     public String apellidoMaterno;
     public String nombres;
+    public String nombreCompleto;
 
     public String fechaNacimiento;
     public Integer edad;

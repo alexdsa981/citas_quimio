@@ -87,6 +87,7 @@ function seleccionarPacienteDesdeModal(paciente) {
     document.getElementById("apellidoPaternoCita").value = paciente.apellidoPaterno;
     document.getElementById("apellidoMaternoCita").value = paciente.apellidoMaterno;
     document.getElementById("nombresCita").value = paciente.nombres;
+    document.getElementById("nombreCompletoCita").value = paciente.nombreCompleto;
     document.getElementById("fechaNacimientoCita").value = paciente.fechaNacimiento;
     document.getElementById("edadCita").value = paciente.edad;
     document.getElementById("sexoCita").value = paciente.sexo;
@@ -96,6 +97,7 @@ function seleccionarPacienteDesdeModal(paciente) {
 
     // ✅ Habilita el botón de agendar
     document.getElementById("btnGuardarCita").disabled = false;
+    document.getElementById("checkCRP").disabled = false;
 
     // Cierra solo el modal de búsqueda
     const modal = bootstrap.Modal.getInstance(document.getElementById("modalBuscarPaciente"));

@@ -16,6 +16,7 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
         apellidoPaterno: document.getElementById("apellidoPaternoCita").value.trim(),
         apellidoMaterno: document.getElementById("apellidoMaternoCita").value.trim(),
         nombres: document.getElementById("nombresCita").value.trim(),
+        nombreCompleto: document.getElementById("nombreCompletoCita").value.trim(),
         fechaNacimiento: document.getElementById("fechaNacimientoCita").value.trim(),
         edad: parseInt(document.getElementById("edadCita").value),
         sexo: document.getElementById("sexoCita").value.trim(),
@@ -69,12 +70,15 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
 
             [
                 "idPaciente", "tipoDocumentoCita", "documentoCita", "apellidoPaternoCita",
-                "apellidoMaternoCita", "nombresCita", "fechaNacimientoCita",
-                "edadCita", "sexoCita", "celularCita", "telefonoCita", "pacienteSeleccionadoCita"
+                "apellidoMaternoCita", "nombresCita", "nombreCompletoCita", "fechaNacimientoCita",
+                "edadCita", "sexoCita", "celularCita", "telefonoCita", "pacienteSeleccionadoCita", "aseguradoraCita"
             ].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.value = "";
             });
+            const checkCRP = document.getElementById("checkCRP");
+            if (checkCRP) checkCRP.checked = false;
+            if (checkCRP) checkCRP.disabled = true;
 
             document.getElementById("btnGuardarCita").disabled = true;
 
@@ -94,3 +98,19 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
         });
     }
 });
+
+let valorOriginalAseguradora = "";
+
+function toggleCRP() {
+    const checkbox = document.getElementById("checkCRP");
+    const input = document.getElementById("aseguradoraCita");
+
+    if (checkbox.checked) {
+        // Guardamos el valor actual antes de cambiarlo
+        valorOriginalAseguradora = input.value;
+        input.value = "CLÍNICA RICARDO PALMA";
+    } else {
+        // Restauramos el valor original
+        input.value = valorOriginalAseguradora;
+    }
+}

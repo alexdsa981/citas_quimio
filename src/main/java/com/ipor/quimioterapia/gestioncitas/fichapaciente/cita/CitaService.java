@@ -32,6 +32,7 @@ public class CitaService {
         cita.setHoraProgramada(citaCreadaDTO.horaProgramada);
         cita.setEstado(EstadoCita.NO_ASIGNADO);
         cita.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
+
 //        cita.setNumPresupuesto(citaCreadaDTO.numeroPresupuesto);
 //        cita.setContratante(citaCreadaDTO.contratante);
         cita.setAseguradora(citaCreadaDTO.aseguradora);

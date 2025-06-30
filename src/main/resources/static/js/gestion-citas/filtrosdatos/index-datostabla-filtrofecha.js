@@ -98,7 +98,7 @@ function llenarTablaFichas(fichas) {
                 ${tdConColor(cita.usuarioCreacion.username || "")}
                 ${tdConColor(cita.aseguradora || "")}
                 ${tdConColor(`<b>${(paciente.tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (paciente.tipoDocumentoNombre || "")}</b>: ${paciente.numDocIdentidad || ""}`)}
-                ${tdConColor(`${paciente.apellidoP || ""} ${paciente.apellidoM || ""}, ${paciente.nombre || ""}`)}
+                ${tdConColor(`${paciente.nombreCompleto || ""}`)}
                 ${tdConColor(cita.fecha || "")}
                 ${tdConColor(calcularRangoHora(cita.horaProgramada, atencion.horasProtocolo, atencion.minutosRestantesProtocolo))}
                 ${tdConColor(cubiculo.codigo || "")}

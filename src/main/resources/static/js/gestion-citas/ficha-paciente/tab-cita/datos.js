@@ -6,7 +6,7 @@ function llenarVisualFichaPaciente(objetoFicha) {
     const medico = cita.medicoConsulta || {};
 
     // Paciente
-    document.getElementById('nombrePacienteFicha').textContent = `${paciente.nombre || ''} ${paciente.apellidoP || ''} ${paciente.apellidoM || ''}`;
+    document.getElementById('nombrePacienteFicha').textContent = `${paciente.nombreCompleto || ''}`;
     document.getElementById('tipoDocumentoPacienteFicha').textContent = paciente.tipoDocumentoNombre || '';
     document.getElementById('numeroDocumentoPacienteFicha').textContent = paciente.numDocIdentidad || '';
     document.getElementById('fechaNacimientoPacienteFicha').textContent = paciente.fechaNacimiento || '';

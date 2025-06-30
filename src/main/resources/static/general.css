@@ -40,7 +40,10 @@
 
 
 
-
+#checkCRP {
+    width: 1.5em;
+    height: 1.5em;
+}
 
 #modalCie .modal-content, #modalBuscarPaciente .modal-content{
     background-color: #e8f1fa; /* azul claro suave */
