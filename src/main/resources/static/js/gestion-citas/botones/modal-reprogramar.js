@@ -6,7 +6,7 @@ document.getElementById('btn-transferir').addEventListener('click', () => {
         Swal.fire({
             icon: 'warning',
             title: 'Ficha no seleccionada',
-            text: 'Selecciona una ficha antes de reprogramar.',
+            text: 'Por favor, selecciona una ficha antes de reprogramar.',
         });
         return;
     }

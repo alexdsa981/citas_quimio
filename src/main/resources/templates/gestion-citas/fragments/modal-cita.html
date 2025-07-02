@@ -23,11 +23,11 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Hora Programada</label><span style="color:red;">*</span>
-                                <input type="time" id="horaProgramadaCita" class="form-control" value="07:00"
-                                       autocomplete="off">
+                                <input type="time" id="horaProgramadaCita" class="form-control" value="07:00" autocomplete="off">
+
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Médico Consulta</label><span style="color:red;">*</span>
+                                <label class="form-label">Médico Tratante</label><span style="color:red;">*</span>
                                 <select class="form-select" name="idMedico" id="idMedicoCita">
                                     <th:block th:each="medico : ${Lista_Medicos_Activos}">
                                         <option th:value="${medico.idPersona}"

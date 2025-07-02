@@ -2,7 +2,7 @@ const modalDuplicar = new bootstrap.Modal(document.getElementById('modalDuplicar
 
 document.getElementById('btn-duplicar').addEventListener('click', () => {
     if (!idFichaSeleccionada) {
-        Swal.fire("Error", "No hay ficha seleccionada para duplicar", "error");
+        Swal.fire("Ficha no seleccionada", "Por favor, selecciona una ficha antes de duplicar.", "warning");
         return;
     }
 

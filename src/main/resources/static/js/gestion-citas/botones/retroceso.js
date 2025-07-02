@@ -5,7 +5,7 @@ document.addEventListener('click', function (e) {
     if (!idFichaSeleccionada) {
         Swal.fire({
             icon: 'warning',
-            title: '⚠️ Ficha no seleccionada',
+            title: 'Ficha no seleccionada',
             text: 'Por favor, seleccione una ficha antes de intentar retroceder el estado.',
             confirmButtonText: 'Entendido'
         });

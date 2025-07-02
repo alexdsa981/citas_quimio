@@ -23,3 +23,11 @@ function cambiarModoBusquedaPaciente() {
 
     document.getElementById("resultadoPacientes").innerHTML = `<div class="text-muted">Ingrese un término para buscar.</div>`;
 }
+
+
+ const inputHora = document.getElementById("horaProgramadaCita");
+
+ inputHora.addEventListener("click", function () {
+     this.showPicker?.(); // Solo funciona en algunos navegadores como Chrome
+ });
+

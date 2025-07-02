@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!idFichaSeleccionada) {
             Swal.fire({
                 icon: 'warning',
-                title: '⚠️ Selección requerida',
+                title: 'Selección requerida',
                 text: 'Por favor, selecciona una ficha antes de iniciar el protocolo.',
                 confirmButtonText: 'Entendido'
             });

@@ -14,6 +14,23 @@
   margin: 0.25rem;
 }
 /*INICIO*/
+
+.panel-botones-cita {
+    position: sticky;
+    top: 0 !important;
+    z-index: 1020;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+/*
+.bg-titulo-botones{
+    background-color: #e3f2fd;
+    margin-right:10px;
+    margin-left:30px;
+}
+*/
+
 .btn-clinico-verde {
     background-color: #78c2a4;
     color: #104c3c;
