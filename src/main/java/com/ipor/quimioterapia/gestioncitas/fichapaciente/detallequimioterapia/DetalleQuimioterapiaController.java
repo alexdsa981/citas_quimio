@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia;
 
 
-import com.ipor.quimioterapia.dto.DetalleQuimioterapiaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.DetalleQuimioterapiaDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;

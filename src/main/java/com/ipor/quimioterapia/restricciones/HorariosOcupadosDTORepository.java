@@ -14,10 +14,10 @@ public interface HorariosOcupadosDTORepository extends JpaRepository<FichaPacien
         fp.id AS idFichaPaciente,
         ci.fecha,
         ci.hora_programada,
-        DATEADD(MINUTE, aq.duracion_minutos_protocolo, ci.hora_programada) AS hora_fin_protocolo,
+        DATEADD(MINUTE, ci.duracion_minutos_protocolo, ci.hora_programada) AS hora_fin_protocolo,
         cu.codigo,
         cu.id AS idCubiculo,
-        aq.duracion_minutos_protocolo
+        ci.duracion_minutos_protocolo
     FROM ficha_paciente fp
     INNER JOIN cita ci ON ci.id = fp.id_cita
     INNER JOIN atencion_quimioterapia aq ON aq.id = fp.id_atencion_quimioterapia

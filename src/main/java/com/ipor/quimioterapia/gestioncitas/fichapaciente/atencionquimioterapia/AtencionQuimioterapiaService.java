@@ -4,7 +4,7 @@ import com.ipor.quimioterapia.recursos.personal.enfermera.Enfermera;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import com.ipor.quimioterapia.recursos.personal.medico.Medico;
 import com.ipor.quimioterapia.recursos.cubiculo.Cubiculo;
-import com.ipor.quimioterapia.dto.AtencionQuimioterapiaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.AtencionQuimioterapiaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,6 @@ public class AtencionQuimioterapiaService {
         atencion.setCubiculo(cubiculo);
         atencion.setHoraInicio(dto.getHoraInicio());
         atencion.setHoraFin(dto.getHoraFin());
-        atencion.setDuracionMinutosProtocolo(dto.getDuracionMinutos());
 
         // Guardamos (si es nuevo o modificado)
         atencionQuimioterapiaRepository.save(atencion);
@@ -70,7 +69,6 @@ public class AtencionQuimioterapiaService {
         atencionQuimioterapia.setMedico(null);
         atencionQuimioterapia.setEnfermera(null);
         atencionQuimioterapia.setCubiculo(null);
-        atencionQuimioterapia.setDuracionMinutosProtocolo(null);
         atencionQuimioterapiaRepository.save(atencionQuimioterapia);
     }
 

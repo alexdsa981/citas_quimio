@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.cie;
 
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
-import com.ipor.quimioterapia.dto.CieCrearDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.CieCrearDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.detallecie.DetalleCie;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.detallecie.DetalleCieRepository;
 import jakarta.transaction.Transactional;

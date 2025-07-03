@@ -32,25 +32,13 @@ public class AtencionQuimioterapia {
     private Medico medico;
 
 
-    //@Column(nullable = false)
-    private Integer duracionMinutosProtocolo;
+
 
     //@Column(nullable = false)
     private LocalTime horaInicio;
     //@Column(nullable = false)
     private LocalTime horaFin;
 
-    @Transient
-    public Integer getHorasProtocolo() {
-        if (duracionMinutosProtocolo == null) return 0;
-        return duracionMinutosProtocolo / 60;
-    }
-
-    @Transient
-    public Integer getMinutosRestantesProtocolo() {
-        if (duracionMinutosProtocolo == null) return 0;
-        return duracionMinutosProtocolo % 60;
-    }
 
 
 }

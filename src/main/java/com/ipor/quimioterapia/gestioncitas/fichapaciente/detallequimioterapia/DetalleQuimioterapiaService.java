@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia;
 
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
-import com.ipor.quimioterapia.dto.DetalleQuimioterapiaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.DetalleQuimioterapiaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +30,13 @@ public class DetalleQuimioterapiaService {
         detalleQuimioterapia.setTratamiento(dto.getTratamiento());
         detalleQuimioterapia.setObservaciones(dto.getObservaciones());
         detalleQuimioterapia.setExamenesAuxiliares(dto.getExamenesAuxiliares());
-        detalleQuimioterapia.setFechaModificacion(LocalDate.now());
-        detalleQuimioterapia.setHoraModificacion(LocalTime.now());
         detalleQuimioterapiaRepository.save(detalleQuimioterapia);
         return detalleQuimioterapia;
     }
 
-
+    public void save(DetalleQuimioterapia detalleQuimioterapia){
+        detalleQuimioterapiaRepository.save(detalleQuimioterapia);
+    }
     public List<DetalleQuimioterapia> getLista() {
         return detalleQuimioterapiaRepository.findAll();
     }

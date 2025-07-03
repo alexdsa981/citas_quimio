@@ -1,11 +1,13 @@
 package com.ipor.quimioterapia.gestioncitas.botones;
 
 import com.ipor.quimioterapia.core.websocket.WSNotificacionesService;
-import com.ipor.quimioterapia.dto.*;
+import com.ipor.quimioterapia.gestioncitas.dto.*;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapia;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.Cita;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.EstadoCita;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapia;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapiaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.PacienteService;
 import com.ipor.quimioterapia.recursos.cubiculo.Cubiculo;
@@ -55,6 +57,9 @@ public class GestionCitaController {
     @Autowired
     RolUsuarioRepository rolUsuarioRepository;
     @Autowired
+    DetalleQuimioterapiaService detalleQuimioterapiaService;
+
+    @Autowired
     WSNotificacionesService wsNotificacionesService;
 
     @PostMapping("/agendar")
@@ -64,8 +69,14 @@ public class GestionCitaController {
 
             Paciente paciente = pacienteService.crearOActualizar(citaCreadaDTO);
 
+            DetalleQuimioterapia detalleQuimioterapia = new DetalleQuimioterapia();
+            detalleQuimioterapia.setMedicinas(citaCreadaDTO.medicamentos);
+            detalleQuimioterapia.setObservaciones(citaCreadaDTO.observaciones);
+            detalleQuimioterapia.setTratamiento(citaCreadaDTO.tratamiento);
+            detalleQuimioterapiaService.save(detalleQuimioterapia);
+
             Cita cita = citaService.crear(citaCreadaDTO, medico, paciente);
-            FichaPaciente fichaPaciente = fichaPacienteService.crear(cita);
+            FichaPaciente fichaPaciente = fichaPacienteService.crear(cita, detalleQuimioterapia);
             fichaPacienteService.save(fichaPaciente);
 
             wsNotificacionesService.notificarActualizacionTabla();
@@ -258,8 +269,6 @@ public class GestionCitaController {
                 atencionQuimioterapia.setCubiculo(null);
                 atencionQuimioterapia.setEnfermera(null);
                 atencionQuimioterapia.setMedico(null);
-                atencionQuimioterapia.setDuracionMinutosProtocolo(null);
-
                 // Cambiar estado y guardar correctamente
                 citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
 
@@ -302,7 +311,7 @@ public class GestionCitaController {
                 ));
             } else {
                 Medico medico = medicoService.getPorID(dto.getIdMedico());
-                citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico);
+                citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos());
 
                 if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
                     atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
@@ -363,7 +372,14 @@ public class GestionCitaController {
             Cita citaActual = fichaActual.getCita();
             Medico medico = medicoService.getPorID(duplicarCitaDTO.getIdMedico());
             Cita citaNueva = citaService.duplicar(duplicarCitaDTO, citaActual, medico);
-            FichaPaciente fichaNueva = fichaPacienteService.crear(citaNueva);
+
+            DetalleQuimioterapia detalleQuimioterapia = new DetalleQuimioterapia();
+            detalleQuimioterapia.setMedicinas(duplicarCitaDTO.medicamentos);
+            detalleQuimioterapia.setObservaciones(duplicarCitaDTO.observaciones);
+            detalleQuimioterapia.setTratamiento(duplicarCitaDTO.tratamiento);
+            detalleQuimioterapiaService.save(detalleQuimioterapia);
+
+            FichaPaciente fichaNueva = fichaPacienteService.crear(citaNueva, detalleQuimioterapia);
             fichaPacienteService.save(fichaNueva);
 
             wsNotificacionesService.notificarActualizacionTabla();

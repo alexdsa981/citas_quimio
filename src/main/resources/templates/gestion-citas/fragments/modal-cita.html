@@ -109,12 +109,12 @@
                                     <label class="form-label">Teléfono</label>
                                     <input type="text" class="form-control bloqueable" id="telefonoCita" readonly>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <label class="form-label">Aseguradora</label>
                                     <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
                                 </div>
 
-                                <div class="col-md-6 d-flex align-items-center mt-5">
+                                <div class="col-md-1 d-flex align-items-center mt-5">
                                     <div class="form-check d-flex align-items-center" style="padding-left:0px !important;">
                                         <label class="form-check-label me-2" for="checkCRP" >
                                             CRP:
@@ -122,6 +122,49 @@
                                         <input class="form-check-input" type="checkbox" id="checkCRP" onclick="toggleCRP()" style="margin-left: 10px;" disabled="true">
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
+                                    <div class="input-group">
+                                        <select class="form-select " id="horasProtocoloCita" required disabled>
+                                            <option value="0">0 h</option>
+                                            <option value="1">1 h</option>
+                                            <option value="2">2 h</option>
+                                            <option value="3">3 h</option>
+                                            <option value="4">4 h</option>
+                                            <option value="5">5 h</option>
+                                            <option value="6">6 h</option>
+                                            <option value="7">7 h</option>
+                                            <option value="8">8 h</option>
+                                            <option value="9">9 h</option>
+                                            <option value="10">10 h</option>
+                                        </select>
+                                        <select class="form-select " id="minutosProtocoloCita" required disabled>
+                                            <option value="0">0 min</option>
+                                            <option value="15">15 min</option>
+                                            <option value="30">30 min</option>
+                                            <option value="45">45 min</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="medicinasCita" class="form-label">Medicamentos</label>
+                                    <textarea id="medicinasCita" class="form-control " rows="2" placeholder="" disabled></textarea>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="observacionesCita" class="form-label">Observaciones del médico tratante</label>
+                                    <textarea id="observacionesCita" class="form-control " rows="2" placeholder="" disabled></textarea>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="tratamientoCita" class="form-label">Tratamiento</label>
+                                    <textarea id="tratamientoCita" class="form-control " rows="2" placeholder="" disabled></textarea>
+                                </div>
+
+
+
 
                             </div>
                         </div>

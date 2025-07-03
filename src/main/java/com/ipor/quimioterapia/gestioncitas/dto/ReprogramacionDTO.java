@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.dto;
+package com.ipor.quimioterapia.gestioncitas.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,4 +12,5 @@ public class ReprogramacionDTO {
     private LocalDate fecha;
     private LocalTime hora;
     private Long idMedico;
+    private Integer duracionMinutos;
 }

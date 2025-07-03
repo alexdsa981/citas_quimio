@@ -1,4 +1,10 @@
 document.getElementById("btnGuardarCita").addEventListener("click", async function () {
+
+    const horas = parseInt(document.getElementById('horasProtocoloCita').value || 0);
+    const minutos = parseInt(document.getElementById('minutosProtocoloCita').value || 0);
+    const duracionTotal = horas * 60 + minutos;
+
+
     const fechaCitaInput = document.querySelector("input[type='date']");
     const fechaCita = fechaCitaInput ? fechaCitaInput.value : "";
 
@@ -22,7 +28,18 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
         sexo: document.getElementById("sexoCita").value.trim(),
         celular: document.getElementById("celularCita").value.trim() || "No asignado",
         telefono: document.getElementById("telefonoCita").value.trim() || "No asignado",
-        aseguradora: document.getElementById("aseguradoraCita").value.trim()
+        aseguradora: document.getElementById("aseguradoraCita").value.trim(),
+
+        duracionMinutos: duracionTotal,
+
+        medicamentos: document.getElementById("medicinasCita").value.trim(),
+
+        observaciones: document.getElementById("observacionesCita").value.trim(),
+
+        tratamiento: document.getElementById("tratamientoCita").value.trim(),
+
+
+
     };
 
     // Validación
@@ -32,6 +49,16 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
             title: 'Campos obligatorios faltantes',
             text: 'Debes ingresar fecha, hora y médico para la cita.'
         });
+    }
+
+
+    if (duracionTotal <= 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Duración no válida',
+            text: 'Por favor, indique una duración válida para el protocolo.'
+        });
+        return;
     }
 
     if (isNaN(dto.idPaciente)) {
@@ -76,6 +103,31 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
                 const el = document.getElementById(id);
                 if (el) el.value = "";
             });
+
+            // Selects de duración
+            const horas = document.getElementById("horasProtocoloCita");
+            const minutos = document.getElementById("minutosProtocoloCita");
+
+            horas.value = "0";
+            horas.disabled = true;
+
+            minutos.value = "0";
+            minutos.disabled = true;
+
+            // Textareas de detalle quimioterapia
+            const medicinas = document.getElementById("medicinasCita");
+            const tratamiento = document.getElementById("tratamientoCita");
+            const observaciones = document.getElementById("observacionesCita");
+
+            medicinas.value = "";
+            medicinas.disabled = true;
+
+            tratamiento.value = "";
+            tratamiento.disabled = true;
+
+            observaciones.value = "";
+            observaciones.disabled = true;
+
             const checkCRP = document.getElementById("checkCRP");
             if (checkCRP) checkCRP.checked = false;
             if (checkCRP) checkCRP.disabled = true;

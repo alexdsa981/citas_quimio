@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente;
 
-import com.ipor.quimioterapia.dto.CitaCreadaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.CitaCreadaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

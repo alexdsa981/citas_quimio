@@ -50,4 +50,22 @@ public class Cita {
     @JoinColumn(name = "id_medico")
     private Medico medicoConsulta;
 
+
+
+
+    //@Column(nullable = false)
+    private Integer duracionMinutosProtocolo;
+    @Transient
+    public Integer getHorasProtocolo() {
+        if (duracionMinutosProtocolo == null) return 0;
+        return duracionMinutosProtocolo / 60;
+    }
+
+    @Transient
+    public Integer getMinutosRestantesProtocolo() {
+        if (duracionMinutosProtocolo == null) return 0;
+        return duracionMinutosProtocolo % 60;
+    }
+
+
 }

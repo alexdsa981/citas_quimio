@@ -32,7 +32,7 @@ public class RestriccionService {
 
         Cubiculo cubiculoActual = atencionActual.getCubiculo();
         LocalTime horaInicioActual = citaActual.getHoraProgramada();
-        LocalTime horaFinPrevista = horaInicioActual.plusMinutes(atencionActual.getDuracionMinutosProtocolo());
+        LocalTime horaFinPrevista = horaInicioActual.plusMinutes(citaActual.getDuracionMinutosProtocolo());
 
         List<HorarioOcupadoDTO> listaHorarios = horariosOcupadosDTORepository.buscarHorarioPorFecha(fechaProtocolo);
 
@@ -126,7 +126,7 @@ public class RestriccionService {
 
         Cubiculo cubiculoActual = atencionActual.getCubiculo();
         LocalTime horaInicioActual = citaActual.getHoraProgramada();
-        LocalTime horaFinPrevista = horaInicioActual.plusMinutes(atencionActual.getDuracionMinutosProtocolo());
+        LocalTime horaFinPrevista = horaInicioActual.plusMinutes(citaActual.getDuracionMinutosProtocolo());
 
         List<HorarioOcupadoDTO> listaHorarios = horariosOcupadosDTORepository.buscarHorarioPorFecha(fechaProtocolo);
 

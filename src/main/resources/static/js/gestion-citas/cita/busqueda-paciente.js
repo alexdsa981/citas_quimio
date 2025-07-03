@@ -98,6 +98,11 @@ function seleccionarPacienteDesdeModal(paciente) {
     // ✅ Habilita el botón de agendar
     document.getElementById("btnGuardarCita").disabled = false;
     document.getElementById("checkCRP").disabled = false;
+    document.getElementById("horasProtocoloCita").disabled = false;
+    document.getElementById("minutosProtocoloCita").disabled = false;
+    document.getElementById("medicinasCita").disabled = false;
+    document.getElementById("tratamientoCita").disabled = false;
+    document.getElementById("observacionesCita").disabled = false;
 
     // Cierra solo el modal de búsqueda
     const modal = bootstrap.Modal.getInstance(document.getElementById("modalBuscarPaciente"));

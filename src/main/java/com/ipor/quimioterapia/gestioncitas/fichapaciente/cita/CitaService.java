@@ -1,8 +1,8 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.cita;
 
-import com.ipor.quimioterapia.dto.DuplicarCitaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.DuplicarCitaDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.*;
-import com.ipor.quimioterapia.dto.CitaCreadaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.CitaCreadaDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.PacienteService;
 import com.ipor.quimioterapia.recursos.personal.medico.Medico;
@@ -33,10 +33,9 @@ public class CitaService {
         cita.setEstado(EstadoCita.NO_ASIGNADO);
         cita.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
 
-//        cita.setNumPresupuesto(citaCreadaDTO.numeroPresupuesto);
-//        cita.setContratante(citaCreadaDTO.contratante);
+        cita.setDuracionMinutosProtocolo(citaCreadaDTO.duracionMinutos);
+
         cita.setAseguradora(citaCreadaDTO.aseguradora);
-//        cita.setTipoPaciente(citaCreadaDTO.tipoPaciente);
         cita.setPaciente(paciente);
         citaRepository.save(cita);
         return cita;
@@ -59,9 +58,10 @@ public class CitaService {
         cita.setEstado(estadoCita);
         citaRepository.save(cita);
     }
-    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion, Medico medico) {
+    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion, Medico medico, Integer duracionEnMinutos) {
         citaActual.setFecha(fechaReprogramacion);
         citaActual.setHoraProgramada(horaReprogramacion);
+        citaActual.setDuracionMinutosProtocolo(duracionEnMinutos);
         citaActual.setMedicoConsulta(medico);
         citaRepository.save(citaActual);
     }
@@ -73,6 +73,7 @@ public class CitaService {
         citaNueva.setHoraProgramada(duplicarCitaDTO.getHoraProgramada());
         citaNueva.setFecha(duplicarCitaDTO.getFecha());
         citaNueva.setMedicoConsulta(medico);
+        citaNueva.setDuracionMinutosProtocolo(citaActual.getDuracionMinutosProtocolo());
         citaNueva.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
         citaRepository.save(citaNueva);
         return citaNueva;

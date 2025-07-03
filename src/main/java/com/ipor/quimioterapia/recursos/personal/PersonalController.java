@@ -3,7 +3,7 @@ package com.ipor.quimioterapia.recursos.personal;
 
 import com.ipor.quimioterapia.recursos.personal.enfermera.Enfermera;
 import com.ipor.quimioterapia.recursos.personal.medico.Medico;
-import com.ipor.quimioterapia.dto.EmpleadoCrearDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.EmpleadoCrearDTO;
 import com.ipor.quimioterapia.recursos.personal.enfermera.EnfermeraService;
 import com.ipor.quimioterapia.recursos.personal.medico.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;

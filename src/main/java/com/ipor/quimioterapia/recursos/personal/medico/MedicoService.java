@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.recursos.personal.medico;
 
-import com.ipor.quimioterapia.dto.EmpleadoCrearDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.EmpleadoCrearDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

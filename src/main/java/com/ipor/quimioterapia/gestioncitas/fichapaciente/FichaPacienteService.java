@@ -1,6 +1,8 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente;
 
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.Cita;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapia;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,12 @@ public class FichaPacienteService {
     FichaPacienteRepository fichaPacienteRepository;
 
 
-    public FichaPaciente crear(Cita cita) {
+    public FichaPaciente crear(Cita cita, DetalleQuimioterapia detalleQuimioterapia) {
         FichaPaciente fichaPaciente = new FichaPaciente();
         fichaPaciente.setFechaCreacion(LocalDate.now());
         fichaPaciente.setHoraCreacion(LocalTime.now());
         fichaPaciente.setCita(cita);
+        fichaPaciente.setDetalleQuimioterapia(detalleQuimioterapia);
         fichaPaciente.setIsActive(Boolean.TRUE);
         fichaPacienteRepository.save(fichaPaciente);
         return fichaPaciente;

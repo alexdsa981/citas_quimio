@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.dto;
+package com.ipor.quimioterapia.gestioncitas.dto;
 
 import lombok.Getter;
 import lombok.Setter;

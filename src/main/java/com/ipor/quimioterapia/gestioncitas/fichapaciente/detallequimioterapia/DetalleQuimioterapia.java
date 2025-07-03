@@ -20,9 +20,6 @@ public class DetalleQuimioterapia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate fechaModificacion;
-    private LocalTime horaModificacion;
-
     private String medicinas;
     private String observaciones;
     private String anamnesis;

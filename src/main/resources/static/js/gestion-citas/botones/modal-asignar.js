@@ -25,19 +25,12 @@ document.getElementById('btn-asignar').addEventListener('click', () => {
             document.getElementById('modalMedico').value = data.medicoId ?? '';
             document.getElementById('modalCubiculo').value = data.cubiculoId ?? '';
 
-            const duracion = data.duracion ?? 0;
-            const horas = Math.floor(duracion / 60);
-            const minutos = duracion % 60;
-
-            document.getElementById('modalHorasProtocolo').value = horas;
-            document.getElementById('modalMinutosProtocolo').value = minutos;
         } else {
             // Si no hay datos, limpiar los campos
             document.getElementById('modalEnfermera').value = '';
             document.getElementById('modalMedico').value = '';
             document.getElementById('modalCubiculo').value = '';
-            document.getElementById('modalHorasProtocolo').value = 0;
-            document.getElementById('modalMinutosProtocolo').value = 0;
+
         }
 
 
@@ -53,25 +46,14 @@ document.getElementById('btn-asignar').addEventListener('click', () => {
 });
 
 function guardarAsignacion() {
-    const horas = parseInt(document.getElementById('modalHorasProtocolo').value || 0);
-    const minutos = parseInt(document.getElementById('modalMinutosProtocolo').value || 0);
-    const duracionTotal = horas * 60 + minutos;
 
-    if (duracionTotal <= 0) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Duración no válida',
-            text: 'Por favor, indique una duración válida para el protocolo.'
-        });
-        return;
-    }
+
 
     const dto = {
         idFicha: idFichaSeleccionada,
         idEnfermera: document.getElementById('modalEnfermera').value,
         idMedico: document.getElementById('modalMedico').value,
         idCubiculo: document.getElementById('modalCubiculo').value,
-        duracionMinutos: duracionTotal
     };
 
     fetch('/app/gestion-citas/boton/asignar', {

@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.funcionesvitales;
 
 
-import com.ipor.quimioterapia.dto.FuncionesVitalesDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.FuncionesVitalesDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import org.springframework.beans.factory.annotation.Autowired;

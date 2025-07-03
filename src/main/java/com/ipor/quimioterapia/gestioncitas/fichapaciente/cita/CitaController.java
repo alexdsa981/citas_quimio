@@ -1,16 +1,8 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.cita;
 
-import com.ipor.quimioterapia.dto.CitaCreadaDTO;
-import com.ipor.quimioterapia.dto.ReprogramacionDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
-import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapia;
-import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapiaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
-import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.PacienteService;
-import com.ipor.quimioterapia.recursos.personal.medico.Medico;
-import com.ipor.quimioterapia.recursos.personal.medico.MedicoService;
-import com.ipor.quimioterapia.restricciones.RestriccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +24,13 @@ public class CitaController {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
             Cita cita = fichaPaciente.getCita();
             Paciente paciente = cita.getPaciente();
-            String nombrePaciente = paciente.getApellidoP() + " " + paciente.getApellidoM() + ",  "+ paciente.getNombre();
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "fechaCita", cita.getFecha(),
                     "HoraCita", cita.getHoraProgramada(),
                     "medicoId", cita.getMedicoConsulta().getIdPersona(),
-                    "nombrePaciente", nombrePaciente
+                    "nombrePaciente", paciente.getNombreCompleto(),
+                    "duracion", cita.getDuracionMinutosProtocolo() != null ? cita.getDuracionMinutosProtocolo() : 0
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

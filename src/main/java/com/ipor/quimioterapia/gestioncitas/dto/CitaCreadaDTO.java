@@ -1,7 +1,8 @@
-package com.ipor.quimioterapia.dto;
+package com.ipor.quimioterapia.gestioncitas.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 
 public class CitaCreadaDTO {
     //DATOS CITA
@@ -12,6 +13,12 @@ public class CitaCreadaDTO {
     public String aseguradora;
     public String contratante;
     public Long numeroPresupuesto;
+    public Integer duracionMinutos;
+
+    //DATOS DETALLE QUIMIO
+    public String medicamentos;
+    public String observaciones;
+    public String tratamiento;
 
 
     //DATOS PACIENTE

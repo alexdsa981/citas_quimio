@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.dto;
+package com.ipor.quimioterapia.gestioncitas.dto;
 
 import lombok.Getter;
 
@@ -9,7 +9,6 @@ public class AtencionQuimioterapiaDTO {
     private Long idEnfermera;
     private Long idMedico;
     private Long idCubiculo;
-    private Integer duracionMinutos;
     private LocalTime horaInicio;
     private LocalTime horaFin;
     private Long idFicha;

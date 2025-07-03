@@ -100,7 +100,7 @@ function llenarTablaFichas(fichas) {
                 ${tdConColor(`<b>${(paciente.tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (paciente.tipoDocumentoNombre || "")}</b>: ${paciente.numDocIdentidad || ""}`)}
                 ${tdConColor(`${paciente.nombreCompleto || ""}`)}
                 ${tdConColor(cita.fecha || "")}
-                ${tdConColor(calcularRangoHora(cita.horaProgramada, atencion.horasProtocolo, atencion.minutosRestantesProtocolo))}
+                ${tdConColor(calcularRangoHora(cita.horaProgramada, cita.horasProtocolo, cita.minutosRestantesProtocolo))}
                 ${tdConColor(cubiculo.codigo || "")}
                 ${tdConColor(formatearHora(atencion.horaInicio) || "")}
                 ${tdConColor(formatearHora(atencion.horaFin) || "")}

@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico;
 
-import com.ipor.quimioterapia.dto.CieCrearDTO;
-import com.ipor.quimioterapia.dto.CieGuardarListaDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.CieCrearDTO;
+import com.ipor.quimioterapia.gestioncitas.dto.CieGuardarListaDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.cie.CieService;
