@@ -91,9 +91,10 @@
                                             <i class="bi bi-calendar-check-fill me-2"></i>Datos de la Cita
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Fecha Programada:</strong> <span id="fechaCitaFicha"></span> | <span id="horaCitaFicha"></span></p>
-                                            <p><strong>Estado:</strong> <span id="estadoCitaFicha"></span></p>
+                                            <p><strong>Registrado Por:</strong> <span id="usuarioRegistroCita"></span> | <span id="fechaRegistroCita"></span></p>
+                                            <p><strong>Fecha Programada:</strong> <span id="fechaCitaFicha"></span> | <span id="horaCitaFicha"></span> - <span id="horaCitaFinFicha"></span> </p>
                                             <p><strong>Médico:</strong> <span id="medicoCitaFicha"></span></p>
+                                            <p><strong>Estado:</strong> <span id="estadoCitaFicha"></span></p>
                                         </div>
                                     </div>
 
@@ -106,7 +107,6 @@
                                             <p><strong>Enfermera:</strong> <span id="enfermeraFichaTexto"></span></p>
                                             <p><strong>Médico:</strong> <span id="medicoFichaTexto"></span></p>
                                             <p><strong>Cubículo:</strong> <span id="cubiculoFichaTexto"></span></p>
-                                            <p><strong>Duración del Protocolo:</strong> <span id="duracionFichaTexto"></span></p>
                                             <p><strong>Hora Inicio:</strong> <span id="horaInicioFichaTexto"></span></p>
                                             <p><strong>Hora Fin:</strong> <span id="horaFinFichaTexto"></span></p>
                                         </div>
@@ -205,48 +205,30 @@
                                     <div class="col-md-6">
                                         <label for="medicinasFicha" class="form-label">Medicinas</label>
                                         <textarea id="medicinasFicha" name="medicinas" class="form-control" rows="2"
-                                                  placeholder="Ej. Doxorrubicina 50mg, Ciclofosfamida 500mg..."></textarea>
+                                                  placeholder=""></textarea>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="observacionesFicha" class="form-label">Observaciones</label>
                                         <textarea id="observacionesFicha" name="observaciones" class="form-control" rows="2"
-                                                  placeholder="Observaciones generales del paciente o sesión..."></textarea>
+                                                  placeholder=""></textarea>
                                     </div>
 
-                                    <!-- Anamnesis -->
-                                    <div class="col-md-6">
-                                        <label for="anamnesisFicha" class="form-label">Anamnesis</label>
-                                        <textarea id="anamnesisFicha" name="anamnesis" class="form-control" rows="3"
-                                                  placeholder="Descripción subjetiva del paciente sobre sus síntomas, antecedentes, etc."></textarea>
-                                    </div>
-
-                                    <!-- Examen Físico -->
-                                    <div class="col-md-6">
-                                        <label for="examenFisicoFicha" class="form-label">Examen Físico</label>
-                                        <textarea id="examenFisicoFicha" name="examenFisico" class="form-control" rows="3"
-                                                  placeholder="Ej. Estado general, peso, signos vitales, hallazgos..."></textarea>
-                                    </div>
 
                                     <!-- Exámenes Auxiliares -->
                                     <div class="col-md-6">
                                         <label for="examenesAuxiliaresFicha" class="form-label">Exámenes Auxiliares</label>
                                         <textarea id="examenesAuxiliaresFicha" name="examenesAuxiliares" class="form-control" rows="2"
-                                                  placeholder="Resultados relevantes de laboratorio o imágenes..."></textarea>
+                                                  placeholder=""></textarea>
                                     </div>
 
                                     <!-- Tratamiento -->
                                     <div class="col-md-6">
                                         <label for="tratamientoFicha" class="form-label">Tratamiento</label>
                                         <textarea id="tratamientoFicha" name="tratamiento" class="form-control" rows="2"
-                                                  placeholder="Intervenciones realizadas durante la sesión..."></textarea>
+                                                  placeholder=""></textarea>
                                     </div>
 
-                                    <!-- Evolución -->
-                                    <div class="col-md-12">
-                                        <label for="evolucionFicha" class="form-label">Evolución</label>
-                                        <textarea id="evolucionFicha" name="evolucion" class="form-control" rows="4"
-                                                  placeholder="Narrativa sobre el progreso, complicaciones o respuesta al tratamiento..."></textarea>
-                                    </div>
+
                                 </div>
 
                                 <div class="card-footer bg-white border-top mt-3 d-flex justify-content-end gap-2">
@@ -288,6 +270,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="mensajeFechaCie" class="text-muted mb-2 d-none"></div>
+
 
                                     <!-- Lista de CIE10 -->
                                     <div class="col-md-12">

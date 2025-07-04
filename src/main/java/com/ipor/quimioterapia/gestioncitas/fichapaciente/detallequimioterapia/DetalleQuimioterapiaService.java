@@ -23,10 +23,7 @@ public class DetalleQuimioterapiaService {
         }else{
             detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
         }
-        detalleQuimioterapia.setAnamnesis(dto.getAnamnesis());
-        detalleQuimioterapia.setEvolucion(dto.getEvolucion());
         detalleQuimioterapia.setMedicinas(dto.getMedicinas());
-        detalleQuimioterapia.setExamenFisico(dto.getExamenFisico());
         detalleQuimioterapia.setTratamiento(dto.getTratamiento());
         detalleQuimioterapia.setObservaciones(dto.getObservaciones());
         detalleQuimioterapia.setExamenesAuxiliares(dto.getExamenesAuxiliares());

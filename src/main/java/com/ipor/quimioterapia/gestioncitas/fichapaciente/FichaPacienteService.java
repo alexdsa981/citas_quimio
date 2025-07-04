@@ -47,6 +47,11 @@ public class FichaPacienteService {
         return fichaPacienteRepository.findById(id).get();
     }
 
+    public List<FichaPaciente> findByPacienteOrderByFechaDesc(Long pacienteId, Long excluirFichaId) {
+        return fichaPacienteRepository
+                .findByCitaPacienteIdAndIdNotOrderByCitaFechaDesc(pacienteId, excluirFichaId);
+    }
+
 
 }
 

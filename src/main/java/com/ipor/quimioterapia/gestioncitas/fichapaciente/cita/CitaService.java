@@ -58,9 +58,10 @@ public class CitaService {
         cita.setEstado(estadoCita);
         citaRepository.save(cita);
     }
-    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion, Medico medico, Integer duracionEnMinutos) {
+    public void reprogramar(Cita citaActual, LocalDate fechaReprogramacion, LocalTime horaReprogramacion, Medico medico, Integer duracionEnMinutos, String aseguradora) {
         citaActual.setFecha(fechaReprogramacion);
         citaActual.setHoraProgramada(horaReprogramacion);
+        citaActual.setAseguradora(aseguradora);
         citaActual.setDuracionMinutosProtocolo(duracionEnMinutos);
         citaActual.setMedicoConsulta(medico);
         citaRepository.save(citaActual);
@@ -71,6 +72,9 @@ public class CitaService {
         citaNueva.setPaciente(citaActual.getPaciente());
         citaNueva.setEstado(EstadoCita.NO_ASIGNADO);
         citaNueva.setHoraProgramada(duplicarCitaDTO.getHoraProgramada());
+
+        citaNueva.setAseguradora(citaActual.getAseguradora());
+
         citaNueva.setFecha(duplicarCitaDTO.getFecha());
         citaNueva.setMedicoConsulta(medico);
         citaNueva.setDuracionMinutosProtocolo(citaActual.getDuracionMinutosProtocolo());

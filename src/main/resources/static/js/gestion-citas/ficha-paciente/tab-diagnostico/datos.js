@@ -1,32 +1,16 @@
 function llenarDetalleCieDesdeFicha(data) {
-    const lista = document.getElementById("lista-cie-seleccionados");
-    lista.innerHTML = "";
+    if (!data?.id) return;
 
-    const detalleCies = data.detalleCies || [];
-
-    // Mostrar u ocultar mensaje informativo
-    document.getElementById("mensajeCieNoDiagnostico").style.display = detalleCies.length > 0 ? "none" : "block";
-
-    detalleCies.forEach(detalle => {
-        const cie = detalle.cie;
-        const id = cie.id;
-        const codigo = cie.codigo;
-        const nombre = cie.descripcion;
-
-        const item = document.createElement("li");
-        item.className = "list-group-item d-flex justify-content-between align-items-center";
-
-        item.innerHTML = `
-            <div>${codigo} - ${nombre}</div>
-            <div class="acciones-cie" style="display: none;">
-                <button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()">Quitar</button>
-            </div>
-            <input type="hidden" name="cieSeleccionados[]" value="${codigo}">
-            <input type="hidden" name="cieIds[]" value="${id}">
-        `;
-
-        lista.appendChild(item);
-    });
+    fetch(`/app/diagnostico/cie/lista/${data.id}`)
+        .then(res => {
+            if (!res.ok) throw new Error("No se pudo obtener diagnósticos");
+            return res.json();
+        })
+        .then(info => renderizarDetalleCie(info))
+        .catch(err => {
+            console.error("Error al obtener los CIE10:", err);
+            document.getElementById("mensajeCieNoDiagnostico").style.display = "block";
+        });
 }
 
 function habilitarModificacionCieFicha() {
@@ -34,9 +18,10 @@ function habilitarModificacionCieFicha() {
     document.getElementById("btnBuscarCie").disabled = false;
     document.getElementById("btnGuardarCie").disabled = false;
 
-    // Mostrar los botones de quitar
-    const acciones = document.querySelectorAll("#lista-cie-seleccionados .acciones-cie");
-    acciones.forEach(div => div.style.display = "block");
+    // Re-renderiza con modo edición activo
+    fetch(`/app/diagnostico/cie/lista/${idFichaSeleccionada}`)
+        .then(res => res.json())
+        .then(data => renderizarDetalleCie(data, true));
 }
 
 function deshabilitarModificacionCieFicha() {
@@ -47,4 +32,47 @@ function deshabilitarModificacionCieFicha() {
     // Ocultar los botones de quitar nuevamente
     const acciones = document.querySelectorAll("#lista-cie-seleccionados .acciones-cie");
     acciones.forEach(div => div.style.display = "none");
+}
+
+function renderizarDetalleCie(info, modoEdicion = false) {
+    const lista = document.getElementById("lista-cie-seleccionados");
+    const mensajeFecha = document.getElementById("mensajeFechaCie");
+    lista.innerHTML = "";
+    mensajeFecha.textContent = "";
+
+    const detalleCies = info.detalleCies || [];
+
+    document.getElementById("mensajeCieNoDiagnostico").style.display =
+        detalleCies.length > 0 ? "none" : "block";
+
+    detalleCies.forEach(detalle => {
+        const id = detalle.cieId;
+        const codigo = detalle.codigo;
+        const nombre = detalle.descripcion;
+
+        const item = document.createElement("li");
+        item.className = "list-group-item d-flex justify-content-between align-items-center";
+
+        item.innerHTML = `
+            <div>${codigo} - ${nombre}</div>
+            <div class="acciones-cie" style="display: ${modoEdicion ? 'block' : 'none'};">
+                <button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()">Quitar</button>
+            </div>
+            <input type="hidden" name="cieSeleccionados[]" value="${codigo}">
+            <input type="hidden" name="cieIds[]" value="${id}">
+        `;
+
+        lista.appendChild(item);
+    });
+
+    if (info.fechaReferencia) {
+        const fecha = new Date(info.fechaReferencia);
+        const fechaTexto = fecha.toLocaleDateString('es-PE', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        mensajeFecha.textContent = `Diagnósticos referenciados (última ficha con datos: ${fechaTexto})`;
+        mensajeFecha.classList.remove("d-none");
+    }
 }

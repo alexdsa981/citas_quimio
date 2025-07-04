@@ -22,9 +22,7 @@ public class DetalleQuimioterapia {
 
     private String medicinas;
     private String observaciones;
-    private String anamnesis;
-    private String examenFisico;
     private String examenesAuxiliares;
     private String tratamiento;
-    private String evolucion;
+
 }

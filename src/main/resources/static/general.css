@@ -143,3 +143,6 @@ tr.no-click {
 .cursor-pointer {
     cursor: pointer;
 }
+.textarea-vacio {
+    background-color: #ffe5e5 !important;
+}

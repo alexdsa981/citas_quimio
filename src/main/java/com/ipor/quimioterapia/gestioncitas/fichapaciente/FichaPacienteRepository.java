@@ -13,4 +13,13 @@ public interface FichaPacienteRepository extends JpaRepository<FichaPaciente, Lo
 
     @Query("SELECT f FROM FichaPaciente f WHERE f.cita.fecha BETWEEN :desde AND :hasta ORDER BY f.cita.fecha ASC, f.cita.horaProgramada ASC")
     List<FichaPaciente> buscarFichasEntreFechas(@Param("desde") LocalDate desde, @Param("hasta") LocalDate hasta);
+
+    @Query("""
+    SELECT f FROM FichaPaciente f
+    WHERE f.cita.paciente.id = :pacienteId
+      AND f.id <> :excluirId
+    ORDER BY f.cita.fecha DESC
+    """)
+    List<FichaPaciente> findByCitaPacienteIdAndIdNotOrderByCitaFechaDesc(Long pacienteId, Long excluirId);
+
 }

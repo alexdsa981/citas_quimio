@@ -28,6 +28,12 @@ function cambiarModoBusquedaPaciente() {
  const inputHora = document.getElementById("horaProgramadaCita");
 
  inputHora.addEventListener("click", function () {
-     this.showPicker?.(); // Solo funciona en algunos navegadores como Chrome
+     this.showPicker?.();
+ });
+
+ const inputFecha = document.getElementById("fechaProgramadaCita");
+
+ inputFecha.addEventListener("click", function () {
+     this.showPicker?.();
  });
 

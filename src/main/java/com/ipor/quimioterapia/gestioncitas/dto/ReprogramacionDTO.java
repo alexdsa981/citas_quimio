@@ -13,4 +13,14 @@ public class ReprogramacionDTO {
     private LocalTime hora;
     private Long idMedico;
     private Integer duracionMinutos;
+
+    private String aseguradora;
+
+    //DATOS DETALLE QUIMIO
+    public String medicamentos;
+    public String observaciones;
+    public String tratamiento;
+
+
+
 }

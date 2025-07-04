@@ -7,6 +7,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="hiddenTipoDoc">
+                    <input type="hidden" id="hiddenNumDoc">
                     <div class="mb-3">
                         <label for="modalFechaCita" class="form-label">Fecha de la Cita</label>
                         <input type="date" class="form-control" id="modalFechaCita">
@@ -16,7 +18,7 @@
                         <input type="time" class="form-control" id="modalHoraCita">
                     </div>
                     <div class="mb-3">
-                        <label for="modalMedicoCita" class="form-label">Médico Consulta</label>
+                        <label for="modalMedicoCita" class="form-label">Médico Tratante</label>
                         <select id="modalMedicoCita" name="medico" class="form-select"
                                 required>
                             <th:block th:each="medico : ${Lista_Medicos_Activos}">
@@ -25,6 +27,65 @@
                             </th:block>
                         </select>
 
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-end gap-4">
+                        <!-- Campo Aseguradora -->
+                        <div class="flex-grow-1">
+                            <label class="form-label">Aseguradora</label>
+                            <input type="text" class="form-control bloqueable" id="reprogramarAseguradoraCita" readonly>
+                        </div>
+
+                        <!-- Checkbox CRP -->
+                        <div class="d-flex align-items-center" style="margin-bottom: 6px;">
+                            <label class="form-check-label me-2" for="reprogramarCheckCRP">CRP:</label>
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="reprogramarCheckCRP"
+                                   onclick="toggleCRP()"
+                                   style="transform: scale(1.4); margin-top: 2px;">
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
+                        <div class="input-group">
+                            <select class="form-select " id="reprogramarHorasProtocoloCita" required >
+                                <option value="0">0 h</option>
+                                <option value="1">1 h</option>
+                                <option value="2">2 h</option>
+                                <option value="3">3 h</option>
+                                <option value="4">4 h</option>
+                                <option value="5">5 h</option>
+                                <option value="6">6 h</option>
+                                <option value="7">7 h</option>
+                                <option value="8">8 h</option>
+                                <option value="9">9 h</option>
+                                <option value="10">10 h</option>
+                            </select>
+                            <select class="form-select " id="reprogramarMinutosProtocoloCita" required >
+                                <option value="0">0 min</option>
+                                <option value="15">15 min</option>
+                                <option value="30">30 min</option>
+                                <option value="45">45 min</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reprogramarMedicinasCita" class="form-label">Medicamentos</label>
+                        <textarea id="reprogramarMedicinasCita" class="form-control " rows="2" placeholder="" ></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reprogramarObservacionesCita" class="form-label">Observaciones del médico tratante</label>
+                        <textarea id="reprogramarObservacionesCita" class="form-control " rows="2" placeholder="" ></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reprogramarTratamientoCita" class="form-label">Tratamiento</label>
+                        <textarea id="reprogramarTratamientoCita" class="form-control " rows="2" placeholder="" ></textarea>
                     </div>
 
                 </div>

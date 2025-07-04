@@ -65,16 +65,14 @@ document.getElementById('filtro-cie').addEventListener('input', function () {
 
 
 function seleccionarCie(id, codigo, nombre) {
-    console.log("ID del CIE seleccionado:", id); // Mostrar ID en consola
+    console.log("ID del CIE seleccionado:", id);
 
-    // Construir el cuerpo del DTO
     const dto = {
         id: id,
         codigo: codigo,
         descripcion: nombre
     };
 
-    // Enviar al backend siempre
     fetch('/app/diagnostico/cie/guardar', {
         method: 'POST',
         headers: {
@@ -88,25 +86,34 @@ function seleccionarCie(id, codigo, nombre) {
 
         const lista = document.getElementById('lista-cie-seleccionados');
 
-        // Verificar si ya existe un input con ese ID (para evitar duplicados visuales)
+        // Verificar si ya existe un input con ese ID (para evitar duplicados)
         const yaExiste = lista.querySelector(`input[name="cieIds[]"][value="${id}"]`);
         if (yaExiste) {
             const modal = bootstrap.Modal.getInstance(document.getElementById('modalCie'));
             modal.hide();
-            return; // No volver a agregar en el HTML
+            return;
         }
 
-        // Agregar visualmente si no existe
+        // Crear el nuevo item
         const item = document.createElement('li');
         item.className = 'list-group-item d-flex justify-content-between align-items-center';
         item.innerHTML = `
-            ${codigo} - ${nombre}
-            <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Quitar</button>
+            <div>${codigo} - ${nombre}</div>
+            <div class="acciones-cie" style="display: none;">
+                <button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()">Quitar</button>
+            </div>
             <input type="hidden" name="cieSeleccionados[]" value="${codigo}">
             <input type="hidden" name="cieIds[]" value="${id}">
         `;
+
+        // Mostrar botón de quitar si está en modo edición
+        if (!document.getElementById("btnGuardarCie").disabled) {
+            item.querySelector('.acciones-cie').style.display = 'block';
+        }
+
         lista.appendChild(item);
 
+        // Cerrar modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('modalCie'));
         modal.hide();
     })

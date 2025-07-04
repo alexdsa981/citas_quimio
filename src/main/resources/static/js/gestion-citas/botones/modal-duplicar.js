@@ -1,5 +1,19 @@
 const modalDuplicar = new bootstrap.Modal(document.getElementById('modalDuplicarSesion'));
 
+const fechaDuplicadaInput = document.getElementById('fechaDuplicada');
+if (fechaDuplicadaInput && typeof fechaDuplicadaInput.showPicker === 'function') {
+    fechaDuplicadaInput.addEventListener('focus', function () {
+        this.showPicker();
+    });
+}
+const horaDuplicadaInput = document.getElementById('horaDuplicada');
+if (horaDuplicadaInput && typeof horaDuplicadaInput.showPicker === 'function') {
+    horaDuplicadaInput.addEventListener('focus', function () {
+        this.showPicker();
+    });
+}
+
+
 document.getElementById('btn-duplicar').addEventListener('click', () => {
     if (!idFichaSeleccionada) {
         Swal.fire("Ficha no seleccionada", "Por favor, selecciona una ficha antes de duplicar.", "warning");
@@ -7,19 +21,37 @@ document.getElementById('btn-duplicar').addEventListener('click', () => {
     }
 
     fetch(`/app/cita/ficha/${idFichaSeleccionada}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error("Error al obtener datos");
+            return response.json();
+        })
         .then(data => {
-            if (data.success) {
-                // Llenar los campos del modal
-                document.getElementById('fechaDuplicada').value = data.fechaCita;
-                document.getElementById('horaDuplicada').value = data.HoraCita;
-                document.getElementById('medicoFicha').value = data.medicoId;
-                document.getElementById('nombrePacienteDuplicar').value = data.nombrePaciente;
+            // Llenar campos visibles
+            document.getElementById('nombrePacienteDuplicar').value = data.nombrePaciente;
+            document.getElementById('fechaDuplicada').value = data.fechaCita;
+            document.getElementById('horaDuplicada').value = data.horaCita;
+            document.getElementById('duplicadaMedicoCita').value = data.medicoId;
 
-                modalDuplicar.show();
-            } else {
-                Swal.fire("Advertencia", data.message || "No se pudo obtener los datos de la ficha.", "warning");
-            }
+            // Llenar campos ocultos/auxiliares
+            document.getElementById('duplicadaTipoDoc').value = data.tipoDoc;
+            document.getElementById('duplicadaNumDoc').value = data.numDoc;
+
+            document.getElementById('duplicadaAseguradora').value = data.aseguradora;
+            const checkCRPdup = document.getElementById('duplicadaCheckCRP');
+            checkCRPdup.checked = (data.aseguradora === 'CLÍNICA RICARDO PALMA');
+
+
+            document.getElementById('duplicadaTratamiento').value = data.tratamiento;
+            document.getElementById('duplicadaObservaciones').value = data.observaciones;
+            document.getElementById('duplicadaMedicinas').value = data.medicina;
+
+            // Duración separada
+            const duracion = data.duracion || 0;
+            document.getElementById('duplicadaHorasProtocoloCita').value = Math.floor(duracion / 60).toString();
+            document.getElementById('duplicadaMinutosProtocoloCita').value = (duracion % 60).toString();
+
+            // Mostrar modal
+            modalDuplicar.show();
         })
         .catch(error => {
             console.error("Error al cargar datos de la ficha:", error);
@@ -27,10 +59,67 @@ document.getElementById('btn-duplicar').addEventListener('click', () => {
         });
 });
 
+
+function toggleCRPduplicada() {
+    const checkbox = document.getElementById('duplicadaCheckCRP');
+    const inputAseg = document.getElementById('duplicadaAseguradora');
+
+    if (!checkbox.checked) {
+        // Obtener valores ocultos
+        const tipoDocTexto = document.getElementById('duplicadaTipoDoc').value;
+        const numDoc = document.getElementById('duplicadaNumDoc').value;
+
+        // Mapa de texto -> código
+        const tipoDocMap = {
+            "D.N.I./Cédula/L.E.": "D",
+            "Carnet Extranjería": "X",
+            "Pasaporte": "P",
+            "RUC / NIT": "R",
+            "Otros": "O"
+        };
+
+        const tipoDocCodigo = tipoDocMap[tipoDocTexto];
+
+        if (!tipoDocCodigo || !numDoc) {
+            console.warn("Tipo de documento o número inválido");
+            return;
+        }
+
+        fetch(`/app/paciente/buscar-por-documento?tipoDocumento=${encodeURIComponent(tipoDocCodigo)}&documento=${encodeURIComponent(numDoc)}`)
+            .then(response => {
+                if (!response.ok) throw new Error("No encontrado");
+                return response.json();
+            })
+            .then(data => {
+                inputAseg.value = data.aseguradora || '';
+            })
+            .catch(error => {
+                console.error("Error al obtener aseguradora original:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo recuperar la aseguradora original.',
+                });
+            });
+    } else {
+        // Si el checkbox se marca, colocamos "CLÍNICA RICARDO PALMA"
+        inputAseg.value = "CLÍNICA RICARDO PALMA";
+    }
+}
+
+
+
 document.getElementById('btn-confirmar-duplicar').addEventListener('click', () => {
     const fecha = document.getElementById('fechaDuplicada').value;
     const hora = document.getElementById('horaDuplicada').value;
-    const idMedico = document.getElementById('medicoFicha').value;
+    const idMedico = document.getElementById('duplicadaMedicoCita').value;
+    const horas = parseInt(document.getElementById('duplicadaHorasProtocoloCita').value) || 0;
+    const minutos = parseInt(document.getElementById('duplicadaMinutosProtocoloCita').value) || 0;
+    const duracionTotal = (horas * 60) + minutos;
+
+    const medicamentos = document.getElementById('duplicadaMedicinas').value;
+    const observaciones = document.getElementById('duplicadaObservaciones').value;
+    const tratamiento = document.getElementById('duplicadaTratamiento').value;
 
     if (!fecha || !hora || !idMedico) {
         Swal.fire({
@@ -45,7 +134,11 @@ document.getElementById('btn-confirmar-duplicar').addEventListener('click', () =
         idFichaPaciente: idFichaSeleccionada,
         fecha: fecha,
         horaProgramada: hora,
-        idMedico: idMedico
+        idMedico: idMedico,
+        duracionMinutos: duracionTotal,
+        medicamentos: medicamentos,
+        observaciones: observaciones,
+        tratamiento: tratamiento
     };
 
     fetch('/app/gestion-citas/boton/duplicar', {

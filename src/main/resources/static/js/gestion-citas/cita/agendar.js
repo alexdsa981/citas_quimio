@@ -5,7 +5,7 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
     const duracionTotal = horas * 60 + minutos;
 
 
-    const fechaCitaInput = document.querySelector("input[type='date']");
+    const fechaCitaInput = document.getElementById("fechaProgramadaCita");
     const fechaCita = fechaCitaInput ? fechaCitaInput.value : "";
 
     const idPacienteRaw = document.getElementById("idPaciente").value;
@@ -28,6 +28,8 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
         sexo: document.getElementById("sexoCita").value.trim(),
         celular: document.getElementById("celularCita").value.trim() || "No asignado",
         telefono: document.getElementById("telefonoCita").value.trim() || "No asignado",
+
+
         aseguradora: document.getElementById("aseguradoraCita").value.trim(),
 
         duracionMinutos: duracionTotal,

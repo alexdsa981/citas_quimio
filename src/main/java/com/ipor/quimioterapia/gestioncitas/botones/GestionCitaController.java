@@ -311,7 +311,13 @@ public class GestionCitaController {
                 ));
             } else {
                 Medico medico = medicoService.getPorID(dto.getIdMedico());
-                citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos());
+                citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
+
+                DetalleQuimioterapia detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
+                detalleQuimioterapia.setObservaciones(dto.observaciones);
+                detalleQuimioterapia.setTratamiento(dto.tratamiento);
+                detalleQuimioterapia.setMedicinas(dto.medicamentos);
+                detalleQuimioterapiaService.save(detalleQuimioterapia);
 
                 if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
                     atencionQuimioterapiaService.reprogramarCita(fichaPaciente);

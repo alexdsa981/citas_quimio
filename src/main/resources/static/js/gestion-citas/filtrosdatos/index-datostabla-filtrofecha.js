@@ -94,7 +94,6 @@ function llenarTablaFichas(fichas) {
 
         const fila = `
             <tr class="${claseFila}" data-id-ficha="${bloqueaClick ? '' : ficha.id}">
-                ${tdConColor(`${ficha.fechaCreacion || ""} ${ficha.horaCreacion?.split(":").slice(0, 2).join(":") || ""}`)}
                 ${tdConColor(cita.usuarioCreacion.username || "")}
                 ${tdConColor(cita.aseguradora || "")}
                 ${tdConColor(`<b>${(paciente.tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (paciente.tipoDocumentoNombre || "")}</b>: ${paciente.numDocIdentidad || ""}`)}
@@ -104,7 +103,7 @@ function llenarTablaFichas(fichas) {
                 ${tdConColor(cubiculo.codigo || "")}
                 ${tdConColor(formatearHora(atencion.horaInicio) || "")}
                 ${tdConColor(formatearHora(atencion.horaFin) || "")}
-                ${tdConColor(`${atencion.horasProtocolo ?? 0} h ${atencion.minutosRestantesProtocolo ?? 0} min`)}
+                ${tdConColor(calcularDuracionReal(atencion.horaInicio, atencion.horaFin))}
                 <td><span class="badge ${claseEstado}">${estado}</span></td>
             </tr>
         `;
@@ -112,6 +111,30 @@ function llenarTablaFichas(fichas) {
         tbody.insertAdjacentHTML("beforeend", fila);
     });
     aplicarFiltrosOtros();
+}
+
+
+function calcularDuracionReal(horaInicio, horaFin) {
+    if (!horaInicio) {
+        return "Pendiente";
+    }
+
+    if (!horaFin) {
+        return "En curso";
+    }
+
+    const inicio = new Date(`2000-01-01T${horaInicio}`);
+    const fin = new Date(`2000-01-01T${horaFin}`);
+
+    const diferenciaMs = fin - inicio;
+    const diferenciaMin = Math.floor(diferenciaMs / 60000);
+
+    const horas = Math.floor(diferenciaMin / 60);
+    const minutos = diferenciaMin % 60;
+
+    if (horas > 0 && minutos > 0) return `${horas} h ${minutos} min`;
+    if (horas > 0) return `${horas} h`;
+    return `${minutos} min`;
 }
 
 

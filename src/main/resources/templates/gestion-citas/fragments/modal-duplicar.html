@@ -1,43 +1,98 @@
 <div th:fragment="modalDuplicarCita" xmlns:th="http://www.thymeleaf.org">
-
     <div class="modal fade" id="modalDuplicarSesion" tabindex="-1" aria-labelledby="tituloDuplicarSesion" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content rounded-3 shadow">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tituloDuplicarSesion">Duplicar Cita</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formDuplicarSesion">
-                        <div class="mb-3">
-                            <label class="form-label">Paciente</label>
-                            <input type="text" class="form-control" id="nombrePacienteDuplicar" disabled>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Paciente</label>
+                        <input type="text" class="form-control" id="nombrePacienteDuplicar" disabled>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="fechaDuplicada" class="form-label">Fecha de la nueva cita</label>
-                            <input type="date" class="form-control" id="fechaDuplicada" required>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha de la nueva cita</label>
+                        <input type="date" class="form-control" id="fechaDuplicada" required>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="horaDuplicada" class="form-label">Hora programada</label>
-                            <input type="time" class="form-control" id="horaDuplicada" required>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hora programada</label>
+                        <input type="time" class="form-control" id="horaDuplicada" required>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="medicoFicha" class="form-label">Médico</label><span style="color:red;">*</span>
-                            <select id="medicoFicha" name="medico" class="form-select" required>
-                                <option value="">Seleccionar Médico</option>
-                                <!-- Este bloque se completa en el backend con Thymeleaf -->
-                                <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                                    <option th:value="${medico.idPersona}"
-                                            th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}">
-                                    </option>
-                                </th:block>
+                    <div class="mb-3">
+                        <label class="form-label">Médico tratante</label>
+                        <select id="duplicadaMedicoCita" name="medico" class="form-select" required>
+                            <option value="">Seleccionar Médico</option>
+                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                                <option th:value="${medico.idPersona}"
+                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-end gap-4">
+                        <div class="flex-grow-1">
+                            <label class="form-label">Aseguradora</label>
+                            <input type="text" class="form-control bloqueable" id="duplicadaAseguradora">
+                        </div>
+                        <div class="d-flex align-items-center" style="margin-bottom: 6px;">
+                            <label class="form-check-label me-2" for="duplicadaCheckCRP">CRP:</label>
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="duplicadaCheckCRP"
+                                   onclick="toggleCRPduplicada()"
+                                   style="transform: scale(1.4); margin-top: 2px;">
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
+                        <div class="input-group">
+                            <select class="form-select" id="duplicadaHorasProtocoloCita" required>
+                                <option value="0">0 h</option>
+                                <option value="1">1 h</option>
+                                <option value="2">2 h</option>
+                                <option value="3">3 h</option>
+                                <option value="4">4 h</option>
+                                <option value="5">5 h</option>
+                                <option value="6">6 h</option>
+                                <option value="7">7 h</option>
+                                <option value="8">8 h</option>
+                                <option value="9">9 h</option>
+                                <option value="10">10 h</option>
+                            </select>
+                            <select class="form-select" id="duplicadaMinutosProtocoloCita" required>
+                                <option value="0">0 min</option>
+                                <option value="15">15 min</option>
+                                <option value="30">30 min</option>
+                                <option value="45">45 min</option>
                             </select>
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Medicamentos</label>
+                        <textarea id="duplicadaMedicinas" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Observaciones del médico tratante</label>
+                        <textarea id="duplicadaObservaciones" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tratamiento</label>
+                        <textarea id="duplicadaTratamiento" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <input type="hidden" id="duplicadaTipoDoc">
+                    <input type="hidden" id="duplicadaNumDoc">
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" id="btn-confirmar-duplicar">Confirmar</button>
@@ -45,5 +100,4 @@
             </div>
         </div>
     </div>
-
 </div>

@@ -1,20 +1,21 @@
 CAMBIOS POR HACER:
 
-	QUITAR: ANAMNESIS / EVOLUCION / EXAMEN FISICO / SE MANEJARA EN OBSEVCACION
-	CIE OBTENER DE LA ULTIMA CITA
-	AGENDAR CITA:
-		medicinas
-		observaciones
-		tratamiento
-		duración al agendar cita
+	
+
 
 
 
 HECHO:
 *******MENU DE BOTONES QUE SIGA EL SCROLL
 
+*************AGENDAR CITA:
+	*****medicinas
+	*****observaciones
+	*****tratamiento
+	*****duración al agendar cita
 
-
+***********QUITAR: ANAMNESIS / EVOLUCION / EXAMEN FISICO / SE MANEJARA EN OBSEVCACION
+************CIE OBTENER DE LA ULTIMA CITA
 
 
 

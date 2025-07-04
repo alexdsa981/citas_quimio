@@ -18,8 +18,30 @@ function llenarVisualFichaPaciente(objetoFicha) {
     document.getElementById('edadPacienteFicha').textContent = paciente.edad || calcularEdadTexto(paciente.fechaNacimiento);
 
     // Cita
+
+    document.getElementById('fechaRegistroCita').textContent = objetoFicha.fechaCreacion || '';
+    document.getElementById('usuarioRegistroCita').textContent = cita.usuarioCreacion.nombre || '';
+
+
     document.getElementById('fechaCitaFicha').textContent = cita.fecha || '';
-    document.getElementById('horaCitaFicha').textContent = cita.horaProgramada || '';
+
+    document.getElementById('horaCitaFicha').textContent = cita.horaProgramada ? cita.horaProgramada.slice(0, 5) : '';
+    const horaInicio = cita.horaProgramada; // formato "HH:mm"
+    const duracionMinutos = cita.duracionMinutosProtocolo || 0;
+
+    if (horaInicio) {
+        const [horas, minutos] = horaInicio.split(":").map(Number);
+        const fecha = new Date();
+        fecha.setHours(horas);
+        fecha.setMinutes(minutos + duracionMinutos);
+
+        const horaFinal = fecha.toTimeString().slice(0, 5); // "HH:mm"
+        document.getElementById('horaCitaFinFicha').textContent = horaFinal;
+    } else {
+        document.getElementById('horaCitaFinFicha').textContent = "";
+    }
+
+
     document.getElementById('estadoCitaFicha').textContent = cita.estado || '';
     document.getElementById('medicoCitaFicha').textContent = medico ? `${medico.nombre || ''} ${medico.apellidoP || ''} ${medico.apellidoM || ''}` : '';
 

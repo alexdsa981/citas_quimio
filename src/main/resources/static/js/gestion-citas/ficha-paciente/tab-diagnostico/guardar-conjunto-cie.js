@@ -20,11 +20,19 @@ function guardarCieSeleccionados() {
     })
     .then(response => {
         if (!response.ok) throw new Error('Error al guardar');
-        return response.json(); // Aquí asumimos que devuelve los cie guardados
+        return response.json();
+    })
+    .then(() => {
+        // Nueva llamada al endpoint que trae lista y fecha
+        return fetch(`/app/diagnostico/cie/lista/${idFichaSeleccionada}`);
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("No se pudo obtener diagnósticos actualizados");
+        return response.json();
     })
     .then(data => {
-        // Recargar lista limpia
-        llenarDetalleCieDesdeFicha(data); // <- Reutilizas la función con los datos actualizados
+        // Cargar lista y mostrar fecha
+        llenarDetalleCieDesdeFicha({ idFicha: idFichaSeleccionada, ...data });
         deshabilitarModificacionCieFicha();
 
         Swal.fire({
