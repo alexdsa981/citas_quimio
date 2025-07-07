@@ -3,12 +3,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalReprogramarLabel">Reprogramar Cita</h5>
+                    <h5 class="modal-title" id="modalReprogramarLabel">Editar Cita</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="hiddenTipoDoc">
                     <input type="hidden" id="hiddenNumDoc">
+                    <div class="mb-3">
+                        <label class="form-label">Paciente</label>
+                        <input type="text" class="form-control" id="nombrePacienteReprogramar" disabled>
+                    </div>
                     <div class="mb-3">
                         <label for="modalFechaCita" class="form-label">Fecha de la Cita</label>
                         <input type="date" class="form-control" id="modalFechaCita">

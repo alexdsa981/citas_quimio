@@ -146,3 +146,14 @@ tr.no-click {
 .textarea-vacio {
     background-color: #ffe5e5 !important;
 }
+
+
+.tr-fecha-distinta {
+    background-color: #f0f8ff; /* azul muy suave como señal visual */
+}
+
+.bloqueado {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}

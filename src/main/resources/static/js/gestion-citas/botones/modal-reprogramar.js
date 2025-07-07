@@ -31,6 +31,9 @@ document.getElementById('btn-transferir').addEventListener('click', () => {
             document.getElementById('hiddenTipoDoc').value = data.tipoDoc;
             document.getElementById('hiddenNumDoc').value = data.numDoc;
 
+            document.getElementById('nombrePacienteReprogramar').value = data.nombrePaciente;
+
+
             // Aseguradora
             const aseguradoraInput = document.getElementById('reprogramarAseguradoraCita');
             aseguradoraInput.value = data.aseguradora || '';
@@ -124,6 +127,17 @@ function guardarReprogramacion() {
         const horas = parseInt(document.getElementById('reprogramarHorasProtocoloCita').value || 0);
         const minutos = parseInt(document.getElementById('reprogramarMinutosProtocoloCita').value || 0);
         const duracionTotal = horas * 60 + minutos;
+
+
+        if (duracionTotal === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Duración inválida',
+                text: 'La duración total del protocolo no puede ser 0 minutos.'
+            });
+            return;
+        }
+
 
     const dto = {
         idFicha: idFichaSeleccionada,

@@ -8,7 +8,7 @@
 <div th:replace="~{common/header :: header}">
 </div>
 
-
+<input type="hidden" id="fechaActual" th:value="${fechaInputActual}" />
 <div class="card shadow-sm border-0 panel-botones-cita" style="top: 1rem; z-index: 1020;">
     <div class="card-body">
         <!-- Acciones -->
@@ -17,25 +17,25 @@
             <div class="d-flex flex-wrap align-items-center gap-2">
                 <span class="fw-semibold text-muted me-2"><i class="bi bi-calendar"></i> Gestión de Citas:</span>
 
-                <button id="btn-atendido" class="btn btn-sm btn-clinico-verde">
+                <button id="btn-atendido" class="btn btn-sm btn-clinico-verde bloqueable-fecha-pasada">
                     <i class="bi bi-clipboard-check"></i> Atendido
                 </button>
 
-                <button id="btn-iniciar" class="btn btn-sm btn-clinico-azul">
+                <button id="btn-iniciar" class="btn btn-sm btn-clinico-azul bloqueable-fecha-pasada">
                     <i class="bi bi-play-circle-fill"></i> Iniciar
                 </button>
 
-                <button id="btn-asignar" class="btn btn-sm btn-clinico-gris">
+                <button id="btn-asignar" class="btn btn-sm btn-clinico-gris bloqueable-fecha-pasada">
                     <i class="bi bi-pencil-square"></i> Asignar
                 </button>
 
                 <span class="fw-semibold text-muted ms-4 me-2">Otros:</span>
 
-                <button id="btn-retroceso" class="btn btn-sm btn-outline-secondary">
+                <button id="btn-retroceso" class="btn btn-sm btn-outline-secondary bloqueable-fecha-pasada">
                     <i class="bi bi-arrow-counterclockwise"></i> Retroceso
                 </button>
 
-                <button id="btn-transferir" class="btn btn-sm btn-outline-secondary">
+                <button id="btn-transferir" class="btn btn-sm btn-outline-secondary bloqueable-fecha-pasada habilitado-futuro">
                     <i class="bi bi-arrow-left-right"></i> Editar
                 </button>
 
@@ -43,7 +43,7 @@
                     <i class="bi bi-copy"></i> Duplicar Cita
                 </button>
 
-                <button id="btn-cancelar" class="btn btn-sm btn-outline-danger">
+                <button id="btn-cancelar" class="btn btn-sm btn-outline-danger bloqueable-fecha-pasada habilitado-futuro">
                     <i class="bi bi-x-circle"></i> Cancelar
                 </button>
             </div>
@@ -105,6 +105,7 @@
         <table class="table table-bordered table-hover align-middle mb-0 small">
             <thead class="table-primary text-center">
             <tr>
+                <th>N°</th>
                 <th>Creado por</th>
                 <th>Aseguradora</th>
                 <th>Num. Documento</th>
@@ -162,6 +163,7 @@
 <script src="/js/gestion-citas/botones/modal-asignar.js"></script>
 <script src="/js/gestion-citas/botones/modal-reprogramar.js"></script>
 <script src="/js/gestion-citas/botones/modal-duplicar.js"></script>
+<script src="/js/gestion-citas/botones/restriccion.js"></script>
 
 
 

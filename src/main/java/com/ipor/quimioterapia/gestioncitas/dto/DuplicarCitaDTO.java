@@ -14,7 +14,7 @@ public class DuplicarCitaDTO {
     private LocalTime HoraProgramada;
     private Integer duracionMinutos;
     private Long idMedico;
-
+    private String aseguradora;
     //DATOS DETALLE QUIMIO
     public String medicamentos;
     public String observaciones;

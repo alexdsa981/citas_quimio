@@ -116,6 +116,9 @@ document.getElementById('btn-confirmar-duplicar').addEventListener('click', () =
     const horas = parseInt(document.getElementById('duplicadaHorasProtocoloCita').value) || 0;
     const minutos = parseInt(document.getElementById('duplicadaMinutosProtocoloCita').value) || 0;
     const duracionTotal = (horas * 60) + minutos;
+    const aseguradora = document.getElementById('duplicadaAseguradora').value;
+
+
 
     const medicamentos = document.getElementById('duplicadaMedicinas').value;
     const observaciones = document.getElementById('duplicadaObservaciones').value;
@@ -129,6 +132,14 @@ document.getElementById('btn-confirmar-duplicar').addEventListener('click', () =
         });
         return;
     }
+    if (duracionTotal === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Duración inválida',
+            text: 'La duración total del protocolo no puede ser 0 minutos.'
+        });
+        return;
+    }
 
     const dto = {
         idFichaPaciente: idFichaSeleccionada,
@@ -136,6 +147,7 @@ document.getElementById('btn-confirmar-duplicar').addEventListener('click', () =
         horaProgramada: hora,
         idMedico: idMedico,
         duracionMinutos: duracionTotal,
+        aseguradora: aseguradora,
         medicamentos: medicamentos,
         observaciones: observaciones,
         tratamiento: tratamiento

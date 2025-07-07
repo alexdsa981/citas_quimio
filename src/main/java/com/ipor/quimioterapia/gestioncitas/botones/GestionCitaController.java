@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.Map;
 //@RequestMapping("/app/protocolo")
 
@@ -65,8 +66,17 @@ public class GestionCitaController {
     @PostMapping("/agendar")
     public ResponseEntity<?> guardarCita(@RequestBody CitaCreadaDTO citaCreadaDTO) {
         try {
-            Medico medico = medicoService.getPorID(citaCreadaDTO.medicoId);
+            // Validar fecha
+            LocalDate fechaCita = citaCreadaDTO.fechaCita;
+            LocalDate hoy = LocalDate.now();
 
+            if (fechaCita.isBefore(hoy)) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("message", "No se puede agendar una cita en una fecha pasada."));
+            }
+
+            Medico medico = medicoService.getPorID(citaCreadaDTO.medicoId);
             Paciente paciente = pacienteService.crearOActualizar(citaCreadaDTO);
 
             DetalleQuimioterapia detalleQuimioterapia = new DetalleQuimioterapia();
@@ -81,12 +91,14 @@ public class GestionCitaController {
 
             wsNotificacionesService.notificarActualizacionTabla();
             return ResponseEntity.ok(Map.of("message", "Cita agendada correctamente"));
+
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Error al guardar cita: " + e.getMessage()));
         }
     }
+
 
     @PostMapping("/asignar")
     public ResponseEntity<?> guardarAtencionQuimioterapia(@RequestBody AtencionQuimioterapiaDTO dto) {
@@ -302,41 +314,52 @@ public class GestionCitaController {
             if (cita.getEstado() == EstadoCita.ATENDIDO) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
                         "success", false,
-                        "message", "La cita ya ha sido atendida, por lo tanto no puede ser reprogramada."
+                        "message", "La cita ya ha sido atendida, por lo tanto no puede ser editada."
                 ));
             } else if (cita.getEstado() == EstadoCita.EN_PROCESO) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
                         "success", false,
-                        "message", "La atención se encuentra en proceso y no es posible realizar una reprogramación."
-                ));
-            } else {
-                Medico medico = medicoService.getPorID(dto.getIdMedico());
-                citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
-
-                DetalleQuimioterapia detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
-                detalleQuimioterapia.setObservaciones(dto.observaciones);
-                detalleQuimioterapia.setTratamiento(dto.tratamiento);
-                detalleQuimioterapia.setMedicinas(dto.medicamentos);
-                detalleQuimioterapiaService.save(detalleQuimioterapia);
-
-                if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
-                    atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
-                    restriccionService.restriccionesReprogramacion(fichaPaciente);
-                }
-
-                citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
-                wsNotificacionesService.notificarActualizacionTabla();
-
-                return ResponseEntity.ok(Map.of(
-                        "success", true,
-                        "message", "La cita ha sido reprogramada satisfactoriamente."
+                        "message", "La atención se encuentra en proceso y no es posible realizar una edición."
                 ));
             }
+
+            // ✅ Validación de fecha pasada
+            LocalDate fechaNueva = (dto.getFecha());
+            LocalDate hoy = LocalDate.now();
+            if (fechaNueva.isBefore(hoy)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                        "success", false,
+                        "message", "No se puede editar la cita a una fecha pasada."
+                ));
+            }
+
+            // Si pasa las validaciones, continúa la reprogramación
+            Medico medico = medicoService.getPorID(dto.getIdMedico());
+            citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
+
+            DetalleQuimioterapia detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
+            detalleQuimioterapia.setObservaciones(dto.observaciones);
+            detalleQuimioterapia.setTratamiento(dto.tratamiento);
+            detalleQuimioterapia.setMedicinas(dto.medicamentos);
+            detalleQuimioterapiaService.save(detalleQuimioterapia);
+
+            if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
+                atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
+                restriccionService.restriccionesReprogramacion(fichaPaciente);
+            }
+
+            citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
+            wsNotificacionesService.notificarActualizacionTabla();
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "La cita ha sido editado satisfactoriamente."
+            ));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                     "success", false,
-                    "message", "Se produjo un error al intentar reprogramar la cita: " + e.getMessage()
+                    "message", "Se produjo un error al intentar editar la cita: " + e.getMessage()
             ));
         }
     }
@@ -374,6 +397,17 @@ public class GestionCitaController {
     @PostMapping("/duplicar")
     public ResponseEntity<?> duplicarCita(@RequestBody DuplicarCitaDTO duplicarCitaDTO) {
         try {
+            // ✅ Validar que la fecha no sea pasada
+            LocalDate fechaDuplicada = duplicarCitaDTO.getFecha();
+            LocalDate hoy = LocalDate.now();
+
+            if (fechaDuplicada.isBefore(hoy)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                        "success", false,
+                        "message", "No se puede duplicar una cita en una fecha pasada."
+                ));
+            }
+
             FichaPaciente fichaActual = fichaPacienteService.getPorID(duplicarCitaDTO.getIdFichaPaciente());
             Cita citaActual = fichaActual.getCita();
             Medico medico = medicoService.getPorID(duplicarCitaDTO.getIdMedico());

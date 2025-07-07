@@ -176,9 +176,9 @@
 
                                     <!-- Botones -->
                                     <div class="mt-4 d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-outline-primary" id="btnModificarSignosVitalesFicha"
+                                        <button type="button" class="btn btn-outline-primary bloqueable-fecha-pasada" id="btnModificarSignosVitalesFicha"
                                                 onclick="habilitarEdicionSignosVitalesFicha()">Modificar</button>
-                                        <button type="button" class="btn btn-success" id="btnGuardarSignosVitalesFicha"
+                                        <button type="button" class="btn btn-success bloqueable-fecha-pasada" id="btnGuardarSignosVitalesFicha"
                                                 onclick="guardarSignosVitalesFicha()">Guardar</button>
                                     </div>
                                 </div>
@@ -232,9 +232,9 @@
                                 </div>
 
                                 <div class="card-footer bg-white border-top mt-3 d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-primary" id="btnModificarDetalleQuimioterapiaFicha"
+                                    <button type="button" class="btn btn-outline-primary bloqueable-fecha-pasada" id="btnModificarDetalleQuimioterapiaFicha"
                                             onclick="habilitarEdicionDetalleQuimioterapiaFicha()">Modificar</button>
-                                    <button type="button" class="btn btn-success" id="btnGuardarDetalleQuimioterapiaFicha"
+                                    <button type="button" class="btn btn-success bloqueable-fecha-pasada" id="btnGuardarDetalleQuimioterapiaFicha"
                                             onclick="guardarDetalleQuimioterapiaFicha()" disabled>Guardar</button>
                                 </div>
                             </div>
@@ -266,7 +266,7 @@
                                                 <span class="form-control" style="background-color: #e9ecef;">
                                                     Haz clic en Buscar para seleccionar un CIE10
                                                 </span>
-                                                <button id="btnBuscarCie" class="btn btn-outline-primary" type="button" onclick="abrirModalCie()" disabled>Buscar</button>
+                                                <button id="btnBuscarCie" class="btn btn-outline-primary bloqueable-fecha-pasada" type="button" onclick="abrirModalCie()" disabled>Buscar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -281,9 +281,9 @@
                                 </div>
 
                                 <div class="card-footer bg-white d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-info" id="btnModificarCieFicha"
-                                            onclick="habilitarModificacionCieFicha()">Modificar</button>
-                                    <button id="btnGuardarCie" class="btn btn-success" type="button"
+                                    <button type="button" class="btn btn-outline-info bloqueable-fecha-pasada" id="btnModificarCieFicha"
+                                            onclick="habilitarModificacionCieFicha() ">Modificar</button>
+                                    <button id="btnGuardarCie" class="btn btn-success bloqueable-fecha-pasada" type="button"
                                             onclick="guardarCieSeleccionados()" disabled>Guardar CIE10</button>
                                 </div>
                             </div>

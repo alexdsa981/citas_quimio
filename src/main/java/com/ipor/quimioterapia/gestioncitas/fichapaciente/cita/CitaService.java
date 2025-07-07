@@ -68,16 +68,14 @@ public class CitaService {
     }
     public Cita duplicar (DuplicarCitaDTO duplicarCitaDTO, Cita citaActual, Medico medico){
         Cita citaNueva = new Cita();
-        citaNueva.setAseguradora(citaActual.getAseguradora());
+        citaNueva.setAseguradora(duplicarCitaDTO.getAseguradora());
         citaNueva.setPaciente(citaActual.getPaciente());
         citaNueva.setEstado(EstadoCita.NO_ASIGNADO);
         citaNueva.setHoraProgramada(duplicarCitaDTO.getHoraProgramada());
 
-        citaNueva.setAseguradora(citaActual.getAseguradora());
-
         citaNueva.setFecha(duplicarCitaDTO.getFecha());
         citaNueva.setMedicoConsulta(medico);
-        citaNueva.setDuracionMinutosProtocolo(citaActual.getDuracionMinutosProtocolo());
+        citaNueva.setDuracionMinutosProtocolo(duplicarCitaDTO.getDuracionMinutos());
         citaNueva.setUsuarioCreacion(usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()));
         citaRepository.save(citaNueva);
         return citaNueva;
