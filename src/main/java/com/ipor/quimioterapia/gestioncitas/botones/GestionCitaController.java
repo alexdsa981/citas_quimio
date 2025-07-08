@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.Map;
-//@RequestMapping("/app/protocolo")
 
 @RestController
 @RequestMapping("/app/gestion-citas/boton")

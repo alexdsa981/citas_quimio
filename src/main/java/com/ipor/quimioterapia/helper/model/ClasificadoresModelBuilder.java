@@ -25,22 +25,12 @@ public class ClasificadoresModelBuilder {
         return model;
     }
 
-    //
-    // GET LISTA
-    //
-
 
     public Model getListaCubiculos(Model model) {
         List<Cubiculo> lista = cubiculoService.getLista();
         model.addAttribute("Lista_Cubiculo", lista);
         return model;
     }
-
-
-    //
-    // GET LISTA ACTIVOS
-    //
-
 
 
     public Model getListaCubiculosActivos(Model model) {

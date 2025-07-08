@@ -18,21 +18,16 @@ public class FuncionesVitalesService {
     @Autowired
     FichaPacienteRepository fichaPacienteRepository;
 
-    public FuncionesVitales crear(FichaPaciente fichaPaciente) {
-        FuncionesVitales funcionesVitales = new FuncionesVitales();
-        funcionesVitales.setHora(LocalTime.now());
-        funcionesVitales.setFecha(LocalDate.now());
-        funcionesVitales.setFichaPaciente(fichaPaciente);
-        funcionesVitalesRepository.save(funcionesVitales);
-        return funcionesVitales;
-    }
 
-    public void setDatoAFicha(FuncionesVitalesDTO dto, FichaPaciente fichaPaciente, FuncionesVitales funcionesVitales) {
-        List<FuncionesVitales> lista = fichaPaciente.getFuncionesVitales();
-        funcionesVitales.setFichaPaciente(fichaPaciente);
-        lista.add(funcionesVitales);
 
-        FuncionesVitales fv = lista.get(0);
+    public void setDatoAFicha(FuncionesVitalesDTO dto, FichaPaciente fichaPaciente) {
+        FuncionesVitales fv = fichaPaciente.getFuncionesVitales();
+
+        if (fv == null) {
+            fv = new FuncionesVitales();
+            fichaPaciente.setFuncionesVitales(fv);
+        }
+
         fv.setPesoKg(dto.getPeso());
         fv.setTallaCm(dto.getTalla());
         fv.setPresionSistolica(dto.getPresionSistolica());
@@ -43,6 +38,7 @@ public class FuncionesVitalesService {
         fv.setSaturacionOxigeno(dto.getSaturacionOxigeno());
         fv.setSuperficieCorporal(dto.getSuperficieCorporal());
         funcionesVitalesRepository.save(fv);
+        fichaPacienteRepository.save(fichaPaciente);
     }
 
 

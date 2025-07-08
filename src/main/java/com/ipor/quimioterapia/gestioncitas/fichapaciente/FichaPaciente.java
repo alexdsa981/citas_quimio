@@ -39,8 +39,9 @@ public class FichaPaciente {
     @JoinColumn(name = "id_detalle_quimioterapia")
     private DetalleQuimioterapia detalleQuimioterapia;
 
-    @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FuncionesVitales> funcionesVitales;
+    @ManyToOne
+    @JoinColumn(name = "id_funciones_vitales")
+    private FuncionesVitales funcionesVitales;
 
     @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleCie> detalleCies;

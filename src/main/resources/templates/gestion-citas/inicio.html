@@ -52,6 +52,8 @@
             <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
                 <i class="bi bi-plus-circle"></i> Agendar Cita
             </button>
+
+
         </div>
     </div>
 </div>
@@ -68,7 +70,7 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-3">
                     <label class="form-label">Buscar paciente</label>
-                    <input type="text" id="filtroPaciente" class="form-control" placeholder="Nombre o documento">
+                    <input type="text" id="filtroPaciente" class="form-control" placeholder="Nombre o documento" autocomplete="off">
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Estado</label>
@@ -92,9 +94,11 @@
                     <button class="btn btn-dark w-50" title="Reporte" disabled>
                         <i class="bi bi-file-earmark-text"></i>
                     </button>
-                    <button class="btn btn-outline-dark w-50" title="Exportar" disabled>
-                        <i class="bi bi-download"></i>
+                    <button id="btnExportarExcel" class="btn btn-outline-dark w-50" title="Exportar">
+                        <span class="icono-exportar"><i class="bi bi-download"></i></span>
+                        <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                     </button>
+
                 </div>
             </div>
         </div>
@@ -163,7 +167,7 @@
 <script src="/js/gestion-citas/botones/modal-asignar.js"></script>
 <script src="/js/gestion-citas/botones/modal-reprogramar.js"></script>
 <script src="/js/gestion-citas/botones/modal-duplicar.js"></script>
-<script src="/js/gestion-citas/botones/restriccion.js"></script>
+<script src="/js/gestion-citas/botones/exportar.js"></script>
 
 
 

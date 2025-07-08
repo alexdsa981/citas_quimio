@@ -19,13 +19,12 @@ public class FuncionesVitales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "id_ficha_paciente")
-    private FichaPaciente fichaPaciente;
+    //@JsonIgnore
+    //@ManyToOne
+    //@JoinColumn(name = "id_ficha_paciente")
+    //private FichaPaciente fichaPaciente;
 
 
-    private Boolean estado;
     private LocalDate fecha;
     private LocalTime hora;
 

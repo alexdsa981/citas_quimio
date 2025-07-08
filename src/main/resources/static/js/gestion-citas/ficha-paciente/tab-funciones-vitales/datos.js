@@ -40,18 +40,16 @@ function llenarFormularioFichaFuncionesVitales(data) {
         document.getElementById("superficieCorporalFicha").value = '';
     };
 
-    if (funcionesVitales && funcionesVitales.length > 0) {
-        const vitales = funcionesVitales[0];
-
-        document.getElementById("presionSistolicaFicha").value = vitales.presionSistolica ?? '';
-        document.getElementById("presionDiastolicaFicha").value = vitales.presionDiastolica ?? '';
-        document.getElementById("frecuenciaRespiratoriaFicha").value = vitales.frecuenciaRespiratoria ?? '';
-        document.getElementById("frecuenciaCardiacaFicha").value = vitales.frecuenciaCardiaca ?? '';
-        document.getElementById("temperaturaFicha").value = vitales.temperatura ?? '';
-        document.getElementById("saturacionOxigenoFicha").value = vitales.saturacionOxigeno ?? '';
-        document.getElementById("pesoFicha").value = vitales.pesoKg ?? '';
-        document.getElementById("tallaFicha").value = vitales.tallaCm ?? '';
-        document.getElementById("superficieCorporalFicha").value = vitales.superficieCorporal ?? '';
+    if (funcionesVitales) {
+        document.getElementById("presionSistolicaFicha").value = funcionesVitales.presionSistolica ?? '';
+        document.getElementById("presionDiastolicaFicha").value = funcionesVitales.presionDiastolica ?? '';
+        document.getElementById("frecuenciaRespiratoriaFicha").value = funcionesVitales.frecuenciaRespiratoria ?? '';
+        document.getElementById("frecuenciaCardiacaFicha").value = funcionesVitales.frecuenciaCardiaca ?? '';
+        document.getElementById("temperaturaFicha").value = funcionesVitales.temperatura ?? '';
+        document.getElementById("saturacionOxigenoFicha").value = funcionesVitales.saturacionOxigeno ?? '';
+        document.getElementById("pesoFicha").value = funcionesVitales.pesoKg ?? '';
+        document.getElementById("tallaFicha").value = funcionesVitales.tallaCm ?? '';
+        document.getElementById("superficieCorporalFicha").value = funcionesVitales.superficieCorporal ?? '';
     } else {
         limpiarCampos();
     }
