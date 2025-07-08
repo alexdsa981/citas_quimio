@@ -95,7 +95,7 @@ function llenarTablaFichas(fichas) {
         claseFila += esSeleccionada ? ' seleccionada' : '';
 
         const fila = `
-                <tr class="${claseFila}" data-id-ficha="${bloqueaClick ? '' : ficha.id}" data-fecha-cita="${cita.fecha}">
+                <tr class="${claseFila}" data-id-ficha="${ficha.id}" data-fecha-cita="${cita.fecha}">
                 <td class="text-center text-muted">${index + 1}</td>
                 ${tdConColor(cita.usuarioCreacion.username || "")}
                 ${tdConColor(cita.aseguradora || "")}

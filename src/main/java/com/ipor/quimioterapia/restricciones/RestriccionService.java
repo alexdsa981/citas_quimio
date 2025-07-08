@@ -1,4 +1,4 @@
-package com.ipor.quimioterapia.restricciones;
+/*package com.ipor.quimioterapia.restricciones;
 
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapia;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.Cita;
@@ -296,3 +296,4 @@ public class RestriccionService {
     }
 
 }
+*/

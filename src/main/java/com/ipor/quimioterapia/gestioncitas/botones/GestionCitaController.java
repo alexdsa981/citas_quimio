@@ -15,7 +15,7 @@ import com.ipor.quimioterapia.recursos.cubiculo.CubiculoService;
 import com.ipor.quimioterapia.recursos.personal.enfermera.Enfermera;
 import com.ipor.quimioterapia.recursos.personal.enfermera.EnfermeraService;
 import com.ipor.quimioterapia.recursos.personal.medico.Medico;
-import com.ipor.quimioterapia.restricciones.RestriccionService;
+//import com.ipor.quimioterapia.restricciones.RestriccionService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapiaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.CitaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
@@ -44,8 +44,8 @@ public class GestionCitaController {
     AtencionQuimioterapiaService atencionQuimioterapiaService;
     @Autowired
     MedicoService medicoService;
-    @Autowired
-    RestriccionService restriccionService;
+    //@Autowired
+    //RestriccionService restriccionService;
     @Autowired
     CubiculoService cubiculoService;
     @Autowired
@@ -123,8 +123,8 @@ public class GestionCitaController {
                 fichaAsignacion.setAtencionQuimioterapia(resultado);
                 fichaPacienteService.save(fichaAsignacion);
 
-                restriccionService.restriccionesAsignar(fichaAsignacion);
-
+                //restriccionService.restriccionesAsignar(fichaAsignacion);
+                citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaAsignacion);
                 wsNotificacionesService.notificarActualizacionTabla();
 
                 return ResponseEntity.ok(Map.of(
@@ -164,22 +164,33 @@ public class GestionCitaController {
                 ));
             }
 
-            if (restriccionService.sePuedeIniciar(fichaPaciente)) {
-                citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
-                atencionQuimioterapiaService.iniciarProtocolo(iniciarProtocoloDTO.getHoraInicio(), fichaPaciente);
 
-                wsNotificacionesService.notificarActualizacionTabla();
+            citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
+            atencionQuimioterapiaService.iniciarProtocolo(iniciarProtocoloDTO.getHoraInicio(), fichaPaciente);
 
-                return ResponseEntity.ok(Map.of(
-                        "status", "INICIO_OK",
-                        "message", "La atención ha sido iniciada correctamente."
-                ));
-            } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
-                        "status", "EN_CURSO",
-                        "message", "Ya existe una atención en curso en el mismo horario y cubículo. No se puede iniciar el protocolo."
-                ));
-            }
+            wsNotificacionesService.notificarActualizacionTabla();
+
+            return ResponseEntity.ok(Map.of(
+                    "status", "INICIO_OK",
+                    "message", "La atención ha sido iniciada correctamente."
+            ));
+
+//            if (restriccionService.sePuedeIniciar(fichaPaciente)) {
+//                citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
+//                atencionQuimioterapiaService.iniciarProtocolo(iniciarProtocoloDTO.getHoraInicio(), fichaPaciente);
+//
+//                wsNotificacionesService.notificarActualizacionTabla();
+//
+//                return ResponseEntity.ok(Map.of(
+//                        "status", "INICIO_OK",
+//                        "message", "La atención ha sido iniciada correctamente."
+//                ));
+//            } else {
+//                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+//                        "status", "EN_CURSO",
+//                        "message", "Ya existe una atención en curso en el mismo horario y cubículo. No se puede iniciar el protocolo."
+//                ));
+//            }
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
@@ -200,8 +211,7 @@ public class GestionCitaController {
             if (fichaPaciente.getCita().getEstado() == EstadoCita.EN_PROCESO) {
                 citaService.cambiarEstado(EstadoCita.ATENDIDO, fichaPaciente);
                 atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), fichaPaciente);
-                restriccionService.comprobarDespuesDeAtendido(fichaPaciente);
-
+                //restriccionService.comprobarDespuesDeAtendido(fichaPaciente);
                 wsNotificacionesService.notificarActualizacionTabla();
 
                 return ResponseEntity.ok(Map.of(
@@ -263,7 +273,7 @@ public class GestionCitaController {
                 citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
 
                 // Evaluar conflictos
-                restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
+                //  restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
 
             } else if (estado == EstadoCita.EN_PROCESO) {
                 Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
@@ -274,7 +284,7 @@ public class GestionCitaController {
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
 
                 // Evaluar conflictos
-                restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
+                //  restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
             }
             else if (estado == EstadoCita.PENDIENTE || estado == EstadoCita.EN_CONFLICTO) {
                 atencionQuimioterapia.setCubiculo(null);
@@ -283,7 +293,7 @@ public class GestionCitaController {
                 // Cambiar estado y guardar correctamente
                 citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
 
-                restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
+                //  restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
             }
 
             // Guardar solo la atención, la cita ya fue guardada en cambiarEstado
@@ -344,7 +354,7 @@ public class GestionCitaController {
 
             if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
                 atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
-                restriccionService.restriccionesReprogramacion(fichaPaciente);
+                //  restriccionService.restriccionesReprogramacion(fichaPaciente);
             }
 
             citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
@@ -371,7 +381,7 @@ public class GestionCitaController {
             citaService.cambiarEstado(EstadoCita.CANCELADO, fichaPaciente);
             fichaPacienteService.save(fichaPaciente);
 
-            restriccionService.comprobarDespuesDeCancelacion(fichaPaciente);
+            // restriccionService.comprobarDespuesDeCancelacion(fichaPaciente);
 
 
             wsNotificacionesService.notificarActualizacionTabla();
