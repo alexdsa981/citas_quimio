@@ -32,6 +32,10 @@ public class UsuarioService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    public Usuario getUsuarioLogeado(){
+        return getUsuarioPorId(getIDdeUsuarioLogeado());
+    }
+
     public Long getIDdeUsuarioLogeado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

@@ -1,0 +1,20 @@
+package com.ipor.quimioterapia.gestioncitas.logs;
+
+public enum AccionLogGlobal {
+    INICIO_SESION,
+    CIERRE_SESION,
+    DESCARGA_FICHAS,
+    FILTRA_FECHAS,
+
+    AGREGA_USUARIO,
+    DESACTIVA_USUARIO,
+
+    AGREGA_CUBICULO,
+    DESACTIVA_CUBICULO,
+
+    AGREGA_ENFERMERA,
+    AGREGA_MEDICO,
+
+    DESACTIVA_ENFERMERA,
+    DESACTIVA_MEDICO
+}

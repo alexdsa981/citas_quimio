@@ -12,18 +12,29 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-//@Entity
+@Entity
 public class LogFicha {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDateTime fechaHora;
+
+    @ManyToOne
+    @JoinColumn(name = "id_ficha_paciente", nullable = false)
     private FichaPaciente fichaPaciente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
-    private String seccion; //especificar seccion cambiante ej: FuncionesVitales
+
+    private String accion; //especificar seccion cambiante ej: FuncionesVitales
+
+    @Column(columnDefinition = "TEXT")
     private String valorActual;
+    @Column(columnDefinition = "TEXT")
     private String valorNuevo;
+
     private String descripcion; // Opcional
 
     @PrePersist

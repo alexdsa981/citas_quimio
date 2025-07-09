@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.gestioncitas.botones;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ipor.quimioterapia.core.websocket.WSNotificacionesService;
 import com.ipor.quimioterapia.gestioncitas.dto.*;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
@@ -10,6 +11,9 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.De
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapiaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.PacienteService;
+import com.ipor.quimioterapia.gestioncitas.logs.AccionLogFicha;
+import com.ipor.quimioterapia.gestioncitas.logs.LogFicha;
+import com.ipor.quimioterapia.gestioncitas.logs.LogService;
 import com.ipor.quimioterapia.recursos.cubiculo.Cubiculo;
 import com.ipor.quimioterapia.recursos.cubiculo.CubiculoService;
 import com.ipor.quimioterapia.recursos.personal.enfermera.Enfermera;
@@ -20,6 +24,7 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.A
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.CitaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.recursos.personal.medico.MedicoService;
+import com.ipor.quimioterapia.usuario.Usuario;
 import com.ipor.quimioterapia.usuario.UsuarioService;
 import com.ipor.quimioterapia.usuario.rol.RolUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @RestController
@@ -58,6 +65,10 @@ public class GestionCitaController {
     RolUsuarioRepository rolUsuarioRepository;
     @Autowired
     DetalleQuimioterapiaService detalleQuimioterapiaService;
+    @Autowired
+    LogService logService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     WSNotificacionesService wsNotificacionesService;
@@ -89,6 +100,34 @@ public class GestionCitaController {
             fichaPacienteService.save(fichaPaciente);
 
             wsNotificacionesService.notificarActualizacionTabla();
+
+
+
+            Map<String, Object> valorNuevoMap = Map.of(
+                    "paciente", fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    "fechaCita", fichaPaciente.getCita().getFecha(),
+                    "medico", fichaPaciente.getCita().getMedicoConsulta().getNombreCompleto(),
+                    "horaCita", fichaPaciente.getCita().getHoraProgramada(),
+                    "duracionProtocolo", fichaPaciente.getCita().getDuracionMinutosProtocolo(),
+                    "medicinas", fichaPaciente.getDetalleQuimioterapia().getMedicinas(),
+                    "tratamiento", fichaPaciente.getDetalleQuimioterapia().getTratamiento(),
+                    "observacion", fichaPaciente.getDetalleQuimioterapia().getObservaciones()
+            );
+
+            String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String descripcionLog = String.format(
+                    "El usuario %s agendó una cita para el paciente %s el %s.",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    paciente.getNombreCompleto(),
+                    LocalDateTime.now().format(formatter)
+            );
+
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.AGENDAR_CITA, null, valorNuevoJson,descripcionLog);
+
+
+
             return ResponseEntity.ok(Map.of("message", "Cita agendada correctamente"));
 
         } catch (Exception e) {

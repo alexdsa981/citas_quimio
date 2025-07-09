@@ -1,5 +1,6 @@
 package com.ipor.quimioterapia.gestioncitas.logs;
 
+import com.ipor.quimioterapia.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +11,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-//@Entity
+@Entity
 public class LogGlobal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String usuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
 
     private String evento; // Ej: "INICIO_ATENCION"

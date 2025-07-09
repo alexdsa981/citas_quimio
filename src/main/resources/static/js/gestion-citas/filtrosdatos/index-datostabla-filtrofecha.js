@@ -64,7 +64,10 @@ function llenarTablaFichas(fichas) {
         return;
     }
 
-    fichas.forEach((ficha, index)  => {
+    const filasNormales = [];
+    const filasCanceladas = [];
+
+    fichas.forEach((ficha, index) => {
         const cita = ficha.cita || {};
         const paciente = cita.paciente || {};
         const cubiculo = ficha.atencionQuimioterapia?.cubiculo || {};
@@ -85,7 +88,7 @@ function llenarTablaFichas(fichas) {
             claseEstado = "bg-light text-muted";
         } else if (estado === "CANCELADO") {
             claseEstado = "bg-dark text-white";
-            claseFila += " bg-light text-muted no-click"; // Estilo gris y bloqueo
+            claseFila += " bg-light text-muted no-click";
             bloqueaClick = true;
         } else if (estado === "EN_CONFLICTO") {
             claseEstado = "bg-danger text-white";
@@ -95,7 +98,7 @@ function llenarTablaFichas(fichas) {
         claseFila += esSeleccionada ? ' seleccionada' : '';
 
         const fila = `
-                <tr class="${claseFila}" data-id-ficha="${ficha.id}" data-fecha-cita="${cita.fecha}">
+            <tr class="${claseFila}" data-id-ficha="${ficha.id}" data-fecha-cita="${cita.fecha}">
                 <td class="text-center text-muted">${index + 1}</td>
                 ${tdConColor(cita.usuarioCreacion.username || "")}
                 ${tdConColor(cita.aseguradora || "")}
@@ -111,43 +114,47 @@ function llenarTablaFichas(fichas) {
             </tr>
         `;
 
-        tbody.insertAdjacentHTML("beforeend", fila);
-    });
-
-
-    //RESTRICCION DE FECHA
-const fechaActual = document.getElementById("fechaActual").value;
-const hoy = new Date(fechaActual);
-
-document.querySelectorAll("tr[data-fecha-cita]").forEach(tr => {
-    const fechaCita = tr.getAttribute("data-fecha-cita");
-    const fecha = new Date(fechaCita);
-
-    if (fechaCita !== fechaActual) {
-        tr.classList.add("tr-fecha-distinta");
-    }
-
-    tr.addEventListener("click", () => {
-        // limpiar todos los bloqueables
-        document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-            btn.classList.remove("bloqueado");
-        });
-
-        if (fecha < hoy) {
-            document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                btn.classList.add("bloqueado");
-            });
-        } else if (fecha > hoy) {
-            document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                if (!btn.classList.contains("habilitado-futuro")) {
-                    btn.classList.add("bloqueado");
-                }
-            });
+        if (estado === "CANCELADO") {
+            filasCanceladas.push(fila);
+        } else {
+            filasNormales.push(fila);
         }
-        // 🟢 Si es fecha igual a hoy, no se bloquea nada (todo se queda habilitado)
     });
-});
 
+    // Insertar normales primero, luego los cancelados
+    filasNormales.forEach(f => tbody.insertAdjacentHTML("beforeend", f));
+    filasCanceladas.forEach(f => tbody.insertAdjacentHTML("beforeend", f));
+
+    // RESTRICCIÓN DE FECHA
+    const fechaActual = document.getElementById("fechaActual").value;
+    const hoy = new Date(fechaActual);
+
+    document.querySelectorAll("tr[data-fecha-cita]").forEach(tr => {
+        const fechaCita = tr.getAttribute("data-fecha-cita");
+        const fecha = new Date(fechaCita);
+
+        if (fechaCita !== fechaActual) {
+            tr.classList.add("tr-fecha-distinta");
+        }
+
+        tr.addEventListener("click", () => {
+            document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
+                btn.classList.remove("bloqueado");
+            });
+
+            if (fecha < hoy) {
+                document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
+                    btn.classList.add("bloqueado");
+                });
+            } else if (fecha > hoy) {
+                document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
+                    if (!btn.classList.contains("habilitado-futuro")) {
+                        btn.classList.add("bloqueado");
+                    }
+                });
+            }
+        });
+    });
 
     aplicarFiltrosOtros();
 }

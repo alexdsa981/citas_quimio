@@ -31,11 +31,7 @@ function aplicarFiltrosOtros() {
         const coincideEstado = !estadoValor || textoEstado === estadoValor;
         const coincideCubiculo = !cubiculoValor || textoCubiculo === cubiculoValor;
 
-        const esCancelado = textoEstado === "cancelado";
-        const mostrarCancelado = estadoValor === "cancelado";
-        const estaPermitido = !esCancelado || mostrarCancelado;
-
-        const visible = coincidePaciente && coincideEstado && coincideCubiculo && estaPermitido;
+        const visible = coincidePaciente && coincideEstado && coincideCubiculo;
         fila.style.display = visible ? '' : 'none';
         if (visible) totalVisibles++;
     });
