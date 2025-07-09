@@ -17,7 +17,6 @@ function guardarDetalleQuimioterapiaFicha() {
     const dto = {
         medicinas: document.getElementById("medicinasFicha").value,
         observaciones: document.getElementById("observacionesFicha").value,
-        examenesAuxiliares: document.getElementById("examenesAuxiliaresFicha").value,
         tratamiento: document.getElementById("tratamientoFicha").value,
         idFicha: idFichaSeleccionada
     };

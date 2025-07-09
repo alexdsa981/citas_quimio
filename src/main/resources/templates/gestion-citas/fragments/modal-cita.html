@@ -7,122 +7,136 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalAgendarCitaLabel">Agendar Cita</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"  tabindex="-1"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"
+                            tabindex="-1"></button>
                 </div>
                 <div class="modal-body">
-
-
                     <form id="formCrearCita">
-                        <!-- Tab Content -->
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Fecha</label><span style="color:red;">*</span>
-                                <input type="date" class="form-control" id="fechaProgramadaCita"
-                                       th:value="${fechaInputActual}"
-                                       autocomplete="off">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Hora Programada</label><span style="color:red;">*</span>
-                                <input type="time" id="horaProgramadaCita" class="form-control" value="07:00" autocomplete="off">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Médico Tratante</label><span style="color:red;">*</span>
-                                <select class="form-select" name="idMedico" id="idMedicoCita">
-                                    <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                                        <option th:value="${medico.idPersona}"
-                                                th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
-                                    </th:block>
-                                </select>
-                            </div>
-                        </div>
 
-                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 row">
 
 
-                        <div id="contenedorPacienteModalCita">
-                            <div class="row g-3">
-                                <!-- Buscar Paciente por Nombre -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Paciente</label><span style="color:red;">*</span>
-                                    <div class="input-group">
-                                        <input type="text"
-                                               class="form-control"
-                                               id="pacienteSeleccionadoCita"
-                                               placeholder="Seleccione un paciente"
-                                               readonly
-                                               tabindex="-1"
-                                               onfocus="this.blur()"
-                                               style="user-select: none; pointer-events: none;">
-                                        <button type="button" class="btn btn-primary" onclick="abrirModalBuscarPaciente()">
-                                            Buscar Paciente
-                                        </button>
 
+
+                                <div id="contenedorPacienteModalCita">
+                                    <div class="row g-3">
+                                        <!-- Buscar Paciente por Nombre -->
+                                        <div class="col-md-12">
+                                            <label class="form-label">Paciente</label><span style="color:red;">*</span>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="pacienteSeleccionadoCita"
+                                                       placeholder="Seleccione un paciente"
+                                                       readonly
+                                                       tabindex="-1"
+                                                       onfocus="this.blur()"
+                                                       style="user-select: none; pointer-events: none;">
+                                                <button type="button" class="btn btn-primary" onclick="abrirModalBuscarPaciente()">
+                                                    Buscar Paciente
+                                                </button>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label">Tipo Documento</label>
+                                            <input type="text" id="tipoDocumentoCita" class="form-control bloqueable" readonly>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label">N° Documento</label>
+                                            <input type="text" id="documentoCita" class="form-control bloqueable" readonly>
+                                        </div>
+                                        <hr>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Apellido Paterno</label>
+                                            <input type="text" id="apellidoPaternoCita" class="form-control bloqueable" readonly>
+                                            <input id="idPaciente" type="hidden">
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Apellido Materno</label>
+                                            <input type="text" id="apellidoMaternoCita" class="form-control bloqueable" readonly>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label">Nombres</label>
+                                            <input type="text" id="nombresCita" class="form-control bloqueable" readonly>
+                                            <input type="hidden" id="nombreCompletoCita" readonly>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label">Fecha Nac.</label>
+                                            <input type="text" class="form-control bloqueable" id="fechaNacimientoCita" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Edad</label>
+                                            <input type="text" class="form-control bloqueable" id="edadCita" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Sexo</label>
+                                            <input type="text" class="form-control bloqueable" id="sexoCita" readonly>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Celular</label>
+                                            <input type="text" class="form-control bloqueable" id="celularCita" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Teléfono</label>
+                                            <input type="text" class="form-control bloqueable" id="telefonoCita" readonly>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label">Aseguradora</label>
+                                            <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 d-flex align-items-center mt-5">
+                                            <div class="form-check d-flex align-items-center" style="padding-left:0px !important;">
+                                                <label class="form-check-label me-2" for="checkCRP">
+                                                    CRP:
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" id="checkCRP" onclick="toggleCRP()"
+                                                       style="margin-left: 10px;" disabled="true">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
-                                    <label class="form-label">Tipo Documento</label>
-                                    <input type="text" id="tipoDocumentoCita" class="form-control bloqueable" readonly>
+
+
+
+                            </div>
+                            <div class="col-md-6 row">
+
+
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Fecha</label><span style="color:red;">*</span>
+                                        <input type="date" class="form-control" id="fechaProgramadaCita"
+                                               th:value="${fechaInputActual}"
+                                               autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Hora Programada</label><span style="color:red;">*</span>
+                                        <input type="time" id="horaProgramadaCita" class="form-control" value="07:00"
+                                               autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Médico Tratante</label><span style="color:red;">*</span>
+                                        <select class="form-select" name="idMedico" id="idMedicoCita">
+                                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                                                <option th:value="${medico.idPersona}"
+                                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">N° Documento</label>
-                                    <input type="text" id="documentoCita" class="form-control bloqueable" readonly>
-                                </div>
+
                                 <hr>
 
-                                <!-- Apellidos y nombres -->
-                                <div class="col-md-3">
-                                    <label class="form-label">Apellido Paterno</label>
-                                    <input type="text" id="apellidoPaternoCita" class="form-control bloqueable" readonly>
-                                    <input id="idPaciente" type="hidden">
-
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Apellido Materno</label>
-                                    <input type="text" id="apellidoMaternoCita" class="form-control bloqueable" readonly>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Nombres</label>
-                                    <input type="text" id="nombresCita" class="form-control bloqueable" readonly>
-                                    <input type="hidden" id="nombreCompletoCita" readonly>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">Fecha Nac.</label>
-                                    <input type="text" class="form-control bloqueable" id="fechaNacimientoCita" readonly>
-                                </div>
-                                <div class="col-md-1">
-                                    <label class="form-label">Edad</label>
-                                    <input type="text" class="form-control bloqueable" id="edadCita" readonly>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Sexo</label>
-                                    <input type="text" class="form-control bloqueable" id="sexoCita" readonly>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">Celular</label>
-                                    <input type="text" class="form-control bloqueable" id="celularCita" readonly>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control bloqueable" id="telefonoCita" readonly>
-                                </div>
-                                <div class="col-md-5">
-                                    <label class="form-label">Aseguradora</label>
-                                    <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
-                                </div>
-
-                                <div class="col-md-1 d-flex align-items-center mt-5">
-                                    <div class="form-check d-flex align-items-center" style="padding-left:0px !important;">
-                                        <label class="form-check-label me-2" for="checkCRP" >
-                                            CRP:
-                                        </label>
-                                        <input class="form-check-input" type="checkbox" id="checkCRP" onclick="toggleCRP()" style="margin-left: 10px;" disabled="true">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
                                     <div class="input-group">
                                         <select class="form-select " id="horasProtocoloCita" required disabled>
@@ -147,20 +161,25 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <label for="medicinasCita" class="form-label">Medicamentos</label>
-                                    <textarea id="medicinasCita" class="form-control " rows="2" placeholder="" disabled></textarea>
+                                    <textarea id="medicinasCita" class="form-control " rows="2" placeholder=""
+                                              disabled></textarea>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="observacionesCita" class="form-label">Observaciones del médico tratante</label>
-                                    <textarea id="observacionesCita" class="form-control " rows="2" placeholder="" disabled></textarea>
+                                <div class="col-md-12">
+                                    <label for="observacionesCita" class="form-label">Observaciones del médico
+                                        tratante</label>
+                                    <textarea id="observacionesCita" class="form-control " rows="2" placeholder=""
+                                              disabled></textarea>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <label for="tratamientoCita" class="form-label">Tratamiento</label>
-                                    <textarea id="tratamientoCita" class="form-control " rows="2" placeholder="" disabled></textarea>
+                                    <textarea id="tratamientoCita" class="form-control " rows="2" placeholder=""
+                                              disabled></textarea>
                                 </div>
+
 
 
 
