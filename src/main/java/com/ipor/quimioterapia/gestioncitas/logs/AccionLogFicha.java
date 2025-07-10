@@ -1,16 +1,19 @@
 package com.ipor.quimioterapia.gestioncitas.logs;
 
 public enum AccionLogFicha {
+    //FLUJO
     AGENDAR_CITA,
     ASIGNAR_CITA,
     INICIAR_ATENCION,
     FINALIZAR_ATENCION,
 
+    //BOTONES ESPECIALES
     RETROCEDER_CITA,
     EDITAR_CITA,
     DUPLICAR_CITA,
     CANCELAR_CITA,
 
+    //FUNCIONES DENTRO DE FICHA
     VISUALIZAR_CITA,
     CREAR_FUNCIONES_VITALES,
     EDITAR_FUNCIONES_VITALES,

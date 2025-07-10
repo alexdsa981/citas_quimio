@@ -12,7 +12,6 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.De
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.PacienteService;
 import com.ipor.quimioterapia.gestioncitas.logs.AccionLogFicha;
-import com.ipor.quimioterapia.gestioncitas.logs.LogFicha;
 import com.ipor.quimioterapia.gestioncitas.logs.LogService;
 import com.ipor.quimioterapia.recursos.cubiculo.Cubiculo;
 import com.ipor.quimioterapia.recursos.cubiculo.CubiculoService;
@@ -37,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
@@ -102,10 +102,11 @@ public class GestionCitaController {
             wsNotificacionesService.notificarActualizacionTabla();
 
 
-
+            //LOG AGENDAR CITA---------------------------------------------------
             Map<String, Object> valorNuevoMap = Map.of(
                     "paciente", fichaPaciente.getCita().getPaciente().getNombreCompleto(),
                     "fechaCita", fichaPaciente.getCita().getFecha(),
+                    "aseguradora", fichaPaciente.getCita().getAseguradora(),
                     "medico", fichaPaciente.getCita().getMedicoConsulta().getNombreCompleto(),
                     "horaCita", fichaPaciente.getCita().getHoraProgramada(),
                     "duracionProtocolo", fichaPaciente.getCita().getDuracionMinutosProtocolo(),
@@ -116,17 +117,17 @@ public class GestionCitaController {
 
             String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
             String descripcionLog = String.format(
-                    "El usuario %s agendó una cita para el paciente %s el %s.",
+                    "Cita agendada por el usuario %s para el paciente %s. Fecha y hora de registro: %s.",
                     usuarioService.getUsuarioLogeado().getNombre(),
                     paciente.getNombreCompleto(),
-                    LocalDateTime.now().format(formatter)
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
             );
 
+
             logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.AGENDAR_CITA, null, valorNuevoJson,descripcionLog);
-
-
+            //---------------------------------------------------
 
             return ResponseEntity.ok(Map.of("message", "Cita agendada correctamente"));
 
@@ -166,6 +167,38 @@ public class GestionCitaController {
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaAsignacion);
                 wsNotificacionesService.notificarActualizacionTabla();
 
+
+
+
+                //LOG ASIGNAR CITA---------------------------------------------------
+                Map<String, Object> valorNuevoMap = Map.of(
+                        "enfermera", fichaAsignacion.getAtencionQuimioterapia().getEnfermera().getNombreCompleto(),
+                        "cubiculo", fichaAsignacion.getAtencionQuimioterapia().getCubiculo().getCodigo(),
+                        "medico", fichaAsignacion.getAtencionQuimioterapia().getMedico().getNombreCompleto()
+                );
+
+                String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+                String descripcionLog = String.format(
+                        "El usuario %s realizó la asignación de personal y espacio al paciente %s: enfermera %s, médico %s y cubículo %s. Fecha y hora de la asignación: %s.",
+                        usuarioService.getUsuarioLogeado().getNombre(),
+                        fichaAsignacion.getCita().getPaciente().getNombreCompleto(),
+                        enfermera.getNombreCompleto(),
+                        medico.getNombreCompleto(),
+                        cubiculo.getCodigo(),
+                        LocalDateTime.now().format(formatter)
+                );
+
+
+                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaAsignacion,  AccionLogFicha.ASIGNAR_CITA, null, valorNuevoJson,descripcionLog);
+                //---------------------------------------------------
+
+
+
+
+
                 return ResponseEntity.ok(Map.of(
                         "success", true,
                         "message", fichaAsignacion.getAtencionQuimioterapia() != null
@@ -196,6 +229,14 @@ public class GestionCitaController {
                 ));
             }
 
+
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.EN_PROCESO) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "EN_PROCESO",
+                        "message", "La atención para este paciente ya se encuentra en proceso."
+                ));
+            }
+
             if (fichaPaciente.getCita().getEstado() == EstadoCita.ATENDIDO) {
                 return ResponseEntity.ok(Map.of(
                         "status", "YA_ATENDIDO",
@@ -209,27 +250,35 @@ public class GestionCitaController {
 
             wsNotificacionesService.notificarActualizacionTabla();
 
+
+
+
+
+            //LOG INICIAR ATENCION---------------------------------------------------
+            Map<String, Object> valorNuevoMap = Map.of(
+                    "horaInicio", fichaPaciente.getAtencionQuimioterapia().getHoraInicio()
+            );
+
+            String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+
+
+            String descripcionLog = String.format(
+                    "El usuario %s registró el inicio de la atención del paciente %s a las %s.",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    fichaPaciente.getAtencionQuimioterapia().getHoraInicio()
+            );
+
+
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.INICIAR_ATENCION, null, valorNuevoJson,descripcionLog);
+            //---------------------------------------------------
+
+
             return ResponseEntity.ok(Map.of(
                     "status", "INICIO_OK",
                     "message", "La atención ha sido iniciada correctamente."
             ));
 
-//            if (restriccionService.sePuedeIniciar(fichaPaciente)) {
-//                citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
-//                atencionQuimioterapiaService.iniciarProtocolo(iniciarProtocoloDTO.getHoraInicio(), fichaPaciente);
-//
-//                wsNotificacionesService.notificarActualizacionTabla();
-//
-//                return ResponseEntity.ok(Map.of(
-//                        "status", "INICIO_OK",
-//                        "message", "La atención ha sido iniciada correctamente."
-//                ));
-//            } else {
-//                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
-//                        "status", "EN_CURSO",
-//                        "message", "Ya existe una atención en curso en el mismo horario y cubículo. No se puede iniciar el protocolo."
-//                ));
-//            }
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
@@ -252,6 +301,34 @@ public class GestionCitaController {
                 atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), fichaPaciente);
                 //restriccionService.comprobarDespuesDeAtendido(fichaPaciente);
                 wsNotificacionesService.notificarActualizacionTabla();
+
+
+
+                //LOG FINALIZAR ATENCION---------------------------------------------------
+                Map<String, Object> valorNuevoMap = Map.of(
+                        "horaFin", fichaPaciente.getAtencionQuimioterapia().getHoraFin()
+                );
+
+                String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+
+
+                String descripcionLog = String.format(
+                        "El usuario %s registró el inicio de la atención del paciente %s a las %s.",
+                        usuarioService.getUsuarioLogeado().getNombre(),
+                        fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                        fichaPaciente.getAtencionQuimioterapia().getHoraFin()
+                );
+
+
+                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.FINALIZAR_ATENCION, null, valorNuevoJson,descripcionLog);
+                //---------------------------------------------------
+
+
+
+
+
+
+
 
                 return ResponseEntity.ok(Map.of(
                         "success", true,
@@ -285,6 +362,8 @@ public class GestionCitaController {
             Cita cita = fichaPaciente.getCita();
 
             EstadoCita estado = cita.getEstado();
+
+            String estadoAnterior = cita.getEstado().toString();
 
             // No retroceder si ya está en el estado más inicial
             if (estado == EstadoCita.NO_ASIGNADO) {
@@ -339,6 +418,42 @@ public class GestionCitaController {
             atencionQuimioterapiaService.save(atencionQuimioterapia);
             wsNotificacionesService.notificarActualizacionTabla();
 
+
+
+
+            //LOG FINALIZAR ATENCION---------------------------------------------------
+            String estadoActual = cita.getEstado().toString();
+            Map<String, Object> valorNuevoMap = Map.of(
+                    "estadoCita", estadoActual
+            );
+            Map<String, Object> valorAnteriorMap = Map.of(
+                    "estadoCita", estadoAnterior
+            );
+
+            String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+            String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
+
+
+            String descripcionLog = String.format(
+                    "El usuario %s retrocedió el estado de la cita del paciente %s a %s a las %s",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    fichaPaciente.getCita().getEstado(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            );
+
+
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.RETROCEDER_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+            //---------------------------------------------------
+
+
+
+
+
+
+
+
+
             return ResponseEntity.ok(Map.of(
                     "status", "CAMBIO_OK",
                     "message", "La atención fue retrocedida exitosamente al estado anterior."
@@ -383,6 +498,27 @@ public class GestionCitaController {
 
             // Si pasa las validaciones, continúa la reprogramación
             Medico medico = medicoService.getPorID(dto.getIdMedico());
+
+
+            //PARTE DE LOG--------------------------------
+            Map<String, Object> valorAnteriorMap = Map.of(
+                    "estadoCita", cita.getEstado().toString(),
+                    "aseguradora", cita.getAseguradora(),
+                    "fecha", cita.getFecha(),
+                    "horaProgramada", cita.getHoraProgramada(),
+                    "duracionMinutos", cita.getDuracionMinutosProtocolo(),
+                    "medico", cita.getMedicoConsulta().getNombreCompleto(),
+                    "medicina", fichaPaciente.getDetalleQuimioterapia().getMedicinas(),
+                    "observacion",fichaPaciente.getDetalleQuimioterapia().getObservaciones(),
+                    "tratamiento", fichaPaciente.getDetalleQuimioterapia().getTratamiento()
+            );
+            String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
+
+            //-------------------------------------------
+
+
+
+
             citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
 
             DetalleQuimioterapia detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
@@ -398,6 +534,39 @@ public class GestionCitaController {
 
             citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
             wsNotificacionesService.notificarActualizacionTabla();
+
+
+
+
+
+
+
+            //LOG EDITAR ATENCION---------------------------------------------------
+            Map<String, Object> valorNuevoMap = Map.of(
+                    "estadoCita", cita.getEstado().toString(),
+                    "aseguradora", cita.getAseguradora(),
+                    "fecha", cita.getFecha(),
+                    "horaProgramada", cita.getHoraProgramada(),
+                    "duracionMinutos", cita.getDuracionMinutosProtocolo(),
+                    "medico", cita.getMedicoConsulta().getNombreCompleto(),
+                    "medicina", fichaPaciente.getDetalleQuimioterapia().getMedicinas(),
+                    "observacion",fichaPaciente.getDetalleQuimioterapia().getObservaciones(),
+                    "tratamiento", fichaPaciente.getDetalleQuimioterapia().getTratamiento()
+            );
+            String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+
+
+            String descripcionLog = String.format(
+                    "El usuario %s editó la cita del paciente %s. Fecha y hora de la edición: %s.",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            );
+
+
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.EDITAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+            //---------------------------------------------------
+
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -417,13 +586,40 @@ public class GestionCitaController {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idficha);
             fichaPaciente.setIsActive(Boolean.FALSE);
+            String estadoAnterior = fichaPaciente.getCita().getEstado().toString();
             citaService.cambiarEstado(EstadoCita.CANCELADO, fichaPaciente);
+
+            String estadoActual = fichaPaciente.getCita().getEstado().toString();
             fichaPacienteService.save(fichaPaciente);
 
-            // restriccionService.comprobarDespuesDeCancelacion(fichaPaciente);
-
-
             wsNotificacionesService.notificarActualizacionTabla();
+
+            //LOG CANCELAR CITA----------------------------------------------
+            Map<String, Object> valorNuevoMap = Map.of(
+                    "estadoCita", estadoActual
+            );
+            Map<String, Object> valorAnteriorMap = Map.of(
+                    "estadoCita", estadoAnterior
+            );
+
+            String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+            String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
+
+
+            String descripcionLog = String.format(
+                    "El usuario %s canceló la cita del paciente %s a las %s",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            );
+
+
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.CANCELAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+            //---------------------------------------------------
+
+
+
+
 
             // El frontend espera que haya una propiedad "success"
             return ResponseEntity.ok(Map.of(
@@ -471,6 +667,58 @@ public class GestionCitaController {
             fichaPacienteService.save(fichaNueva);
 
             wsNotificacionesService.notificarActualizacionTabla();
+
+
+
+            //LOG DUPLICAR CITA----------------------------------------------
+            Map<String, Object> valorAnteriorMap = Map.of(
+                    "paciente", fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    "aseguradora", fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    "fechaCita", fichaNueva.getCita().getFecha(),
+                    "medico", fichaNueva.getCita().getMedicoConsulta().getNombreCompleto(),
+                    "horaCita", fichaNueva.getCita().getHoraProgramada(),
+                    "duracionProtocolo", fichaNueva.getCita().getDuracionMinutosProtocolo(),
+                    "medicinas", fichaNueva.getDetalleQuimioterapia().getMedicinas(),
+                    "tratamiento", fichaNueva.getDetalleQuimioterapia().getTratamiento(),
+                    "observacion", fichaNueva.getDetalleQuimioterapia().getObservaciones()
+            );
+
+            Map<String, Object> valorNuevoMap = Map.of(
+                    "paciente", fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    "aseguradora", fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    "fechaCita", fichaNueva.getCita().getFecha(),
+                    "medico", fichaNueva.getCita().getMedicoConsulta().getNombreCompleto(),
+                    "horaCita", fichaNueva.getCita().getHoraProgramada(),
+                    "duracionProtocolo", fichaNueva.getCita().getDuracionMinutosProtocolo(),
+                    "medicinas", fichaNueva.getDetalleQuimioterapia().getMedicinas(),
+                    "tratamiento", fichaNueva.getDetalleQuimioterapia().getTratamiento(),
+                    "observacion", fichaNueva.getDetalleQuimioterapia().getObservaciones()
+            );
+
+            String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+            String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
+
+
+            String descripcionDuplicacionLog = String.format(
+                    "El usuario %s duplicó la ficha del paciente %s el %s.",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    fichaActual.getCita().getPaciente().getNombreCompleto(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            );
+
+
+            String descripcionDuplicadoLog = String.format(
+                    "Esta ficha fue generada como duplicado de una cita anterior del paciente %s. Registrado por el usuario %s el %s.",
+                    fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            );
+
+
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaActual,  AccionLogFicha.DUPLICAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionDuplicacionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaNueva,  AccionLogFicha.DUPLICAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionDuplicadoLog);
+            //---------------------------------------------------
+
 
             return ResponseEntity.ok(Map.of(
                     "success", true,

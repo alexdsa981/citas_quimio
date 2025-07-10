@@ -33,7 +33,7 @@ public class LogService {
         logFicha.setUsuario(usuarioLogeado);
         logFicha.setAccion(String.valueOf(accion));
         logFicha.setFechaHora(LocalDateTime.now());
-        logFicha.setValorActual(valorActual);
+        logFicha.setValorAnterior(valorActual);
         logFicha.setValorNuevo(valorNuevo);
         logFicha.setDescripcion(descripcion);
         logFichaRepository.save(logFicha);

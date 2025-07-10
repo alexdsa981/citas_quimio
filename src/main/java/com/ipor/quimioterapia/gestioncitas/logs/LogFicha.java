@@ -31,7 +31,7 @@ public class LogFicha {
     private String accion; //especificar seccion cambiante ej: FuncionesVitales
 
     @Column(columnDefinition = "TEXT")
-    private String valorActual;
+    private String valorAnterior;
     @Column(columnDefinition = "TEXT")
     private String valorNuevo;
 
