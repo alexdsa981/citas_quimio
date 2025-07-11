@@ -27,13 +27,13 @@ public class LogService {
 
     //POR FICHA
 
-    public void saveDeFicha(Usuario usuarioLogeado, FichaPaciente fichaPaciente, AccionLogFicha accion, String valorActual, String valorNuevo ,String descripcion) {
+    public void saveDeFicha(Usuario usuarioLogeado, FichaPaciente fichaPaciente, AccionLogFicha accion, String valorAnterior, String valorNuevo ,String descripcion) {
         LogFicha logFicha = new LogFicha();
         logFicha.setFichaPaciente(fichaPaciente);
         logFicha.setUsuario(usuarioLogeado);
         logFicha.setAccion(String.valueOf(accion));
         logFicha.setFechaHora(LocalDateTime.now());
-        logFicha.setValorAnterior(valorActual);
+        logFicha.setValorAnterior(valorAnterior);
         logFicha.setValorNuevo(valorNuevo);
         logFicha.setDescripcion(descripcion);
         logFichaRepository.save(logFicha);

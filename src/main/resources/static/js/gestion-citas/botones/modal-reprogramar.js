@@ -160,7 +160,7 @@ function guardarReprogramacion() {
 
     };
 
-    fetch('/app/gestion-citas/boton/reprogramar', {
+    fetch('/app/gestion-citas/boton/editar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -23,7 +23,6 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.A
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.CitaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.recursos.personal.medico.MedicoService;
-import com.ipor.quimioterapia.usuario.Usuario;
 import com.ipor.quimioterapia.usuario.UsuarioService;
 import com.ipor.quimioterapia.usuario.rol.RolUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
@@ -158,8 +156,18 @@ public class GestionCitaController {
                 Medico medico = medicoService.getPorID(dto.getIdMedico());
                 Enfermera enfermera = enfermeraService.getPorID(dto.getIdEnfermera());
                 Cubiculo cubiculo = cubiculoService.getPorID(dto.getIdCubiculo());
-
                 boolean esNueva = fichaAsignacion.getAtencionQuimioterapia() == null;
+                String valorAnteriorJson = null;
+
+                if (!esNueva){
+                    Map<String, Object> valorAanteriorMap = Map.of(
+                            "enfermera", fichaAsignacion.getAtencionQuimioterapia().getEnfermera().getNombreCompleto(),
+                            "cubiculo", fichaAsignacion.getAtencionQuimioterapia().getCubiculo().getCodigo(),
+                            "medico", fichaAsignacion.getAtencionQuimioterapia().getMedico().getNombreCompleto()
+                    );
+                    valorAnteriorJson = objectMapper.writeValueAsString(valorAanteriorMap);
+                }
+
                 AtencionQuimioterapia resultado = atencionQuimioterapiaService.crearOActualizar(dto, fichaAsignacion, medico, enfermera, cubiculo);
                 if (esNueva) {
                     fichaAsignacion.setAtencionQuimioterapia(resultado);
@@ -167,13 +175,8 @@ public class GestionCitaController {
                 }
 
 
-
-
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaAsignacion);
                 wsNotificacionesService.notificarActualizacionTabla();
-
-
-
 
                 //LOG ASIGNAR CITA---------------------------------------------------
                 Map<String, Object> valorNuevoMap = Map.of(
@@ -197,7 +200,7 @@ public class GestionCitaController {
                 );
 
 
-                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaAsignacion,  AccionLogFicha.ASIGNAR_CITA, null, valorNuevoJson,descripcionLog);
+                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaAsignacion,  AccionLogFicha.ASIGNAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
                 //---------------------------------------------------
 
 
@@ -318,7 +321,7 @@ public class GestionCitaController {
 
 
                 String descripcionLog = String.format(
-                        "El usuario %s registró el inicio de la atención del paciente %s a las %s.",
+                        "El usuario %s registró la finalización de la atención del paciente %s a las %s.",
                         usuarioService.getUsuarioLogeado().getNombre(),
                         fichaPaciente.getCita().getPaciente().getNombreCompleto(),
                         fichaPaciente.getAtencionQuimioterapia().getHoraFin()
@@ -327,12 +330,6 @@ public class GestionCitaController {
 
                 logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.FINALIZAR_ATENCION, null, valorNuevoJson,descripcionLog);
                 //---------------------------------------------------
-
-
-
-
-
-
 
 
                 return ResponseEntity.ok(Map.of(
@@ -379,7 +376,7 @@ public class GestionCitaController {
             }
 
             if (cita.getEstado() == EstadoCita.ATENDIDO) {
-                Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
+                //Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
 
 //                if (idRol != 2 && idRol != 3) {
 //                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
@@ -395,7 +392,7 @@ public class GestionCitaController {
 
 
             } else if (cita.getEstado() == EstadoCita.EN_PROCESO) {
-                Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
+                //Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
 
                 // Borrar horas
                 atencionQuimioterapia.setHoraInicio(null);
@@ -410,7 +407,6 @@ public class GestionCitaController {
                 // Cambiar estado y guardar correctamente
                 citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
 
-                //  restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
             }
 
             // Guardar solo la atención, la cita ya fue guardada en cambiarEstado
@@ -467,7 +463,7 @@ public class GestionCitaController {
     }
 
 
-    @PostMapping("/reprogramar")
+    @PostMapping("/editar")
     public ResponseEntity<?> reprogramarCita(@RequestBody ReprogramacionDTO dto) {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
@@ -518,7 +514,7 @@ public class GestionCitaController {
 
 
 
-            citaService.reprogramar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
+            citaService.editar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
 
             DetalleQuimioterapia detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
             detalleQuimioterapia.setObservaciones(dto.observaciones);
@@ -526,8 +522,6 @@ public class GestionCitaController {
             detalleQuimioterapia.setMedicinas(dto.medicamentos);
             detalleQuimioterapiaService.save(detalleQuimioterapia);
 
-
-            citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
             wsNotificacionesService.notificarActualizacionTabla();
 
 
@@ -669,20 +663,21 @@ public class GestionCitaController {
 
             //LOG DUPLICAR CITA----------------------------------------------
             Map<String, Object> valorAnteriorMap = Map.of(
-                    "paciente", fichaNueva.getCita().getPaciente().getNombreCompleto(),
-                    "aseguradora", fichaNueva.getCita().getPaciente().getNombreCompleto(),
-                    "fechaCita", fichaNueva.getCita().getFecha(),
-                    "medico", fichaNueva.getCita().getMedicoConsulta().getNombreCompleto(),
-                    "horaCita", fichaNueva.getCita().getHoraProgramada(),
-                    "duracionProtocolo", fichaNueva.getCita().getDuracionMinutosProtocolo(),
-                    "medicinas", fichaNueva.getDetalleQuimioterapia().getMedicinas(),
-                    "tratamiento", fichaNueva.getDetalleQuimioterapia().getTratamiento(),
-                    "observacion", fichaNueva.getDetalleQuimioterapia().getObservaciones()
+                    "paciente", fichaActual.getCita().getPaciente().getNombreCompleto(),
+                    "aseguradora", fichaActual.getCita().getAseguradora(),
+                    "fechaCita", fichaActual.getCita().getFecha(),
+                    "medico", fichaActual.getCita().getMedicoConsulta().getNombreCompleto(),
+                    "horaCita", fichaActual.getCita().getHoraProgramada(),
+                    "duracionProtocolo", fichaActual.getCita().getDuracionMinutosProtocolo(),
+                    "medicinas", fichaActual.getDetalleQuimioterapia().getMedicinas(),
+                    "tratamiento", fichaActual.getDetalleQuimioterapia().getTratamiento(),
+                    "observacion", fichaActual.getDetalleQuimioterapia().getObservaciones()
             );
+            String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
 
             Map<String, Object> valorNuevoMap = Map.of(
                     "paciente", fichaNueva.getCita().getPaciente().getNombreCompleto(),
-                    "aseguradora", fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    "aseguradora", fichaNueva.getCita().getAseguradora(),
                     "fechaCita", fichaNueva.getCita().getFecha(),
                     "medico", fichaNueva.getCita().getMedicoConsulta().getNombreCompleto(),
                     "horaCita", fichaNueva.getCita().getHoraProgramada(),
@@ -693,7 +688,6 @@ public class GestionCitaController {
             );
 
             String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
-            String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
 
 
             String descripcionDuplicacionLog = String.format(
