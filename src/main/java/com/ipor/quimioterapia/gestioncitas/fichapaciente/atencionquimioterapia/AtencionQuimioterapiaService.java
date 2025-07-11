@@ -28,11 +28,10 @@ public class AtencionQuimioterapiaService {
     ) {
         AtencionQuimioterapia atencion;
 
-        if (fichaPaciente.getAtencionQuimioterapia() != null) {
-            // Ya existe, actualizamos la existente
-            atencion = fichaPaciente.getAtencionQuimioterapia();
-        } else {
+        if (fichaPaciente.getAtencionQuimioterapia() == null) {
             atencion = new AtencionQuimioterapia();
+        } else {
+            atencion = fichaPaciente.getAtencionQuimioterapia();
         }
 
         atencion.setMedico(medico);
@@ -62,23 +61,19 @@ public class AtencionQuimioterapiaService {
         return atencionQuimioterapiaRepository.findById(id).get();
     }
 
-    public void reprogramarCita(FichaPaciente fichaPaciente) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
-        atencionQuimioterapia.setHoraInicio(null);
-        atencionQuimioterapia.setHoraFin(null);
-        atencionQuimioterapia.setMedico(null);
-        atencionQuimioterapia.setEnfermera(null);
-        atencionQuimioterapia.setCubiculo(null);
-        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
-    }
 
 
-    public void pendienteProtocolo(FichaPaciente fichaPaciente) {
-        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
-        atencionQuimioterapia.setHoraFin(null);
-        atencionQuimioterapia.setHoraInicio(null);
-        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
-    }
+//    public void reprogramarCita(FichaPaciente fichaPaciente) {
+//        AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
+//        atencionQuimioterapia.setHoraInicio(null);
+//        atencionQuimioterapia.setHoraFin(null);
+//        atencionQuimioterapia.setMedico(null);
+//        atencionQuimioterapia.setEnfermera(null);
+//        atencionQuimioterapia.setCubiculo(null);
+//        atencionQuimioterapiaRepository.save(atencionQuimioterapia);
+//    }
+
+
 
     public void iniciarProtocolo(LocalTime horaInicio, FichaPaciente fichaPaciente) {
         AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();

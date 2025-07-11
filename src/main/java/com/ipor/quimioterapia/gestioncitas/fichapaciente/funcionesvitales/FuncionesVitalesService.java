@@ -20,12 +20,13 @@ public class FuncionesVitalesService {
 
 
 
-    public void setDatoAFicha(FuncionesVitalesDTO dto, FichaPaciente fichaPaciente) {
-        FuncionesVitales fv = fichaPaciente.getFuncionesVitales();
+    public FuncionesVitales setDatoAFicha(FuncionesVitalesDTO dto, FichaPaciente fichaPaciente) {
+        FuncionesVitales fv;
 
-        if (fv == null) {
+        if (fichaPaciente.getFuncionesVitales() == null) {
             fv = new FuncionesVitales();
-            fichaPaciente.setFuncionesVitales(fv);
+        } else {
+            fv = fichaPaciente.getFuncionesVitales();
         }
 
         fv.setPesoKg(dto.getPeso());
@@ -37,8 +38,8 @@ public class FuncionesVitalesService {
         fv.setTemperatura(dto.getTemperatura());
         fv.setSaturacionOxigeno(dto.getSaturacionOxigeno());
         fv.setSuperficieCorporal(dto.getSuperficieCorporal());
-        funcionesVitalesRepository.save(fv);
-        fichaPacienteRepository.save(fichaPaciente);
+
+        return funcionesVitalesRepository.save(fv);
     }
 
 

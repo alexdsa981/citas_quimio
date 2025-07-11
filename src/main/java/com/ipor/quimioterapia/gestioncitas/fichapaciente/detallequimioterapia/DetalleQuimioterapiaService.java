@@ -17,19 +17,22 @@ public class DetalleQuimioterapiaService {
     DetalleQuimioterapiaRepository detalleQuimioterapiaRepository;
 
     public DetalleQuimioterapia guardar(DetalleQuimioterapiaDTO dto, FichaPaciente fichaPaciente) {
-        DetalleQuimioterapia detalleQuimioterapia;
+        DetalleQuimioterapia detalle;
+
         if (fichaPaciente.getDetalleQuimioterapia() == null){
-            detalleQuimioterapia = new DetalleQuimioterapia();
-        }else{
-            detalleQuimioterapia = fichaPaciente.getDetalleQuimioterapia();
+            detalle = new DetalleQuimioterapia();
+        } else {
+            detalle = fichaPaciente.getDetalleQuimioterapia();
         }
-        detalleQuimioterapia.setMedicinas(dto.getMedicinas());
-        detalleQuimioterapia.setTratamiento(dto.getTratamiento());
-        detalleQuimioterapia.setObservaciones(dto.getObservaciones());
-        detalleQuimioterapia.setExamenesAuxiliares(dto.getExamenesAuxiliares());
-        detalleQuimioterapiaRepository.save(detalleQuimioterapia);
-        return detalleQuimioterapia;
+
+        detalle.setMedicinas(dto.getMedicinas());
+        detalle.setTratamiento(dto.getTratamiento());
+        detalle.setObservaciones(dto.getObservaciones());
+        detalle.setExamenesAuxiliares(dto.getExamenesAuxiliares());
+
+        return detalleQuimioterapiaRepository.save(detalle);
     }
+
 
     public void save(DetalleQuimioterapia detalleQuimioterapia){
         detalleQuimioterapiaRepository.save(detalleQuimioterapia);

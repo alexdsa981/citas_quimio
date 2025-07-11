@@ -28,13 +28,20 @@ public class DetalleQuimioterapiaController {
     public ResponseEntity<Map<String, Object>> guardarDetalleQuimioterapia(@RequestBody DetalleQuimioterapiaDTO dto) {
         FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
 
-        fichaPaciente.setDetalleQuimioterapia(detalleQuimioterapiaService.guardar(dto, fichaPaciente));
+        boolean esNuevo = (fichaPaciente.getDetalleQuimioterapia() == null);
 
-        fichaPacienteService.save(fichaPaciente);
+        DetalleQuimioterapia detalle = detalleQuimioterapiaService.guardar(dto, fichaPaciente);
+
+        if (esNuevo) {
+            fichaPaciente.setDetalleQuimioterapia(detalle);
+            fichaPacienteService.save(fichaPaciente);
+        }
+
         Map<String, Object> response = new HashMap<>();
-        response.put("mensaje", "Signos vitales guardados correctamente");
+        response.put("mensaje", "Detalle guardado correctamente");
         return ResponseEntity.ok(response);
     }
+
 
 
 }

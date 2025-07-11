@@ -159,11 +159,16 @@ public class GestionCitaController {
                 Enfermera enfermera = enfermeraService.getPorID(dto.getIdEnfermera());
                 Cubiculo cubiculo = cubiculoService.getPorID(dto.getIdCubiculo());
 
+                boolean esNueva = fichaAsignacion.getAtencionQuimioterapia() == null;
                 AtencionQuimioterapia resultado = atencionQuimioterapiaService.crearOActualizar(dto, fichaAsignacion, medico, enfermera, cubiculo);
-                fichaAsignacion.setAtencionQuimioterapia(resultado);
-                fichaPacienteService.save(fichaAsignacion);
+                if (esNueva) {
+                    fichaAsignacion.setAtencionQuimioterapia(resultado);
+                    fichaPacienteService.save(fichaAsignacion);
+                }
 
-                //restriccionService.restriccionesAsignar(fichaAsignacion);
+
+
+
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaAsignacion);
                 wsNotificacionesService.notificarActualizacionTabla();
 
@@ -361,12 +366,11 @@ public class GestionCitaController {
             AtencionQuimioterapia atencionQuimioterapia = fichaPaciente.getAtencionQuimioterapia();
             Cita cita = fichaPaciente.getCita();
 
-            EstadoCita estado = cita.getEstado();
 
             String estadoAnterior = cita.getEstado().toString();
 
             // No retroceder si ya está en el estado más inicial
-            if (estado == EstadoCita.NO_ASIGNADO) {
+            if (cita.getEstado() == EstadoCita.NO_ASIGNADO) {
 
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
                         "status", "NO_ASIGNADO",
@@ -374,7 +378,7 @@ public class GestionCitaController {
                 ));
             }
 
-            if (estado == EstadoCita.ATENDIDO) {
+            if (cita.getEstado() == EstadoCita.ATENDIDO) {
                 Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
 
 //                if (idRol != 2 && idRol != 3) {
@@ -387,13 +391,10 @@ public class GestionCitaController {
                 // Borrar horas
                 atencionQuimioterapia.setHoraFin(null);
 
-                // Cambiar estado explícitamente antes de guardar
                 citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
 
-                // Evaluar conflictos
-                //  restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
 
-            } else if (estado == EstadoCita.EN_PROCESO) {
+            } else if (cita.getEstado() == EstadoCita.EN_PROCESO) {
                 Long idRol = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado()).getRolUsuario().getId();
 
                 // Borrar horas
@@ -401,10 +402,8 @@ public class GestionCitaController {
                 // Cambiar estado explícitamente antes de guardar
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
 
-                // Evaluar conflictos
-                //  restriccionService.comprobarDespuesDeRetroceso(fichaPaciente);
             }
-            else if (estado == EstadoCita.PENDIENTE || estado == EstadoCita.EN_CONFLICTO) {
+            else if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
                 atencionQuimioterapia.setCubiculo(null);
                 atencionQuimioterapia.setEnfermera(null);
                 atencionQuimioterapia.setMedico(null);
@@ -527,10 +526,6 @@ public class GestionCitaController {
             detalleQuimioterapia.setMedicinas(dto.medicamentos);
             detalleQuimioterapiaService.save(detalleQuimioterapia);
 
-            if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
-                atencionQuimioterapiaService.reprogramarCita(fichaPaciente);
-                //  restriccionService.restriccionesReprogramacion(fichaPaciente);
-            }
 
             citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
             wsNotificacionesService.notificarActualizacionTabla();
@@ -586,7 +581,9 @@ public class GestionCitaController {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idficha);
             fichaPaciente.setIsActive(Boolean.FALSE);
+
             String estadoAnterior = fichaPaciente.getCita().getEstado().toString();
+
             citaService.cambiarEstado(EstadoCita.CANCELADO, fichaPaciente);
 
             String estadoActual = fichaPaciente.getCita().getEstado().toString();

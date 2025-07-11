@@ -27,7 +27,15 @@ public class FuncionesVitalesController {
     @PostMapping("/guardar")
     public ResponseEntity<Map<String, Object>> guardarSignosVitales(@RequestBody FuncionesVitalesDTO dto) {
         FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
-        funcionesVitalesService.setDatoAFicha(dto, fichaPaciente);
+
+        boolean esNuevo = (fichaPaciente.getFuncionesVitales() == null);
+
+        FuncionesVitales fv = funcionesVitalesService.setDatoAFicha(dto, fichaPaciente);
+
+        if (esNuevo) {
+            fichaPaciente.setFuncionesVitales(fv);
+            fichaPacienteService.save(fichaPaciente);
+        }
 
         Map<String, Object> response = new HashMap<>();
         response.put("mensaje", "Signos vitales guardados correctamente");

@@ -54,7 +54,7 @@ public class CieService {
 
         Set<Long> idsNuevos = new HashSet<>(listaCie);
 
-        // Agregar nuevos que no estén aún
+        // Agregar nuevos
         for (Long idCie : idsNuevos) {
             if (!idsActuales.contains(idCie)) {
                 Cie cie = getPorID(idCie);
@@ -69,10 +69,11 @@ public class CieService {
         if (!idsNuevos.isEmpty()) {
             detalleCieRepository.deleteByFichaPacienteIdAndCieIdNotIn(fichaPaciente.getId(), listaCie);
         } else {
-            // Si no se envió ninguno, borra todos los existentes
             detalleCieRepository.deleteAll(actuales);
         }
-        return fichaPaciente.getDetalleCies();
+
+        // Consulta limpia y actualizada
+        return detalleCieRepository.findByFichaPacienteId(fichaPaciente.getId());
     }
 
 

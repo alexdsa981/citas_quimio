@@ -19,11 +19,6 @@ public class FuncionesVitales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@JsonIgnore
-    //@ManyToOne
-    //@JoinColumn(name = "id_ficha_paciente")
-    //private FichaPaciente fichaPaciente;
-
 
     private LocalDate fecha;
     private LocalTime hora;
