@@ -30,11 +30,13 @@ public class LogFicha {
 
     private String accion; //especificar seccion cambiante ej: FuncionesVitales
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String valorAnterior;
-    @Column(columnDefinition = "TEXT")
+
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String valorNuevo;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String descripcion; // Opcional
 
     @PrePersist

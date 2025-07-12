@@ -22,7 +22,7 @@ public class LogGlobal {
     private Usuario usuario;
 
 
-    private String evento; // Ej: "INICIO_ATENCION"
+    private String evento;
 
     private String detalle;
 

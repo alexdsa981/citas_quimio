@@ -2,6 +2,8 @@ package com.ipor.quimioterapia.usuario.login;
 
 import com.ipor.quimioterapia.core.security.ConstantesSeguridad;
 import com.ipor.quimioterapia.core.security.JwtTokenProvider;
+import com.ipor.quimioterapia.gestioncitas.logs.AccionLogGlobal;
+import com.ipor.quimioterapia.gestioncitas.logs.LogService;
 import com.ipor.quimioterapia.usuario.Usuario;
 import com.ipor.quimioterapia.usuario.UsuarioService;
 import com.ipor.quimioterapia.spring.usuario.SpringUserService;
@@ -22,6 +24,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -36,6 +40,8 @@ public class LoginService {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    LogService logService;
 
 
     public ResponseEntity<Void> logearUsuarioAlSistema(String username, String password, HttpServletResponse response) throws IOException {
@@ -121,6 +127,15 @@ public class LoginService {
                 System.out.println("Redirigiendo a /citas");
                 response.sendRedirect("/citas");
             }
+
+
+            String descripcion = String.format("El usuario %s inició sesión el %s.",
+                    usuarioLocal.getNombre(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))
+            );
+
+            logService.saveDeGlobal(usuarioLocal, AccionLogGlobal.INICIO_SESION, descripcion);
+
 
             return ResponseEntity.ok().build();
 

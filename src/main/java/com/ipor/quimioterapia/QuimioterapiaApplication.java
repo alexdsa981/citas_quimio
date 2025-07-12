@@ -10,4 +10,5 @@ public class QuimioterapiaApplication {
 		SpringApplication.run(QuimioterapiaApplication.class, args);
 	}
 
+
 }

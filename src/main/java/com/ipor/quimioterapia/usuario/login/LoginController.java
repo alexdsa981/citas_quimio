@@ -1,6 +1,8 @@
 package com.ipor.quimioterapia.usuario.login;
 
 import com.ipor.quimioterapia.core.other.CookieUtil;
+import com.ipor.quimioterapia.gestioncitas.logs.AccionLogGlobal;
+import com.ipor.quimioterapia.gestioncitas.logs.LogService;
 import com.ipor.quimioterapia.usuario.Usuario;
 import com.ipor.quimioterapia.usuario.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/app")
@@ -22,6 +26,8 @@ public class LoginController {
     UsuarioService usuarioService;
     @Autowired
     LoginService loginService;
+    @Autowired
+    LogService logService;
 
 
     @PostMapping("/login")
@@ -31,6 +37,15 @@ public class LoginController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) throws IOException {
+        Usuario usuario = usuarioService.getUsuarioLogeado();
+
+        String descripcion = String.format("El usuario %s cerró sesión el %s.",
+                usuario.getNombre(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))
+        );
+
+        logService.saveDeGlobal(usuario, AccionLogGlobal.CIERRE_SESION, descripcion);
+
         CookieUtil.removeJwtCookie(response);
         response.sendRedirect("/login");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

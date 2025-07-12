@@ -39,6 +39,15 @@ public class LogService {
         logFichaRepository.save(logFicha);
     }
 
+    public void saveDeGlobal(Usuario usuarioLogeado, AccionLogGlobal accion, String descripcion){
+        LogGlobal logGlobal = new LogGlobal();
+        logGlobal.setDetalle(descripcion);
+        logGlobal.setEvento(String.valueOf(accion));
+        logGlobal.setUsuario(usuarioLogeado);
+        logGlobal.setFechaHora(LocalDateTime.now());
+        logGlobalRepository.save(logGlobal);
+    }
+
     public List<LogFicha> getListaFicha(Long idFicha) {
         return logFichaRepository.findByFichaPaciente_Id(idFicha);
     }

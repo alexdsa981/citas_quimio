@@ -1,6 +1,8 @@
 package com.ipor.quimioterapia.usuario;
 
 
+import com.ipor.quimioterapia.gestioncitas.logs.AccionLogGlobal;
+import com.ipor.quimioterapia.gestioncitas.logs.LogService;
 import com.ipor.quimioterapia.spring.usuario.SpringUserService;
 import com.ipor.quimioterapia.spring.usuario.UsuarioSpringDTO;
 import com.ipor.quimioterapia.usuario.rol.RolUsuario;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +33,8 @@ public class UsuariosController {
     private UsuarioService usuarioService;
     @Autowired
     private SpringUserService springUserService;
+    @Autowired
+    LogService logService;
 
     // Mostrar la lista de usuarios
     @GetMapping("/activos")
@@ -79,8 +85,20 @@ public class UsuariosController {
                 usuario.setIsSpringUser(Boolean.TRUE);
                 usuario.setIsActive(Boolean.TRUE);
                 usuario.setChangedPass(Boolean.FALSE);
-
                 usuarioService.guardarUsuario(usuario);
+
+
+                //LOG GLOBAL----------------------
+                String descripcion = String.format("El usuario %s añadió la cuenta (ya existente localmente) de %s. Fecha: %s",
+                        usuarioService.getUsuarioLogeado().getNombre(),
+                        usuario.getNombre(),
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))
+                );
+
+                logService.saveDeGlobal(usuarioService.getUsuarioLogeado(), AccionLogGlobal.AGREGA_USUARIO, descripcion);
+                //-------------------------------
+
+
                 return ResponseEntity.ok("Usuario actualizado correctamente");
             } else {
                 usuario = new Usuario();
@@ -97,6 +115,18 @@ public class UsuariosController {
                 usuario.setChangedPass(Boolean.FALSE);
 
                 usuarioService.guardarUsuario(usuario);
+
+                //LOG GLOBAL----------------------
+                String descripcion = String.format("El usuario %s añadió la cuenta (no existente localmente) de %s. Fecha: %s",
+                        usuarioService.getUsuarioLogeado().getNombre(),
+                        usuario.getNombre(),
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))
+                );
+
+                logService.saveDeGlobal(usuarioService.getUsuarioLogeado(), AccionLogGlobal.AGREGA_USUARIO, descripcion);
+                //-------------------------------
+
+
                 return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado correctamente");
             }
 
@@ -128,11 +158,32 @@ public class UsuariosController {
                 usuario.setPassword(password);
             }
 
+            String rolAnterior = usuarioService.getUsuarioPorId(id).getRolUsuario().getNombre();
+
             usuario.setNombre(nombre.toUpperCase());
             usuario.setRolUsuario(usuarioService.getRolPorId(rolId));
             usuario.setIsActive(Boolean.TRUE);
 
             usuarioService.actualizarUsuario(id, usuario);
+
+
+
+
+
+            //LOG GLOBAL----------------------
+            String descripcion = String.format("El usuario %s actualizó la cuenta de %s. Fecha: %s Rol: %s -> %s",
+                    usuarioService.getUsuarioLogeado().getNombre(),
+                    usuarioService.getUsuarioPorId(id).getNombre(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm")),
+                    rolAnterior,
+                    usuarioService.getUsuarioPorId(id).getRolUsuario().getNombre()
+            );
+
+            logService.saveDeGlobal(usuarioService.getUsuarioLogeado(), AccionLogGlobal.ACTUALIZA_USUARIO, descripcion);
+            //-------------------------------
+
+
+
 
             return ResponseEntity.ok("Usuario actualizado correctamente");
         } catch (DataIntegrityViolationException e) {
@@ -152,6 +203,20 @@ public class UsuariosController {
 
             if (!Objects.equals(idUsuarioLogeado, id) && id != 1) {
                 usuarioService.desactivarUsuario(id);
+
+
+                //LOG GLOBAL----------------------
+                String descripcion = String.format("El usuario %s desactivó la cuenta de %s. Fecha: %s",
+                        usuarioService.getUsuarioLogeado().getNombre(),
+                        usuarioService.getUsuarioPorId(id).getNombre(),
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))
+                );
+
+                logService.saveDeGlobal(usuarioService.getUsuarioLogeado(), AccionLogGlobal.DESACTIVA_USUARIO, descripcion);
+                //-------------------------------
+
+
+
                 return ResponseEntity.ok("Usuario desactivado correctamente");
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No puedes desactivarte a ti mismo o al usuario admin");

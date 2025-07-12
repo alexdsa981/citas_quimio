@@ -18,7 +18,6 @@ import com.ipor.quimioterapia.recursos.cubiculo.CubiculoService;
 import com.ipor.quimioterapia.recursos.personal.enfermera.Enfermera;
 import com.ipor.quimioterapia.recursos.personal.enfermera.EnfermeraService;
 import com.ipor.quimioterapia.recursos.personal.medico.Medico;
-//import com.ipor.quimioterapia.restricciones.RestriccionService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapiaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.CitaService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
@@ -49,8 +48,6 @@ public class GestionCitaController {
     AtencionQuimioterapiaService atencionQuimioterapiaService;
     @Autowired
     MedicoService medicoService;
-    //@Autowired
-    //RestriccionService restriccionService;
     @Autowired
     CubiculoService cubiculoService;
     @Autowired
