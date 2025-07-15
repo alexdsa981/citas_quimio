@@ -129,6 +129,7 @@ function llenarTablaFichas(fichas) {
     const fechaActual = document.getElementById("fechaActual").value;
     const hoy = new Date(fechaActual);
 
+
     document.querySelectorAll("tr[data-fecha-cita]").forEach(tr => {
         const fechaCita = tr.getAttribute("data-fecha-cita");
         const fecha = new Date(fechaCita);
@@ -138,23 +139,28 @@ function llenarTablaFichas(fichas) {
         }
 
         tr.addEventListener("click", () => {
+            // Siempre quitamos bloqueos al inicio
             document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
                 btn.classList.remove("bloqueado");
             });
 
-            if (fecha < hoy) {
-                document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                    btn.classList.add("bloqueado");
-                });
-            } else if (fecha > hoy) {
-                document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                    if (!btn.classList.contains("habilitado-futuro")) {
+            // Solo aplicar bloqueo si NO es administrador (id ≠ 3)
+            if (idRolUsuario !== 3) {
+                if (fecha < hoy) {
+                    document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
                         btn.classList.add("bloqueado");
-                    }
-                });
+                    });
+                } else if (fecha > hoy) {
+                    document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
+                        if (!btn.classList.contains("habilitado-futuro")) {
+                            btn.classList.add("bloqueado");
+                        }
+                    });
+                }
             }
         });
     });
+
 
     aplicarFiltrosOtros();
 }

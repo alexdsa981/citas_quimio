@@ -46,19 +46,23 @@ public class FuncionesVitalesController {
             // LOG FUNCIONES VITALES ---------------------------------------------------
             String valorAnteriorJson = null;
             if (!esNuevo) {
+                FuncionesVitales fv = fichaPaciente.getFuncionesVitales();
+
                 Map<String, Object> valorAnteriorMap = Map.of(
-                        "presDiast", fichaPaciente.getFuncionesVitales().getPresionDiastolica().toString(),
-                        "presSist", fichaPaciente.getFuncionesVitales().getPresionSistolica().toString(),
-                        "frecResp", fichaPaciente.getFuncionesVitales().getFrecuenciaRespiratoria().toString(),
-                        "frecCard", fichaPaciente.getFuncionesVitales().getFrecuenciaCardiaca().toString(),
-                        "temperatura", fichaPaciente.getFuncionesVitales().getTemperatura().toString(),
-                        "satOxig", fichaPaciente.getFuncionesVitales().getSaturacionOxigeno().toString(),
-                        "pesoKG", fichaPaciente.getFuncionesVitales().getPesoKg().toString(),
-                        "tallaCM", fichaPaciente.getFuncionesVitales().getTallaCm().toString(),
-                        "subCorp", fichaPaciente.getFuncionesVitales().getSuperficieCorporal().toString()
+                        "presDiast", fv.getPresionDiastolica() != null ? fv.getPresionDiastolica().toString() : "0",
+                        "presSist", fv.getPresionSistolica() != null ? fv.getPresionSistolica().toString() : "0",
+                        "frecResp", fv.getFrecuenciaRespiratoria() != null ? fv.getFrecuenciaRespiratoria().toString() : "0",
+                        "frecCard", fv.getFrecuenciaCardiaca() != null ? fv.getFrecuenciaCardiaca().toString() : "0",
+                        "temperatura", fv.getTemperatura() != null ? fv.getTemperatura().toString() : "0",
+                        "satOxig", fv.getSaturacionOxigeno() != null ? fv.getSaturacionOxigeno().toString() : "0",
+                        "pesoKG", fv.getPesoKg() != null ? fv.getPesoKg().toString() : "0",
+                        "tallaCM", fv.getTallaCm() != null ? fv.getTallaCm().toString() : "0",
+                        "subCorp", fv.getSuperficieCorporal() != null ? fv.getSuperficieCorporal().toString() : "0"
                 );
+
                 valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
             }
+
 
             FuncionesVitales fv = funcionesVitalesService.setDatoAFicha(dto, fichaPaciente);
 
@@ -69,16 +73,17 @@ public class FuncionesVitalesController {
 
             // LOG NUEVOS DATOS ---------------------------------------------------
             Map<String, Object> valorNuevoMap = Map.of(
-                    "presDiast", fichaPaciente.getFuncionesVitales().getPresionDiastolica().toString(),
-                    "presSist", fichaPaciente.getFuncionesVitales().getPresionSistolica().toString(),
-                    "frecResp", fichaPaciente.getFuncionesVitales().getFrecuenciaRespiratoria().toString(),
-                    "frecCard", fichaPaciente.getFuncionesVitales().getFrecuenciaCardiaca().toString(),
-                    "temperatura", fichaPaciente.getFuncionesVitales().getTemperatura().toString(),
-                    "satOxig", fichaPaciente.getFuncionesVitales().getSaturacionOxigeno().toString(),
-                    "pesoKG", fichaPaciente.getFuncionesVitales().getPesoKg().toString(),
-                    "tallaCM", fichaPaciente.getFuncionesVitales().getTallaCm().toString(),
-                    "subCorp", fichaPaciente.getFuncionesVitales().getSuperficieCorporal().toString()
+                    "presDiast", fv.getPresionDiastolica() != null ? fv.getPresionDiastolica().toString() : "0",
+                    "presSist", fv.getPresionSistolica() != null ? fv.getPresionSistolica().toString() : "0",
+                    "frecResp", fv.getFrecuenciaRespiratoria() != null ? fv.getFrecuenciaRespiratoria().toString() : "0",
+                    "frecCard", fv.getFrecuenciaCardiaca() != null ? fv.getFrecuenciaCardiaca().toString() : "0",
+                    "temperatura", fv.getTemperatura() != null ? fv.getTemperatura().toString() : "0",
+                    "satOxig", fv.getSaturacionOxigeno() != null ? fv.getSaturacionOxigeno().toString() : "0",
+                    "pesoKG", fv.getPesoKg() != null ? fv.getPesoKg().toString() : "0",
+                    "tallaCM", fv.getTallaCm() != null ? fv.getTallaCm().toString() : "0",
+                    "subCorp", fv.getSuperficieCorporal() != null ? fv.getSuperficieCorporal().toString() : "0"
             );
+
 
             String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
 
@@ -97,6 +102,7 @@ public class FuncionesVitalesController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("mensaje", "Error al guardar signos vitales: " + e.getMessage())
             );

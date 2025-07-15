@@ -39,6 +39,7 @@ public class GlobalAdviceController {
         if (authentication != null && authentication.isAuthenticated() &&
                 !authentication.getPrincipal().equals("anonymousUser")) {
             Usuario usuario = usuarioService.getUsuarioPorId(usuarioService.getIDdeUsuarioLogeado());
+            model.addAttribute("idRolUsuario", usuario.getRolUsuario().getId());
             model.addAttribute("idUsuarioLogeado", usuario.getId());
             model.addAttribute("nombreUsuario", usuario.getNombre());
             model.addAttribute("currentPath", request.getRequestURI());

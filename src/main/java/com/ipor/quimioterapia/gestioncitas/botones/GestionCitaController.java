@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
@@ -73,13 +74,27 @@ public class GestionCitaController {
         try {
             // Validar fecha
             LocalDate fechaCita = citaCreadaDTO.fechaCita;
-            LocalDate hoy = LocalDate.now();
+            LocalTime horaProgramada = citaCreadaDTO.horaProgramada;
 
-            if (fechaCita.isBefore(hoy)) {
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("message", "No se puede agendar una cita en una fecha pasada."));
+            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L){
+                if (fechaCita == null || horaProgramada == null) {
+                    return ResponseEntity
+                            .status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("message", "Debe proporcionar la fecha y hora de la cita."));
+                }
+
+                LocalDateTime fechaHoraCita = LocalDateTime.of(fechaCita, horaProgramada);
+                LocalDateTime ahora = LocalDateTime.now();
+                LocalDateTime limite = ahora.minusMinutes(60); // Margen de 1 hora
+
+                if (fechaHoraCita.isBefore(limite)) {
+                    return ResponseEntity
+                            .status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("message", "Solo se permite agendar una cita con hasta 1 hora de retraso."));
+                }
+
             }
+
 
             Medico medico = medicoService.getPorID(citaCreadaDTO.medicoId);
             Paciente paciente = pacienteService.crearOActualizar(citaCreadaDTO);
@@ -440,12 +455,6 @@ public class GestionCitaController {
 
 
 
-
-
-
-
-
-
             return ResponseEntity.ok(Map.of(
                     "status", "CAMBIO_OK",
                     "message", "La atención fue retrocedida exitosamente al estado anterior."
@@ -478,15 +487,33 @@ public class GestionCitaController {
                 ));
             }
 
-            // ✅ Validación de fecha pasada
-            LocalDate fechaNueva = (dto.getFecha());
-            LocalDate hoy = LocalDate.now();
-            if (fechaNueva.isBefore(hoy)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-                        "success", false,
-                        "message", "No se puede editar la cita a una fecha pasada."
-                ));
+
+
+            // Validar fecha
+            LocalDate fechaCita = dto.getFecha();
+            LocalTime horaProgramada = dto.getHora();
+
+            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L ){
+                if (fechaCita == null || horaProgramada == null) {
+                    return ResponseEntity
+                            .status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("message", "Debe proporcionar la fecha y hora de la cita."));
+                }
+
+                LocalDateTime fechaHoraCita = LocalDateTime.of(fechaCita, horaProgramada);
+                LocalDateTime ahora = LocalDateTime.now();
+                LocalDateTime limite = ahora.minusMinutes(60); // Margen de 1 hora
+
+                if (fechaHoraCita.isBefore(limite)) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                            "success", false,
+                            "message", "Solo se permite agendar una cita con hasta 1 hora de retraso."
+
+                    ));
+                }
+
             }
+
 
             // Si pasa las validaciones, continúa la reprogramación
             Medico medico = medicoService.getPorID(dto.getIdMedico());
@@ -629,16 +656,30 @@ public class GestionCitaController {
     @PostMapping("/duplicar")
     public ResponseEntity<?> duplicarCita(@RequestBody DuplicarCitaDTO duplicarCitaDTO) {
         try {
-            // ✅ Validar que la fecha no sea pasada
-            LocalDate fechaDuplicada = duplicarCitaDTO.getFecha();
-            LocalDate hoy = LocalDate.now();
+            // Validar fecha
+            LocalDate fechaCita = duplicarCitaDTO.getFecha();
+            LocalTime horaProgramada = duplicarCitaDTO.getHoraProgramada();
 
-            if (fechaDuplicada.isBefore(hoy)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-                        "success", false,
-                        "message", "No se puede duplicar una cita en una fecha pasada."
-                ));
+            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L ){
+                if (fechaCita == null || horaProgramada == null) {
+                    return ResponseEntity
+                            .status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("message", "Debe proporcionar la fecha y hora de la cita."));
+                }
+
+                LocalDateTime fechaHoraCita = LocalDateTime.of(fechaCita, horaProgramada);
+                LocalDateTime ahora = LocalDateTime.now();
+                LocalDateTime limite = ahora.minusMinutes(60); // Margen de 1 hora
+
+                if (fechaHoraCita.isBefore(limite)) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                            "success", false,
+                            "message", "Solo se permite agendar una cita con hasta 1 hora de retraso."
+                    ));
+                }
+
             }
+
 
             FichaPaciente fichaActual = fichaPacienteService.getPorID(duplicarCitaDTO.getIdFichaPaciente());
             Cita citaActual = fichaActual.getCita();
