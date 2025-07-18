@@ -23,7 +23,7 @@ public class CitaController {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(idFicha);
             Cita cita = fichaPaciente.getCita();
-            Paciente paciente = cita.getPaciente();
+            Paciente paciente = fichaPaciente.getPaciente();
             DetalleQuimioterapia detallequimio = fichaPaciente.getDetalleQuimioterapia();
 
             ObtenerDatosCitaDTO dto = new ObtenerDatosCitaDTO();

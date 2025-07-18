@@ -9,6 +9,7 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.Cita;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.EstadoCita;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapia;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapiaService;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.funcionesvitales.FuncionesVitalesService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.PacienteService;
 import com.ipor.quimioterapia.gestioncitas.logs.AccionLogFicha;
@@ -62,6 +63,8 @@ public class GestionCitaController {
     @Autowired
     DetalleQuimioterapiaService detalleQuimioterapiaService;
     @Autowired
+    FuncionesVitalesService funcionesVitalesService;
+    @Autowired
     LogService logService;
     @Autowired
     private ObjectMapper objectMapper;
@@ -105,8 +108,8 @@ public class GestionCitaController {
             detalleQuimioterapia.setTratamiento(citaCreadaDTO.tratamiento);
             detalleQuimioterapiaService.save(detalleQuimioterapia);
 
-            Cita cita = citaService.crear(citaCreadaDTO, medico, paciente);
-            FichaPaciente fichaPaciente = fichaPacienteService.crear(cita, detalleQuimioterapia);
+            Cita cita = citaService.crear(citaCreadaDTO, medico);
+            FichaPaciente fichaPaciente = fichaPacienteService.crear(cita, detalleQuimioterapia, paciente);
             fichaPacienteService.save(fichaPaciente);
 
             wsNotificacionesService.notificarActualizacionTabla();
@@ -114,7 +117,7 @@ public class GestionCitaController {
 
             //LOG AGENDAR CITA---------------------------------------------------
             Map<String, Object> valorNuevoMap = Map.of(
-                    "paciente", fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    "paciente", fichaPaciente.getPaciente().getNombreCompleto(),
                     "fechaCita", fichaPaciente.getCita().getFecha(),
                     "aseguradora", fichaPaciente.getCita().getAseguradora(),
                     "medico", fichaPaciente.getCita().getMedicoConsulta().getNombreCompleto(),
@@ -204,7 +207,7 @@ public class GestionCitaController {
                 String descripcionLog = String.format(
                         "El usuario %s realizó la asignación de personal y espacio al paciente %s: enfermera %s, médico %s y cubículo %s. Fecha y hora de la asignación: %s.",
                         usuarioService.getUsuarioLogeado().getNombre(),
-                        fichaAsignacion.getCita().getPaciente().getNombreCompleto(),
+                        fichaAsignacion.getPaciente().getNombreCompleto(),
                         enfermera.getNombreCompleto(),
                         medico.getNombreCompleto(),
                         cubiculo.getCodigo(),
@@ -285,7 +288,7 @@ public class GestionCitaController {
             String descripcionLog = String.format(
                     "El usuario %s registró el inicio de la atención del paciente %s a las %s.",
                     usuarioService.getUsuarioLogeado().getNombre(),
-                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    fichaPaciente.getPaciente().getNombreCompleto(),
                     fichaPaciente.getAtencionQuimioterapia().getHoraInicio()
             );
 
@@ -335,7 +338,7 @@ public class GestionCitaController {
                 String descripcionLog = String.format(
                         "El usuario %s registró la finalización de la atención del paciente %s a las %s.",
                         usuarioService.getUsuarioLogeado().getNombre(),
-                        fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                        fichaPaciente.getPaciente().getNombreCompleto(),
                         fichaPaciente.getAtencionQuimioterapia().getHoraFin()
                 );
 
@@ -444,7 +447,7 @@ public class GestionCitaController {
             String descripcionLog = String.format(
                     "El usuario %s retrocedió el estado de la cita del paciente %s a %s a las %s",
                     usuarioService.getUsuarioLogeado().getNombre(),
-                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    fichaPaciente.getPaciente().getNombreCompleto(),
                     fichaPaciente.getCita().getEstado(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
             );
@@ -572,7 +575,7 @@ public class GestionCitaController {
             String descripcionLog = String.format(
                     "El usuario %s editó la cita del paciente %s. Fecha y hora de la edición: %s.",
                     usuarioService.getUsuarioLogeado().getNombre(),
-                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    fichaPaciente.getPaciente().getNombreCompleto(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
             );
 
@@ -624,7 +627,7 @@ public class GestionCitaController {
             String descripcionLog = String.format(
                     "El usuario %s canceló la cita del paciente %s a las %s",
                     usuarioService.getUsuarioLogeado().getNombre(),
-                    fichaPaciente.getCita().getPaciente().getNombreCompleto(),
+                    fichaPaciente.getPaciente().getNombreCompleto(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
             );
 
@@ -692,7 +695,7 @@ public class GestionCitaController {
             detalleQuimioterapia.setTratamiento(duplicarCitaDTO.tratamiento);
             detalleQuimioterapiaService.save(detalleQuimioterapia);
 
-            FichaPaciente fichaNueva = fichaPacienteService.crear(citaNueva, detalleQuimioterapia);
+            FichaPaciente fichaNueva = fichaPacienteService.crear(citaNueva, detalleQuimioterapia, fichaActual.getPaciente());
             fichaPacienteService.save(fichaNueva);
 
             wsNotificacionesService.notificarActualizacionTabla();
@@ -701,7 +704,7 @@ public class GestionCitaController {
 
             //LOG DUPLICAR CITA----------------------------------------------
             Map<String, Object> valorAnteriorMap = Map.of(
-                    "paciente", fichaActual.getCita().getPaciente().getNombreCompleto(),
+                    "paciente", fichaActual.getPaciente().getNombreCompleto(),
                     "aseguradora", fichaActual.getCita().getAseguradora(),
                     "fechaCita", fichaActual.getCita().getFecha(),
                     "medico", fichaActual.getCita().getMedicoConsulta().getNombreCompleto(),
@@ -714,7 +717,7 @@ public class GestionCitaController {
             String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
 
             Map<String, Object> valorNuevoMap = Map.of(
-                    "paciente", fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    "paciente", fichaNueva.getPaciente().getNombreCompleto(),
                     "aseguradora", fichaNueva.getCita().getAseguradora(),
                     "fechaCita", fichaNueva.getCita().getFecha(),
                     "medico", fichaNueva.getCita().getMedicoConsulta().getNombreCompleto(),
@@ -731,14 +734,14 @@ public class GestionCitaController {
             String descripcionDuplicacionLog = String.format(
                     "El usuario %s duplicó la ficha del paciente %s el %s.",
                     usuarioService.getUsuarioLogeado().getNombre(),
-                    fichaActual.getCita().getPaciente().getNombreCompleto(),
+                    fichaActual.getPaciente().getNombreCompleto(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
             );
 
 
             String descripcionDuplicadoLog = String.format(
                     "Esta ficha fue generada como duplicado de una cita anterior del paciente %s. Registrado por el usuario %s el %s.",
-                    fichaNueva.getCita().getPaciente().getNombreCompleto(),
+                    fichaNueva.getPaciente().getNombreCompleto(),
                     usuarioService.getUsuarioLogeado().getNombre(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
             );

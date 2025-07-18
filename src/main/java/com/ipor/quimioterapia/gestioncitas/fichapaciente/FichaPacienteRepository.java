@@ -16,10 +16,14 @@ public interface FichaPacienteRepository extends JpaRepository<FichaPaciente, Lo
 
     @Query("""
     SELECT f FROM FichaPaciente f
-    WHERE f.cita.paciente.id = :pacienteId
+    WHERE f.paciente.id = :pacienteId
       AND f.id <> :excluirId
     ORDER BY f.cita.fecha DESC
     """)
     List<FichaPaciente> findByCitaPacienteIdAndIdNotOrderByCitaFechaDesc(Long pacienteId, Long excluirId);
+
+    FichaPaciente findTop1ByPacienteIdPacienteOrderByCitaFechaDesc(Long pacienteId);
+
+
 
 }

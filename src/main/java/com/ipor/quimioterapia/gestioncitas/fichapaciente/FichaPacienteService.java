@@ -3,6 +3,7 @@ package com.ipor.quimioterapia.gestioncitas.fichapaciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.Cita;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapia;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapiaService;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,11 @@ public class FichaPacienteService {
     FichaPacienteRepository fichaPacienteRepository;
 
 
-    public FichaPaciente crear(Cita cita, DetalleQuimioterapia detalleQuimioterapia) {
+    public FichaPaciente crear(Cita cita, DetalleQuimioterapia detalleQuimioterapia, Paciente paciente) {
         FichaPaciente fichaPaciente = new FichaPaciente();
         fichaPaciente.setFechaCreacion(LocalDate.now());
         fichaPaciente.setHoraCreacion(LocalTime.now());
+        fichaPaciente.setPaciente(paciente);
         fichaPaciente.setCita(cita);
         fichaPaciente.setDetalleQuimioterapia(detalleQuimioterapia);
         fichaPaciente.setIsActive(Boolean.TRUE);
@@ -52,6 +54,9 @@ public class FichaPacienteService {
                 .findByCitaPacienteIdAndIdNotOrderByCitaFechaDesc(pacienteId, excluirFichaId);
     }
 
+    public FichaPaciente obtenerUltimaFichaPaciente(Long pacienteId) {
+        return fichaPacienteRepository.findTop1ByPacienteIdPacienteOrderByCitaFechaDesc(pacienteId);
+    }
 
 }
 

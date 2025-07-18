@@ -101,7 +101,7 @@ public class DiagnosticoController {
 
             if (lista == null || lista.isEmpty()) {
                 // Buscar otras fichas del mismo paciente (excluyendo la actual)
-                Paciente paciente = fichaActual.getCita().getPaciente();
+                Paciente paciente = fichaActual.getPaciente();
                 List<FichaPaciente> fichasAnteriores = fichaPacienteService
                         .findByPacienteOrderByFechaDesc(paciente.getIdPaciente(), idFicha);
 

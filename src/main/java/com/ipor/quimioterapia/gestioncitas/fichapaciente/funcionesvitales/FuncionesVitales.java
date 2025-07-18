@@ -19,10 +19,6 @@ public class FuncionesVitales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    private LocalDate fecha;
-    private LocalTime hora;
-
     private Integer presionSistolica;
     private Integer presionDiastolica;
     private Integer frecuenciaCardiaca;

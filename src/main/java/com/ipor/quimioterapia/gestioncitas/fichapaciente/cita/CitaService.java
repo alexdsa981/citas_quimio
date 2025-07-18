@@ -25,7 +25,7 @@ public class CitaService {
     UsuarioService usuarioService;
 
 
-    public Cita crear(CitaCreadaDTO citaCreadaDTO, Medico medico, Paciente paciente) {
+    public Cita crear(CitaCreadaDTO citaCreadaDTO, Medico medico) {
         Cita cita = new Cita();
         cita.setFecha(citaCreadaDTO.fechaCita);
         cita.setMedicoConsulta(medico);
@@ -36,7 +36,6 @@ public class CitaService {
         cita.setDuracionMinutosProtocolo(citaCreadaDTO.duracionMinutos);
 
         cita.setAseguradora(citaCreadaDTO.aseguradora);
-        cita.setPaciente(paciente);
         citaRepository.save(cita);
         return cita;
     }
@@ -69,7 +68,6 @@ public class CitaService {
     public Cita duplicar (DuplicarCitaDTO duplicarCitaDTO, Cita citaActual, Medico medico){
         Cita citaNueva = new Cita();
         citaNueva.setAseguradora(duplicarCitaDTO.getAseguradora());
-        citaNueva.setPaciente(citaActual.getPaciente());
         citaNueva.setEstado(EstadoCita.NO_ASIGNADO);
         citaNueva.setHoraProgramada(duplicarCitaDTO.getHoraProgramada());
 

@@ -5,6 +5,7 @@ import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.Cita;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.detallequimioterapia.DetalleQuimioterapia;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.detallecie.DetalleCie;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.funcionesvitales.FuncionesVitales;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,10 @@ public class FichaPaciente {
     private Cita cita;
 
     @ManyToOne
+    @JoinColumn(name = "id_paciente")
+    private Paciente paciente;
+
+    @ManyToOne
     @JoinColumn(name = "id_atencion_quimioterapia")
     private AtencionQuimioterapia atencionQuimioterapia;
     @ManyToOne
@@ -45,7 +50,6 @@ public class FichaPaciente {
 
     @OneToMany(mappedBy = "fichaPaciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleCie> detalleCies;
-
 
 
 }

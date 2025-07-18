@@ -1,5 +1,5 @@
 function llenarVisualFichaPaciente(objetoFicha) {
-    const paciente = objetoFicha.cita?.paciente || {};
+    const paciente = objetoFicha.paciente || {};
     const cita = objetoFicha.cita || {};
     const contratante = cita.contratante || {};
     const aseguradora = cita.aseguradora || {};

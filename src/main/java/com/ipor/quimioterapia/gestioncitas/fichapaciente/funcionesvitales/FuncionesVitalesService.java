@@ -42,6 +42,9 @@ public class FuncionesVitalesService {
         return funcionesVitalesRepository.save(fv);
     }
 
+    public  void save(FuncionesVitales funcionesVitales){
+        funcionesVitalesRepository.save(funcionesVitales);
+    }
 
     public List<FuncionesVitales> getLista() {
         return funcionesVitalesRepository.findAll();

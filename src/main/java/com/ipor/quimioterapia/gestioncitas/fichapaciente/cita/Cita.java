@@ -42,9 +42,6 @@ public class Cita {
     @Column(nullable = false)
     private String aseguradora;
 
-    @ManyToOne
-    @JoinColumn(name = "id_paciente")
-    private Paciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "id_medico")

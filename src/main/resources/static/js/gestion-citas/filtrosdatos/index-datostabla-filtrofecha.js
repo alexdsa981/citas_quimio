@@ -69,7 +69,7 @@ function llenarTablaFichas(fichas) {
 
     fichas.forEach((ficha, index) => {
         const cita = ficha.cita || {};
-        const paciente = cita.paciente || {};
+        const paciente = ficha.paciente || {};
         const cubiculo = ficha.atencionQuimioterapia?.cubiculo || {};
         const atencion = ficha.atencionQuimioterapia || {};
         const estado = cita.estado || "";

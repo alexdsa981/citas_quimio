@@ -23,9 +23,9 @@ function calcularSuperficieCorporalMosteller() {
 
 
 
-
 function llenarFormularioFichaFuncionesVitales(data) {
     const funcionesVitales = data.funcionesVitales;
+    const idPaciente = data.paciente?.idPaciente ?? null;
 
     // Función auxiliar para limpiar todos los campos
     const limpiarCampos = () => {
@@ -52,5 +52,22 @@ function llenarFormularioFichaFuncionesVitales(data) {
         document.getElementById("superficieCorporalFicha").value = funcionesVitales.superficieCorporal ?? '';
     } else {
         limpiarCampos();
+
+        // Solo intenta obtener la última talla si tenemos ID del paciente
+        if (idPaciente) {
+            fetch(`/app/funciones-vitales/${idPaciente}/ultima-talla`)
+                .then(response => {
+                    if (!response.ok) throw new Error("No se pudo obtener la última talla");
+                    return response.json();
+                })
+                .then(talla => {
+                    if (talla !== null) {
+                        document.getElementById("tallaFicha").value = talla;
+                    }
+                })
+                .catch(error => {
+                    console.warn("Error al obtener la última talla del paciente:", error);
+                });
+        }
     }
 }

@@ -11,10 +11,7 @@ import com.ipor.quimioterapia.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -109,5 +106,14 @@ public class FuncionesVitalesController {
         }
     }
 
+    @GetMapping("/{pacienteId}/ultima-talla")
+    public ResponseEntity<Double> obtenerUltimaTallaPaciente(@PathVariable Long pacienteId) {
+        FichaPaciente ficha = fichaPacienteService.obtenerUltimaFichaPaciente(pacienteId);
 
+        if (ficha != null && ficha.getFuncionesVitales() != null) {
+            return ResponseEntity.ok(ficha.getFuncionesVitales().getTallaCm());
+        }
+
+        return ResponseEntity.ok(null); // Devuelve 200 con null si no hay datos
+    }
 }

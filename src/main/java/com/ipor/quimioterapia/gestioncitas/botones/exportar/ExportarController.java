@@ -70,7 +70,7 @@ public class ExportarController {
         for (FichaPaciente ficha : listaFichas) {
             Row fila = sheet.createRow(filaIdx++);
             Cita cita = ficha.getCita();
-            Paciente paciente = cita.getPaciente();
+            Paciente paciente = ficha.getPaciente();
             AtencionQuimioterapia atencion = ficha.getAtencionQuimioterapia();
             DetalleQuimioterapia detalle = ficha.getDetalleQuimioterapia();
             FuncionesVitales vitals = ficha.getFuncionesVitales();
