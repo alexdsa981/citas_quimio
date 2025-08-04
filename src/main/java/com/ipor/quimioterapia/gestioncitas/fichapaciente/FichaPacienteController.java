@@ -1,7 +1,11 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente;
 
 import com.ipor.quimioterapia.gestioncitas.dto.FiltroFechasDTO;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguos;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguosRepository;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,23 @@ public class FichaPacienteController {
 
     @Autowired
     FichaPacienteService fichaPacienteService;
+    @Autowired
+    RegistrosAntiguosService registrosAntiguosService;
+
+    @GetMapping("/registros-antiguos")
+    public ResponseEntity<?> getRegistrosAntiguos(
+            @RequestParam("desde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam("hasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta) {
+        try {
+            List<RegistrosAntiguos> fichas = registrosAntiguosService.registrosAntiguosEntreFechas(desde, hasta);
+            return ResponseEntity.ok(fichas);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error al obtener fichas: " + e.getMessage()));
+        }
+    }
+
+
 
     @GetMapping("/fichas/hoy")
     public ResponseEntity<?> getFichasDelDia() {

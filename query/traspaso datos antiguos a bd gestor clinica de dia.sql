@@ -1,0 +1,57 @@
+SELECT * INTO PROD_GESTOR_CLINICA_DE_DIA.dbo.registros_antiguos FROM BDQuimioterapia.dbo.Paciente;
+
+
+-- Cambios de nombres de columnas a snake_case
+EXEC sp_rename 'registros_antiguos.IdQuimioterapia', 'id_quimioterapia', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Establecimiento', 'establecimiento', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Servicio', 'servicio', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Historia', 'historia', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.ApellidoP', 'apellido_p', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.ApellidoM', 'apellido_m', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Nombres', 'nombres', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.FecNacimiento', 'fec_nacimiento', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Edad', 'edad', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Sexo', 'sexo', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.DocIdentidad', 'doc_identidad', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.NoDocIdentidad', 'no_doc_identidad', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Telefono', 'telefono', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Entrada', 'entrada', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Codcie1', 'codcie1', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Codcie2', 'codcie2', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Cie1', 'cie1', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Cie2', 'cie2', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.TipoPaciente', 'tipo_paciente', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Aseguradora', 'aseguradora', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Contratante', 'contratante', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.FecIngreso', 'fec_ingreso', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.FecRegistro', 'fec_registro', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Medico', 'medico', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.CMP', 'cmp', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Enfermera', 'enfermera', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.RNE', 'rne', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.HoraInicio', 'hora_inicio', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.HoraFin', 'hora_fin', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.HoraProtocolo', 'hora_protocolo', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.HoraReal', 'hora_real', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Cama', 'cama', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.MedicoRef', 'medico_ref', 'COLUMN';
+-- medicinas ya está en minúscula
+EXEC sp_rename 'registros_antiguos.Observaciones', 'observaciones', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Anamnesis', 'anamnesis', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.ExamFisico', 'exam_fisico', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.ExamAuxiliar', 'exam_auxiliar', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Tratamiento', 'tratamiento', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Evolucion', 'evolucion', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.PresArterial', 'pres_arterial', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.FrecCardiaca', 'frec_cardiaca', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Temperatura', 'temperatura', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Saturacion', 'saturacion', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.FrecRespiratoria', 'frec_respiratoria', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Peso', 'peso', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Talla', 'talla', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.SupCorporal', 'sup_corporal', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Estado', 'estado', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.Usuario', 'usuario', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.UsuarioUp', 'usuario_up', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.FecUp', 'fec_up', 'COLUMN';
+EXEC sp_rename 'registros_antiguos.PresionMax', 'presion_max', 'COLUMN';
