@@ -20,7 +20,7 @@ public class RegistrosAntiguos {
 
     @Id
     @Column(nullable = false)
-    private Integer idQuimioterapia;
+    private Long idQuimioterapia;
 
     @Column(length = 50, nullable = false)
     private String establecimiento;
@@ -133,9 +133,9 @@ public class RegistrosAntiguos {
     private Double temperatura;
     private Integer saturacion;
     private Integer frecRespiratoria;
-    private BigDecimal peso;
-    private BigDecimal talla;
-    private BigDecimal supCorporal;
+    private Double peso;
+    private Double talla;
+    private Double supCorporal;
 
     @Column(length = 20)
     private String estado;

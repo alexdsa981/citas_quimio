@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,9 +55,19 @@ public class FichaPacienteController {
     @PostMapping("/fichas/entre-fechas")
     public ResponseEntity<?> getFichasEntreFechas(@RequestBody FiltroFechasDTO filtro) {
         try {
-            List<FichaPaciente> fichas = fichaPacienteService.getListaEntreFechas(filtro.getDesde(), filtro.getHasta());
+            List<FichaPaciente> fichasActuales = fichaPacienteService.getListaEntreFechas(filtro.getDesde(), filtro.getHasta());
+            List<RegistrosAntiguos> fichasAntiguas = registrosAntiguosService.registrosAntiguosEntreFechas(filtro.getDesde(), filtro.getHasta());
+            List<FichaPacienteDTO> listaDTO = new ArrayList<>();
+            for (FichaPaciente ficha : fichasActuales){
+                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha, true);
+                listaDTO.add(fichaDTO);
+            }
+            for (RegistrosAntiguos ficha : fichasAntiguas){
+                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha, true);
+                listaDTO.add(fichaDTO);
+            }
             System.out.println(filtro.getDesde() + " " + filtro.getHasta());
-            return ResponseEntity.ok(fichas);
+            return ResponseEntity.ok(listaDTO);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Error al obtener fichas entre fechas: " + e.getMessage()));

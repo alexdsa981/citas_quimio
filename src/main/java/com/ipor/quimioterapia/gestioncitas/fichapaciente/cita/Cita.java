@@ -29,14 +29,8 @@ public class Cita {
     @JoinColumn(name = "id_usuario_creador", nullable = false)
     private Usuario usuarioCreacion;
 
-//    private Long numPresupuesto;
-//    private String tipoPaciente;
-//    private String aseguradora;
-//    private String contratante;
-
 
     @Enumerated(EnumType.STRING)
-    //@Column(nullable = false)
     private EstadoCita estado;
 
     @Column(nullable = false)

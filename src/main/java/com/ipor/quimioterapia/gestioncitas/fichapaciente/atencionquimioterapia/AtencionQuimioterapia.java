@@ -31,12 +31,7 @@ public class AtencionQuimioterapia {
     @JoinColumn(name = "id_medico")
     private Medico medico;
 
-
-
-
-    //@Column(nullable = false)
     private LocalTime horaInicio;
-    //@Column(nullable = false)
     private LocalTime horaFin;
 
 

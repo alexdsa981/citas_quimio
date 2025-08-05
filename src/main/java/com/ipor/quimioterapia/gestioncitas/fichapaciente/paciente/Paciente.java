@@ -24,7 +24,6 @@ public class Paciente {
     private String sexo;
 
     private String numCelular;
-    private String numTelefono;
 
     private String tipoDocumentoNombre;
     private String numDocIdentidad;

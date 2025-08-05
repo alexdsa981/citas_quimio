@@ -1,6 +1,6 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos;
 
-import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
