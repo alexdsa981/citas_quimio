@@ -1,13 +1,11 @@
-function llenarFormularioFichaAtencionQuimioterapia(objetoFicha) {
-    const atencion = objetoFicha.atencionQuimioterapia || {};
-
+function llenarFormularioFichaAtencionQuimioterapia(ficha) {
     const mostrarTexto = (valor) => valor || "No asignado";
 
-    document.getElementById('enfermeraFichaTexto').textContent = mostrarTexto(atencion.enfermera?.nombreCompleto);
-    document.getElementById('medicoFichaTexto').textContent = mostrarTexto(atencion.medico?.nombreCompleto);
-    document.getElementById('cubiculoFichaTexto').textContent = mostrarTexto(atencion.cubiculo?.codigo);
+    document.getElementById('enfermeraFichaTexto').textContent = mostrarTexto(ficha.atencion_enfermera);
+    document.getElementById('medicoFichaTexto').textContent = mostrarTexto(ficha.atencion_medico);
+    document.getElementById('cubiculoFichaTexto').textContent = mostrarTexto(ficha.atencion_cubiculo);
 
 
-    document.getElementById('horaInicioFichaTexto').textContent = mostrarTexto(atencion.horaInicio?.substring(0, 5));
-    document.getElementById('horaFinFichaTexto').textContent = mostrarTexto(atencion.horaFin?.substring(0, 5));
+    document.getElementById('horaInicioFichaTexto').textContent = mostrarTexto(ficha.atencion_horaInicio.substring(0, 5));
+    document.getElementById('horaFinFichaTexto').textContent = mostrarTexto(ficha.atencion_horaFin.substring(0, 5));
 }

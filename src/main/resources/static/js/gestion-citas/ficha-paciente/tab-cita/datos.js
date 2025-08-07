@@ -1,33 +1,28 @@
-function llenarVisualFichaPaciente(objetoFicha) {
-    const paciente = objetoFicha.paciente || {};
-    const cita = objetoFicha.cita || {};
-    const contratante = cita.contratante || {};
-    const aseguradora = cita.aseguradora || {};
-    const medico = cita.medicoConsulta || {};
+function llenarVisualFichaPaciente(ficha) {
 
     // Paciente
-    document.getElementById('nombrePacienteFicha').textContent = `${paciente.nombreCompleto || ''}`;
-    document.getElementById('tipoDocumentoPacienteFicha').textContent = paciente.tipoDocumentoNombre || '';
-    document.getElementById('numeroDocumentoPacienteFicha').textContent = paciente.numDocIdentidad || '';
-    document.getElementById('fechaNacimientoPacienteFicha').textContent = paciente.fechaNacimiento || '';
-    document.getElementById('sexoPacienteFicha').textContent = paciente.sexo || '';
-    document.getElementById('celularPacienteFicha').textContent = paciente.numCelular || 'No asignado';
-    document.getElementById('telefonoPacienteFicha').textContent = paciente.telefono || 'No asignado';
+    document.getElementById('nombrePacienteFicha').textContent = `${ficha.paciente_nombreCompleto || ''}`;
+    document.getElementById('tipoDocumentoPacienteFicha').textContent = ficha.paciente_tipoDocumentoNombre || '';
+    document.getElementById('numeroDocumentoPacienteFicha').textContent = ficha.paciente_numDocIdentidad || '';
+    document.getElementById('fechaNacimientoPacienteFicha').textContent = ficha.paciente_fechaNacimiento || '';
+    document.getElementById('sexoPacienteFicha').textContent = ficha.paciente_sexo || '';
+    document.getElementById('celularPacienteFicha').textContent = ficha.paciente_numCelular || 'No asignado';
+    document.getElementById('telefonoPacienteFicha').textContent = ficha.paciente_telefono || 'No asignado';
 
     // Edad
-    document.getElementById('edadPacienteFicha').textContent = paciente.edad || calcularEdadTexto(paciente.fechaNacimiento);
+    document.getElementById('edadPacienteFicha').textContent = ficha.paciente_edad || calcularEdadTexto(ficha.paciente_fechaNacimiento);
 
     // Cita
 
-    document.getElementById('fechaRegistroCita').textContent = objetoFicha.fechaCreacion || '';
-    document.getElementById('usuarioRegistroCita').textContent = cita.usuarioCreacion.nombre || '';
+    document.getElementById('fechaRegistroCita').textContent = ficha.cita_fechaRegistro || '';
+    document.getElementById('usuarioRegistroCita').textContent = ficha.cita_usuarioCreacion || '';
 
 
-    document.getElementById('fechaCitaFicha').textContent = cita.fecha || '';
+    document.getElementById('fechaCitaFicha').textContent = ficha.cita_fecha || '';
 
-    document.getElementById('horaCitaFicha').textContent = cita.horaProgramada ? cita.horaProgramada.slice(0, 5) : '';
-    const horaInicio = cita.horaProgramada; // formato "HH:mm"
-    const duracionMinutos = cita.duracionMinutosProtocolo || 0;
+    document.getElementById('horaCitaFicha').textContent = ficha.cita_horaProgramada ? ficha.cita_horaProgramada.slice(0, 5) : '';
+    const horaInicio = ficha.cita_horaProgramada; // formato "HH:mm"
+    const duracionMinutos = ficha.cita_duracionMinutosProtocolo || 0;
 
     if (horaInicio) {
         const [horas, minutos] = horaInicio.split(":").map(Number);
@@ -42,11 +37,11 @@ function llenarVisualFichaPaciente(objetoFicha) {
     }
 
 
-    document.getElementById('estadoCitaFicha').textContent = cita.estado || '';
-    document.getElementById('medicoCitaFicha').textContent = medico ? `${medico.nombre || ''} ${medico.apellidoP || ''} ${medico.apellidoM || ''}` : '';
+    document.getElementById('estadoCitaFicha').textContent = ficha.cita_estado || '';
+    document.getElementById('medicoCitaFicha').textContent = ficha.cita_medico || '';
 
     //Otros
-    document.getElementById('aseguradoraCitaFicha').textContent = cita.aseguradora || '';
+    document.getElementById('aseguradoraCitaFicha').textContent = ficha.cita_aseguradora || '';
 
 }
 

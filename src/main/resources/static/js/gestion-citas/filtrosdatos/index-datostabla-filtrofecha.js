@@ -278,10 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obtener datos de la variable global
     const ficha = fichasGlobal.find(dto => dto.ficha_id == idFicha); // usa == por si el id es string
     if (ficha) {
-        const cita = ficha.cita || {};
-        const estado = cita.estado || "NO_ASIGNADO";
-        const fecha = cita.fecha || "";
-        const hora = formatearHora(cita.horaProgramada) || "";
+        const estado = ficha.cita_estado || "NO_ASIGNADO";
+        const fecha = ficha.cita_fecha || "";
+        const hora = formatearHora(ficha.cita_horaProgramada) || "";
 
         let claseEstado = "bg-secondary text-white";
         if (estado === "PENDIENTE") claseEstado = "bg-warning text-dark";

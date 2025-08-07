@@ -1,8 +1,10 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente;
 
+import com.ipor.quimioterapia.gestioncitas.dto.DetalleCieDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.detallecie.DetalleCie;
 
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguos;
+import com.ipor.quimioterapia.spring.cie.CieSpringDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +24,7 @@ public class FichaPacienteDTO {
     private Boolean ficha_isActive;
 
     //PACIENTE
+    private Long paciente_id;
     private String paciente_nombre;
     private String paciente_apellidoP;
     private String paciente_apellidoM;
@@ -80,7 +83,7 @@ public class FichaPacienteDTO {
     private Double fv_superficieCorporal;
 
     //LISTA CIE
-    private List<String> listaCIE = new ArrayList<>();
+    private List<DetalleCieDTO> listaCIE = new ArrayList<>();
 
     public FichaPacienteDTO(FichaPaciente fichaPaciente){
         //FICHA
@@ -100,16 +103,18 @@ public class FichaPacienteDTO {
             this.cita_horaProgramada = fichaPaciente.getCita().getHoraProgramada();
             this.cita_fecha = fichaPaciente.getCita().getFecha();
             this.cita_usuarioCreacion = fichaPaciente.getCita().getUsuarioCreacion().getUsername();
-            this.cita_fechaRegistro = fichaPaciente.getCita().getFecha();
+            this.cita_fechaRegistro = fichaPaciente.getFechaCreacion();
         }
 
 
         //PACIENTE
         if(fichaPaciente.getCita() != null) {
+            this.paciente_id = fichaPaciente.getPaciente().getIdPaciente();
             this.paciente_edad = fichaPaciente.getPaciente().getEdad();
             this.paciente_numDocIdentidad = fichaPaciente.getPaciente().getNumDocIdentidad();
             this.paciente_tipoDocumentoNombre = fichaPaciente.getPaciente().getTipoDocumentoNombre();
             this.paciente_numCelular = fichaPaciente.getPaciente().getNumCelular();
+            this.paciente_telefono = fichaPaciente.getPaciente().getTelefono();
             this.paciente_sexo = fichaPaciente.getPaciente().getSexo();
             this.paciente_fechaNacimiento = fichaPaciente.getPaciente().getFechaNacimiento();
             this.paciente_nombreCompleto = fichaPaciente.getPaciente().getNombreCompleto();
@@ -135,8 +140,8 @@ public class FichaPacienteDTO {
         //LISTA DETALLES CIE
         if(fichaPaciente.getDetalleCies() != null) {
             for (DetalleCie detalleCie : fichaPaciente.getDetalleCies()){
-                String cadenaCIE = detalleCie.getCie().getCodigo() + " - " + detalleCie.getCie().getDescripcion();
-                this.listaCIE.add(cadenaCIE);
+                DetalleCieDTO dtocie = new DetalleCieDTO(detalleCie);
+                this.listaCIE.add(dtocie);
             }
         }
 
@@ -156,11 +161,6 @@ public class FichaPacienteDTO {
             this.detalle_medicinas = fichaPaciente.getDetalleQuimioterapia().getMedicinas();
         }
 
-
-
-
-
-
         //EXTRA
         this.ficha_isNuevo = true;
     }
@@ -179,10 +179,20 @@ public class FichaPacienteDTO {
         this.fv_presionSistolica = registrosAntiguos.getPresArterial();
 
         //LISTA DETALLES CIE
-        String cie1 = registrosAntiguos.getCodcie1() + " - " + registrosAntiguos.getCie1();
-        String cie2 = registrosAntiguos.getCie2() + " - " + registrosAntiguos.getCie2();
-        this.getListaCIE().add(cie1);
-        this.getListaCIE().add(cie2);
+        if (registrosAntiguos.getCie1() != null && !registrosAntiguos.getCie1().isEmpty()){
+            DetalleCieDTO ciedto1 = new DetalleCieDTO();
+            ciedto1.setId(-1L);
+            ciedto1.setCodigo(registrosAntiguos.getCodcie1());
+            ciedto1.setDescripcion(registrosAntiguos.getCodcie1());
+            this.getListaCIE().add(ciedto1);
+        }
+        if (registrosAntiguos.getCie2() != null && !registrosAntiguos.getCie2().isEmpty()){
+            DetalleCieDTO ciedto2 = new DetalleCieDTO();
+            ciedto2.setId(-2L);
+            ciedto2.setCodigo(registrosAntiguos.getCodcie2());
+            ciedto2.setDescripcion(registrosAntiguos.getCodcie2());
+            this.getListaCIE().add(ciedto2);
+        }
 
         //ATENCION
         this.atencion_horaFin = registrosAntiguos.getHoraFin();
@@ -204,7 +214,7 @@ public class FichaPacienteDTO {
         this.cita_horaProgramada = registrosAntiguos.getHoraInicio();
         this.cita_fecha = registrosAntiguos.getFecIngreso();
         this.cita_usuarioCreacion = registrosAntiguos.getUsuarioUp();
-        this.cita_fechaRegistro = registrosAntiguos.getFecRegistro();
+        this.cita_fechaRegistro = registrosAntiguos.getFecUp();
 
         //PACIENTE
         this.paciente_edad = registrosAntiguos.getEdad();

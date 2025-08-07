@@ -44,8 +44,13 @@ public class FichaPacienteController {
     public ResponseEntity<?> getFichasDelDia() {
         try {
             List<FichaPaciente> fichas = fichaPacienteService.getListaHoy();
+            List<FichaPacienteDTO> fichasdto = new ArrayList<>();
+            for (FichaPaciente ficha : fichas){
+                FichaPacienteDTO dto = new FichaPacienteDTO(ficha);
+                fichasdto.add(dto);
+            }
             System.out.println(LocalDate.now() + " " + LocalTime.now());
-            return ResponseEntity.ok(fichas);
+            return ResponseEntity.ok(fichasdto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "Error al obtener fichas del día: " + e.getMessage()));
@@ -77,12 +82,19 @@ public class FichaPacienteController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getFichaPorId(@PathVariable Long id) {
         try {
-            FichaPaciente ficha = fichaPacienteService.getPorID(id);
-            if (ficha == null) {
+            FichaPacienteDTO pacienteDTO;
+            if (id > 0){
+                FichaPaciente fp = fichaPacienteService.getPorID(id);
+                pacienteDTO = new FichaPacienteDTO(fp);
+            }else {
+                RegistrosAntiguos ra = registrosAntiguosService.getPorId(-id);
+                pacienteDTO = new FichaPacienteDTO(ra);
+            }
+            if (pacienteDTO.getFicha_id() == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(Map.of("message", "Ficha no encontrada con id " + id));
             }
-            return ResponseEntity.ok(ficha);
+            return ResponseEntity.ok(pacienteDTO);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Error al obtener ficha: " + e.getMessage()));

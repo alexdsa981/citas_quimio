@@ -23,9 +23,8 @@ function calcularSuperficieCorporalMosteller() {
 
 
 
-function llenarFormularioFichaFuncionesVitales(data) {
-    const funcionesVitales = data.funcionesVitales;
-    const idPaciente = data.paciente?.idPaciente ?? null;
+function llenarFormularioFichaFuncionesVitales(ficha) {
+    const idPaciente = ficha.paciente_idPaciente ? ficha.paciente_idPaciente : null;
 
     // Función auxiliar para limpiar todos los campos
     const limpiarCampos = () => {
@@ -40,16 +39,16 @@ function llenarFormularioFichaFuncionesVitales(data) {
         document.getElementById("superficieCorporalFicha").value = '';
     };
 
-    if (funcionesVitales) {
-        document.getElementById("presionSistolicaFicha").value = funcionesVitales.presionSistolica ?? '';
-        document.getElementById("presionDiastolicaFicha").value = funcionesVitales.presionDiastolica ?? '';
-        document.getElementById("frecuenciaRespiratoriaFicha").value = funcionesVitales.frecuenciaRespiratoria ?? '';
-        document.getElementById("frecuenciaCardiacaFicha").value = funcionesVitales.frecuenciaCardiaca ?? '';
-        document.getElementById("temperaturaFicha").value = funcionesVitales.temperatura ?? '';
-        document.getElementById("saturacionOxigenoFicha").value = funcionesVitales.saturacionOxigeno ?? '';
-        document.getElementById("pesoFicha").value = funcionesVitales.pesoKg ?? '';
-        document.getElementById("tallaFicha").value = funcionesVitales.tallaCm ?? '';
-        document.getElementById("superficieCorporalFicha").value = funcionesVitales.superficieCorporal ?? '';
+    if (ficha) {
+        document.getElementById("presionSistolicaFicha").value = ficha.fv_presionSistolica ?? '';
+        document.getElementById("presionDiastolicaFicha").value = ficha.fv_presionDiastolica ?? '';
+        document.getElementById("frecuenciaRespiratoriaFicha").value = ficha.fv_frecuenciaRespiratoria ?? '';
+        document.getElementById("frecuenciaCardiacaFicha").value = ficha.fv_frecuenciaCardiaca ?? '';
+        document.getElementById("temperaturaFicha").value = ficha.fv_temperatura ?? '';
+        document.getElementById("saturacionOxigenoFicha").value = ficha.fv_saturacionOxigeno ?? '';
+        document.getElementById("pesoFicha").value = ficha.fv_pesoKg ?? '';
+        document.getElementById("tallaFicha").value = ficha.fv_tallaCm ?? '';
+        document.getElementById("superficieCorporalFicha").value = ficha.fv_superficieCorporal ?? '';
     } else {
         limpiarCampos();
 

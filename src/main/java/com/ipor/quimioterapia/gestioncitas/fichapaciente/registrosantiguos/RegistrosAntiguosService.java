@@ -15,4 +15,9 @@ public class RegistrosAntiguosService {
     public List<RegistrosAntiguos> registrosAntiguosEntreFechas(LocalDate desde, LocalDate hasta){
         return registrosAntiguosRepository.buscarFichasEntreFechas(desde, hasta);
     }
+
+    public RegistrosAntiguos getPorId(Long id){
+        return registrosAntiguosRepository.findById(id).get();
+
+    }
 }

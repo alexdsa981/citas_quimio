@@ -1,7 +1,5 @@
-function llenarFormularioDetalleQuimioterapiaFicha(objetoFicha) {
-    const detalle = objetoFicha.detalleQuimioterapia || {};
-
-    document.getElementById('medicinasFicha').value = detalle.medicinas || "";
-    document.getElementById('observacionesFicha').value = detalle.observaciones || "";
-    document.getElementById('tratamientoFicha').value = detalle.tratamiento || "";
+function llenarFormularioDetalleQuimioterapiaFicha(ficha) {
+    document.getElementById('medicinasFicha').value = ficha.detalle_medicinas || "";
+    document.getElementById('observacionesFicha').value = ficha.detalle_observaciones || "";
+    document.getElementById('tratamientoFicha').value = ficha.detalle_tratamiento || "";
 }

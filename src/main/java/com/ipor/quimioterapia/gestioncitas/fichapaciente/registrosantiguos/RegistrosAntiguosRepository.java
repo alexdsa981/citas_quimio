@@ -13,4 +13,6 @@ public interface RegistrosAntiguosRepository extends JpaRepository<RegistrosAnti
     @Query("SELECT r FROM RegistrosAntiguos r WHERE r.fecIngreso BETWEEN :desde AND :hasta ORDER BY r.fecIngreso ASC, r.horaInicio ASC")
     List<RegistrosAntiguos> buscarFichasEntreFechas(@Param("desde") LocalDate desde, @Param("hasta") LocalDate hasta);
 
+
+
 }

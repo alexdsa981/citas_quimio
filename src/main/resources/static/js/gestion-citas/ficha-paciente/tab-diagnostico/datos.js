@@ -1,7 +1,7 @@
-function llenarDetalleCieDesdeFicha(data) {
-    if (!data?.id) return;
+function llenarDetalleCieDesdeFicha(ficha) {
+    if (!ficha?.ficha_id) return;
 
-    fetch(`/app/diagnostico/cie/lista/${data.id}`)
+    fetch(`/app/diagnostico/cie/lista/${ficha.ficha_id}`)
         .then(res => {
             if (!res.ok) throw new Error("No se pudo obtener diagnósticos");
             return res.json();
@@ -46,7 +46,7 @@ function renderizarDetalleCie(info, modoEdicion = false) {
         detalleCies.length > 0 ? "none" : "block";
 
     detalleCies.forEach(detalle => {
-        const id = detalle.cieId;
+        const id = detalle.id;
         const codigo = detalle.codigo;
         const nombre = detalle.descripcion;
 
