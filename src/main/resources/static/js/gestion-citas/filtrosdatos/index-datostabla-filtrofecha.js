@@ -67,12 +67,8 @@ function llenarTablaFichas(fichas) {
     const filasNormales = [];
     const filasCanceladas = [];
 
-    fichas.forEach((ficha, index) => {
-        const cita = ficha.cita || {};
-        const paciente = ficha.paciente || {};
-        const cubiculo = ficha.atencionQuimioterapia?.cubiculo || {};
-        const atencion = ficha.atencionQuimioterapia || {};
-        const estado = cita.estado || "";
+    fichas.forEach((dto, index) => {
+        const estado = dto.cita_estado || "";
 
         let claseEstado = "bg-secondary text-white";
         let claseFila = "fila-ficha";
@@ -92,24 +88,26 @@ function llenarTablaFichas(fichas) {
             bloqueaClick = true;
         } else if (estado === "EN_CONFLICTO") {
             claseEstado = "bg-danger text-white";
+        } else {
+            claseEstado = "bg-light text-muted border";
         }
 
-        const esSeleccionada = ficha.id == idFichaSeleccionada ? 'seleccionada' : '';
+        const esSeleccionada = dto.ficha_id == idFichaSeleccionada ? 'seleccionada' : '';
         claseFila += esSeleccionada ? ' seleccionada' : '';
 
         const fila = `
-            <tr class="${claseFila}" data-id-ficha="${ficha.id}" data-fecha-cita="${cita.fecha}">
+            <tr class="${claseFila}" data-id-ficha="${dto.ficha_id}" data-fecha-cita="${dto.cita_fecha}">
                 <td class="text-center text-muted">${index + 1}</td>
-                ${tdConColor(cita.usuarioCreacion.username || "")}
-                ${tdConColor(cita.aseguradora || "")}
-                ${tdConColor(`<b>${(paciente.tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (paciente.tipoDocumentoNombre || "")}</b>: ${paciente.numDocIdentidad || ""}`)}
-                ${tdConColor(`${paciente.nombreCompleto || ""}`)}
-                ${tdConColor(cita.fecha || "")}
-                ${tdConColor(calcularRangoHora(cita.horaProgramada, cita.horasProtocolo, cita.minutosRestantesProtocolo))}
-                ${tdConColor(cubiculo.codigo || "")}
-                ${tdConColor(formatearHora(atencion.horaInicio) || "")}
-                ${tdConColor(formatearHora(atencion.horaFin) || "")}
-                ${tdConColor(calcularDuracionReal(atencion.horaInicio, atencion.horaFin))}
+                ${tdConColor(dto.cita_usuarioCreacion || "")}
+                ${tdConColor(dto.cita_aseguradora || "")}
+                ${tdConColor(`<b>${(dto.paciente_tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (dto.paciente_tipoDocumentoNombre || "")}</b>: ${dto.paciente_numDocIdentidad || ""}`)}
+                ${tdConColor(`${dto.nombreCompleto || ""}`)}
+                ${tdConColor(dto.cita_fecha || "")}
+                ${tdConColor(calcularRangoHora(dto.cita_horaProgramada, dto.cita_horasProtocolo, dto.cita_minutosRestantesProtocolo))}
+                ${tdConColor(dto.atencion_cubiculo || "")}
+                ${tdConColor(formatearHora(dto.atencion_horaInicio) || "")}
+                ${tdConColor(formatearHora(dto.atencion_horaFin) || "")}
+                ${tdConColor(calcularDuracionReal(dto.atencion_horaInicio, dto.atencion_horaFin))}
                 <td><span class="badge ${claseEstado}">${estado}</span></td>
             </tr>
         `;
@@ -278,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Ficha seleccionada:', idFicha);
 
     // Obtener datos de la variable global
-    const ficha = fichasGlobal.find(f => f.id == idFicha); // usa == por si el id es string
+    const ficha = fichasGlobal.find(dto => dto.ficha_id == idFicha); // usa == por si el id es string
     if (ficha) {
         const cita = ficha.cita || {};
         const estado = cita.estado || "NO_ASIGNADO";

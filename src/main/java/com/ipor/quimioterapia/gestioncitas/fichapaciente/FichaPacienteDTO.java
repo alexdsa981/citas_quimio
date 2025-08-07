@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -79,72 +80,93 @@ public class FichaPacienteDTO {
     private Double fv_superficieCorporal;
 
     //LISTA CIE
-    private List<String> listaCIE;
+    private List<String> listaCIE = new ArrayList<>();
 
-    public FichaPacienteDTO(FichaPaciente fichaPaciente, Boolean ficha_isNuevo){
+    public FichaPacienteDTO(FichaPaciente fichaPaciente){
+        //FICHA
+        if(fichaPaciente.getCita() != null) {
+            this.ficha_id = fichaPaciente.getId();
+            this.ficha_isActive = fichaPaciente.getIsActive();
+            this.ficha_horaCreacion = fichaPaciente.getHoraCreacion();
+            this.ficha_fechaCreacion = fichaPaciente.getFechaCreacion();
+        }
+
+        //CITA
+        if(fichaPaciente.getCita() != null) {
+            this.cita_duracionMinutosProtocolo = fichaPaciente.getCita().getDuracionMinutosProtocolo();
+            this.cita_medico = fichaPaciente.getCita().getMedicoConsulta().getNombreCompleto();
+            this.cita_aseguradora = fichaPaciente.getCita().getAseguradora();
+            this.cita_estado = fichaPaciente.getCita().getEstado().toString();
+            this.cita_horaProgramada = fichaPaciente.getCita().getHoraProgramada();
+            this.cita_fecha = fichaPaciente.getCita().getFecha();
+            this.cita_usuarioCreacion = fichaPaciente.getCita().getUsuarioCreacion().getUsername();
+            this.cita_fechaRegistro = fichaPaciente.getCita().getFecha();
+        }
+
+
+        //PACIENTE
+        if(fichaPaciente.getCita() != null) {
+            this.paciente_edad = fichaPaciente.getPaciente().getEdad();
+            this.paciente_numDocIdentidad = fichaPaciente.getPaciente().getNumDocIdentidad();
+            this.paciente_tipoDocumentoNombre = fichaPaciente.getPaciente().getTipoDocumentoNombre();
+            this.paciente_numCelular = fichaPaciente.getPaciente().getNumCelular();
+            this.paciente_sexo = fichaPaciente.getPaciente().getSexo();
+            this.paciente_fechaNacimiento = fichaPaciente.getPaciente().getFechaNacimiento();
+            this.paciente_nombreCompleto = fichaPaciente.getPaciente().getNombreCompleto();
+            this.paciente_apellidoM = fichaPaciente.getPaciente().getApellidoM();
+            this.paciente_apellidoP = fichaPaciente.getPaciente().getApellidoP();
+            this.paciente_nombre = fichaPaciente.getPaciente().getNombre();
+        }
+
+
         //FUNCIONES VITALES
-        this.fv_superficieCorporal = fichaPaciente.getFuncionesVitales().getSuperficieCorporal();
-        this.fv_tallaCm = fichaPaciente.getFuncionesVitales().getTallaCm();
-        this.fv_pesoKg = fichaPaciente.getFuncionesVitales().getPesoKg();
-        this.fv_temperatura = fichaPaciente.getFuncionesVitales().getTemperatura();
-        this.fv_saturacionOxigeno = fichaPaciente.getFuncionesVitales().getSaturacionOxigeno();
-        this.fv_frecuenciaRespiratoria = fichaPaciente.getFuncionesVitales().getFrecuenciaRespiratoria();
-        this.fv_frecuenciaCardiaca = fichaPaciente.getFuncionesVitales().getFrecuenciaCardiaca();
-        this.fv_presionDiastolica = fichaPaciente.getFuncionesVitales().getPresionDiastolica();
-        this.fv_presionSistolica = fichaPaciente.getFuncionesVitales().getPresionSistolica();
+        if(fichaPaciente.getFuncionesVitales() != null){
+            this.fv_superficieCorporal = fichaPaciente.getFuncionesVitales().getSuperficieCorporal();
+            this.fv_tallaCm = fichaPaciente.getFuncionesVitales().getTallaCm();
+            this.fv_pesoKg = fichaPaciente.getFuncionesVitales().getPesoKg();
+            this.fv_temperatura = fichaPaciente.getFuncionesVitales().getTemperatura();
+            this.fv_saturacionOxigeno = fichaPaciente.getFuncionesVitales().getSaturacionOxigeno();
+            this.fv_frecuenciaRespiratoria = fichaPaciente.getFuncionesVitales().getFrecuenciaRespiratoria();
+            this.fv_frecuenciaCardiaca = fichaPaciente.getFuncionesVitales().getFrecuenciaCardiaca();
+            this.fv_presionDiastolica = fichaPaciente.getFuncionesVitales().getPresionDiastolica();
+            this.fv_presionSistolica = fichaPaciente.getFuncionesVitales().getPresionSistolica();
+        }
 
         //LISTA DETALLES CIE
-        for (DetalleCie detalleCie : fichaPaciente.getDetalleCies()){
-            String cadenaCIE = detalleCie.getCie().getCodigo() + " - " + detalleCie.getCie().getDescripcion();
-            this.listaCIE.add(cadenaCIE);
+        if(fichaPaciente.getDetalleCies() != null) {
+            for (DetalleCie detalleCie : fichaPaciente.getDetalleCies()){
+                String cadenaCIE = detalleCie.getCie().getCodigo() + " - " + detalleCie.getCie().getDescripcion();
+                this.listaCIE.add(cadenaCIE);
+            }
         }
 
         //ATENCION
-        this.atencion_horaFin = fichaPaciente.getAtencionQuimioterapia().getHoraFin();
-        this.atencion_horaInicio = fichaPaciente.getAtencionQuimioterapia().getHoraInicio();
-        this.atencion_medico = fichaPaciente.getAtencionQuimioterapia().getMedico().getNombreCompleto();
-        this.atencion_enfermera = fichaPaciente.getAtencionQuimioterapia().getEnfermera().getNombreCompleto();
-        this.atencion_cubiculo = fichaPaciente.getAtencionQuimioterapia().getCubiculo().getCodigo();
+        if(fichaPaciente.getAtencionQuimioterapia() != null) {
+            this.atencion_horaFin = fichaPaciente.getAtencionQuimioterapia().getHoraFin();
+            this.atencion_horaInicio = fichaPaciente.getAtencionQuimioterapia().getHoraInicio();
+            this.atencion_medico = fichaPaciente.getAtencionQuimioterapia().getMedico().getNombreCompleto();
+            this.atencion_enfermera = fichaPaciente.getAtencionQuimioterapia().getEnfermera().getNombreCompleto();
+            this.atencion_cubiculo = fichaPaciente.getAtencionQuimioterapia().getCubiculo().getCodigo();
+        }
 
         //DETALLE
-        this.detalle_tratamiento = fichaPaciente.getDetalleQuimioterapia().getTratamiento();
-        this.detalle_observaciones = fichaPaciente.getDetalleQuimioterapia().getObservaciones();
-        this.detalle_medicinas = fichaPaciente.getDetalleQuimioterapia().getMedicinas();
+        if(fichaPaciente.getDetalleQuimioterapia() != null) {
+            this.detalle_tratamiento = fichaPaciente.getDetalleQuimioterapia().getTratamiento();
+            this.detalle_observaciones = fichaPaciente.getDetalleQuimioterapia().getObservaciones();
+            this.detalle_medicinas = fichaPaciente.getDetalleQuimioterapia().getMedicinas();
+        }
 
-        //CITA
-        this.cita_duracionMinutosProtocolo = fichaPaciente.getCita().getDuracionMinutosProtocolo();
-        this.cita_medico = fichaPaciente.getCita().getMedicoConsulta().getNombreCompleto();
-        this.cita_aseguradora = fichaPaciente.getCita().getAseguradora();
-        this.cita_estado = fichaPaciente.getCita().getEstado().toString();
-        this.cita_horaProgramada = fichaPaciente.getCita().getHoraProgramada();
-        this.cita_fecha = fichaPaciente.getCita().getFecha();
-        this.cita_usuarioCreacion = fichaPaciente.getCita().getUsuarioCreacion().getNombre();
-        this.cita_fechaRegistro = fichaPaciente.getCita().getFecha();
 
-        //PACIENTE
-        this.paciente_edad = fichaPaciente.getPaciente().getEdad();
-        this.paciente_numDocIdentidad = fichaPaciente.getPaciente().getNumDocIdentidad();
-        this.paciente_tipoDocumentoNombre = fichaPaciente.getPaciente().getTipoDocumentoNombre();
-        this.paciente_numCelular = fichaPaciente.getPaciente().getNumCelular();
-        this.paciente_sexo = fichaPaciente.getPaciente().getSexo();
-        this.paciente_fechaNacimiento = fichaPaciente.getPaciente().getFechaNacimiento();
-        this.paciente_nombreCompleto = fichaPaciente.getPaciente().getNombreCompleto();
-        this.paciente_apellidoM = fichaPaciente.getPaciente().getApellidoM();
-        this.paciente_apellidoP = fichaPaciente.getPaciente().getApellidoP();
-        this.paciente_nombre = fichaPaciente.getPaciente().getNombre();
 
-        //FICHA
-        this.ficha_id = fichaPaciente.getId();
-        this.ficha_isActive = fichaPaciente.getIsActive();
-        this.ficha_horaCreacion = fichaPaciente.getHoraCreacion();
-        this.ficha_fechaCreacion = fichaPaciente.getFechaCreacion();
+
+
 
         //EXTRA
-        this.ficha_isNuevo = ficha_isNuevo;
+        this.ficha_isNuevo = true;
     }
 
 
-    public FichaPacienteDTO(RegistrosAntiguos registrosAntiguos, Boolean ficha_isNuevo){
+    public FichaPacienteDTO(RegistrosAntiguos registrosAntiguos){
         //FUNCIONES VITALES
         this.fv_superficieCorporal = registrosAntiguos.getSupCorporal();
         this.fv_tallaCm = registrosAntiguos.getTalla();
@@ -203,6 +225,6 @@ public class FichaPacienteDTO {
         this.ficha_fechaCreacion = null;
 
         //EXTRA
-        this.ficha_isNuevo = ficha_isNuevo;
+        this.ficha_isNuevo = false;
     }
 }

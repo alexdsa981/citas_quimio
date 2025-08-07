@@ -59,11 +59,11 @@ public class FichaPacienteController {
             List<RegistrosAntiguos> fichasAntiguas = registrosAntiguosService.registrosAntiguosEntreFechas(filtro.getDesde(), filtro.getHasta());
             List<FichaPacienteDTO> listaDTO = new ArrayList<>();
             for (FichaPaciente ficha : fichasActuales){
-                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha, true);
+                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha);
                 listaDTO.add(fichaDTO);
             }
             for (RegistrosAntiguos ficha : fichasAntiguas){
-                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha, true);
+                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha);
                 listaDTO.add(fichaDTO);
             }
             System.out.println(filtro.getDesde() + " " + filtro.getHasta());
