@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ipor.quimioterapia.gestioncitas.dto.CieCrearDTO;
 import com.ipor.quimioterapia.gestioncitas.dto.CieGuardarListaDTO;
 import com.ipor.quimioterapia.gestioncitas.dto.DetalleCieDTO;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPacienteService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.cie.CieService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.detallecie.DetalleCie;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguos;
+import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguosService;
 import com.ipor.quimioterapia.gestioncitas.logs.AccionLogFicha;
 import com.ipor.quimioterapia.gestioncitas.logs.LogService;
 import com.ipor.quimioterapia.usuario.UsuarioService;
@@ -30,6 +33,8 @@ public class DiagnosticoController {
     CieService cieService;
     @Autowired
     FichaPacienteService fichaPacienteService;
+    @Autowired
+    RegistrosAntiguosService registrosAntiguosService;
     @Autowired
     UsuarioService usuarioService;
     @Autowired
@@ -95,34 +100,46 @@ public class DiagnosticoController {
     @GetMapping("/cie/lista/{idFicha}")
     public ResponseEntity<?> obtenerDetalleCiePorFicha(@PathVariable Long idFicha) {
         try {
-            FichaPaciente fichaActual = fichaPacienteService.getPorID(idFicha);
-            List<DetalleCie> lista = cieService.getPorIDFichaPaciente(idFicha);
-            FichaPaciente fichaDeOrigen = fichaActual;
+            if(idFicha > 0){
+                FichaPaciente fichaActual = fichaPacienteService.getPorID(idFicha);
+                List<DetalleCie> lista = cieService.getPorIDFichaPaciente(idFicha);
+                FichaPaciente fichaDeOrigen = fichaActual;
 
-            if (lista == null || lista.isEmpty()) {
-                // Buscar otras fichas del mismo paciente (excluyendo la actual)
-                Paciente paciente = fichaActual.getPaciente();
-                List<FichaPaciente> fichasAnteriores = fichaPacienteService
-                        .findByPacienteOrderByFechaDesc(paciente.getIdPaciente(), idFicha);
+                if (lista == null || lista.isEmpty()) {
+                    // Buscar otras fichas del mismo paciente (excluyendo la actual)
+                    Paciente paciente = fichaActual.getPaciente();
+                    List<FichaPaciente> fichasAnteriores = fichaPacienteService
+                            .findByPacienteOrderByFechaDesc(paciente.getIdPaciente(), idFicha);
 
-                for (FichaPaciente ficha : fichasAnteriores) {
-                    List<DetalleCie> listaTemporal = cieService.getPorIDFichaPaciente(ficha.getId());
-                    if (listaTemporal != null && !listaTemporal.isEmpty()) {
-                        lista = listaTemporal;
-                        fichaDeOrigen = ficha;
-                        break;
+                    for (FichaPaciente ficha : fichasAnteriores) {
+                        List<DetalleCie> listaTemporal = cieService.getPorIDFichaPaciente(ficha.getId());
+                        if (listaTemporal != null && !listaTemporal.isEmpty()) {
+                            lista = listaTemporal;
+                            fichaDeOrigen = ficha;
+                            break;
+                        }
                     }
                 }
+                List<DetalleCieDTO> dtoList = lista.stream()
+                        .map(DetalleCieDTO::new)
+                        .toList();
+
+                return ResponseEntity.ok(Map.of(
+                        "detalleCies", dtoList,
+                        "fechaReferencia", fichaDeOrigen.getFechaCreacion()
+                ));
+
+            }else{
+                RegistrosAntiguos registrosAntiguos = registrosAntiguosService.getPorId(-idFicha);
+                FichaPacienteDTO fichaPacienteDTO = new FichaPacienteDTO(registrosAntiguos);
+
+
+                return ResponseEntity.ok(Map.of(
+                        "detalleCies", fichaPacienteDTO.getListaCIE(),
+                        "fechaReferencia", fichaPacienteDTO.getCita_fecha()
+                ));
             }
 
-            List<DetalleCieDTO> dtoList = lista.stream()
-                    .map(DetalleCieDTO::new)
-                    .toList();
-
-            return ResponseEntity.ok(Map.of(
-                    "detalleCies", dtoList,
-                    "fechaReferencia", fichaDeOrigen.getFechaCreacion()
-            ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                     "success", false,

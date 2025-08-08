@@ -6,6 +6,6 @@ function llenarFormularioFichaAtencionQuimioterapia(ficha) {
     document.getElementById('cubiculoFichaTexto').textContent = mostrarTexto(ficha.atencion_cubiculo);
 
 
-    document.getElementById('horaInicioFichaTexto').textContent = mostrarTexto(ficha.atencion_horaInicio.substring(0, 5));
-    document.getElementById('horaFinFichaTexto').textContent = mostrarTexto(ficha.atencion_horaFin.substring(0, 5));
+    document.getElementById('horaInicioFichaTexto').textContent = mostrarTexto(ficha.atencion_horaInicio?.substring(0, 5) || "No Asignado");
+    document.getElementById('horaFinFichaTexto').textContent = mostrarTexto(ficha.atencion_horaFin?.substring(0, 5) || "No Asignado");
 }

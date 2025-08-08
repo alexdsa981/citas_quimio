@@ -183,14 +183,14 @@ public class FichaPacienteDTO {
             DetalleCieDTO ciedto1 = new DetalleCieDTO();
             ciedto1.setId(-1L);
             ciedto1.setCodigo(registrosAntiguos.getCodcie1());
-            ciedto1.setDescripcion(registrosAntiguos.getCodcie1());
+            ciedto1.setDescripcion(registrosAntiguos.getCie1());
             this.getListaCIE().add(ciedto1);
         }
         if (registrosAntiguos.getCie2() != null && !registrosAntiguos.getCie2().isEmpty()){
             DetalleCieDTO ciedto2 = new DetalleCieDTO();
             ciedto2.setId(-2L);
             ciedto2.setCodigo(registrosAntiguos.getCodcie2());
-            ciedto2.setDescripcion(registrosAntiguos.getCodcie2());
+            ciedto2.setDescripcion(registrosAntiguos.getCie2());
             this.getListaCIE().add(ciedto2);
         }
 

@@ -55,3 +55,28 @@ EXEC sp_rename 'registros_antiguos.Usuario', 'usuario', 'COLUMN';
 EXEC sp_rename 'registros_antiguos.UsuarioUp', 'usuario_up', 'COLUMN';
 EXEC sp_rename 'registros_antiguos.FecUp', 'fec_up', 'COLUMN';
 EXEC sp_rename 'registros_antiguos.PresionMax', 'presion_max', 'COLUMN';
+
+
+
+DELETE FROM registros_antiguos
+WHERE fec_ingreso >= '2025-07-01';
+
+
+
+UPDATE registros_antiguos
+SET estado = CASE estado
+    WHEN 'Cita Cancelada' THEN 'CANCELADO'
+    WHEN 'CONFIRMADO' THEN 'EN_PROCESO'
+    WHEN 'ATENDIDO' THEN 'ATENDIDO'
+    WHEN 'PENDIENTE' THEN 'NO_ASIGNADO'
+    ELSE estado  -- Mantiene el valor original si no coincide con ninguno
+END;
+
+
+UPDATE registros_antiguos
+SET doc_identidad = CASE doc_identidad
+    WHEN 'DNI' THEN 'D.N.I./Cédula/L.E.'
+    WHEN 'PASAPORTE' THEN 'Pasaporte'
+    WHEN 'CARNET EXTRANJERIA' THEN 'Carnet Extranjería'
+    ELSE doc_identidad  -- conserva el valor original si no coincide
+END;

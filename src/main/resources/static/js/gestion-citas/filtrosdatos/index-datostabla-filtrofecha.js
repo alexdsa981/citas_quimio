@@ -94,14 +94,15 @@ function llenarTablaFichas(fichas) {
 
         const esSeleccionada = dto.ficha_id == idFichaSeleccionada ? 'seleccionada' : '';
         claseFila += esSeleccionada ? ' seleccionada' : '';
+        const claseFila2 = dto.ficha_id < 0 ? "ficha_antigua" : "";
 
         const fila = `
-            <tr class="${claseFila}" data-id-ficha="${dto.ficha_id}" data-fecha-cita="${dto.cita_fecha}">
+    <tr class="${claseFila} ${claseFila2}" data-id-ficha="${dto.ficha_id}" data-fecha-cita="${dto.cita_fecha}">
                 <td class="text-center text-muted">${index + 1}</td>
                 ${tdConColor(dto.cita_usuarioCreacion || "")}
                 ${tdConColor(dto.cita_aseguradora || "")}
                 ${tdConColor(`<b>${(dto.paciente_tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (dto.paciente_tipoDocumentoNombre || "")}</b>: ${dto.paciente_numDocIdentidad || ""}`)}
-                ${tdConColor(`${dto.nombreCompleto || ""}`)}
+                ${tdConColor(`${dto.paciente_nombreCompleto || ""}`)}
                 ${tdConColor(dto.cita_fecha || "")}
                 ${tdConColor(calcularRangoHora(dto.cita_horaProgramada, dto.cita_horasProtocolo, dto.cita_minutosRestantesProtocolo))}
                 ${tdConColor(dto.atencion_cubiculo || "")}
@@ -141,21 +142,32 @@ function llenarTablaFichas(fichas) {
             document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
                 btn.classList.remove("bloqueado");
             });
+            document.querySelectorAll(".btn-duplicar").forEach(btn => {
+                btn.classList.remove("bloqueado");
+            });
 
             // Solo aplicar bloqueo si NO es administrador (id ≠ 3)
-            if (idRolUsuario !== 3) {
-                if (fecha < hoy) {
-                    document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                        btn.classList.add("bloqueado");
-                    });
-                } else if (fecha > hoy) {
-                    document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                        if (!btn.classList.contains("habilitado-futuro")) {
+            if(idFichaSeleccionada > 0){
+                if (idRolUsuario !== 3) {
+                    if (fecha < hoy) {
+                        document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
                             btn.classList.add("bloqueado");
-                        }
-                    });
+                        });
+                    } else if (fecha > hoy) {
+                        document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
+                            if (!btn.classList.contains("habilitado-futuro")) {
+                                btn.classList.add("bloqueado");
+                            }
+                        });
+                    }
                 }
+            }else{
+                document.querySelectorAll(".btn-duplicar").forEach(btn => {
+                    btn.classList.add("bloqueado");
+                });
             }
+
+
         });
     });
 

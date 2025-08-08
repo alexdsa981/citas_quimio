@@ -109,6 +109,11 @@ tr.fila-ficha.seleccionada td {
     background-color: #d0ebff !important;
     user-select: none;
 }
+tr.fila-ficha.ficha_antigua td {
+    background-color: #f8f9fa !important;
+    color: #495057;
+    user-select: none;
+}
 
 .form-disabled textarea,
 .form-disabled input,
