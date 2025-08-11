@@ -46,7 +46,7 @@ function renderizarDetalleCie(info, modoEdicion = false) {
         detalleCies.length > 0 ? "none" : "block";
 
     detalleCies.forEach(detalle => {
-        const id = detalle.id;
+        const id = detalle.cieId;
         const codigo = detalle.codigo;
         const nombre = detalle.descripcion;
 

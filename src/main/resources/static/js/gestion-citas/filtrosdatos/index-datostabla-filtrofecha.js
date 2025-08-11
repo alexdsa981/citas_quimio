@@ -104,7 +104,7 @@ function llenarTablaFichas(fichas) {
                 ${tdConColor(`<b>${(dto.paciente_tipoDocumentoNombre === "D.N.I./Cédula/L.E.") ? "DNI" : (dto.paciente_tipoDocumentoNombre || "")}</b>: ${dto.paciente_numDocIdentidad || ""}`)}
                 ${tdConColor(`${dto.paciente_nombreCompleto || ""}`)}
                 ${tdConColor(dto.cita_fecha || "")}
-                ${tdConColor(calcularRangoHora(dto.cita_horaProgramada, dto.cita_horasProtocolo, dto.cita_minutosRestantesProtocolo))}
+                ${tdConColor(calcularRangoHora(dto.cita_horaProgramada, dto.cita_duracionMinutosProtocolo))}
                 ${tdConColor(dto.atencion_cubiculo || "")}
                 ${tdConColor(formatearHora(dto.atencion_horaInicio) || "")}
                 ${tdConColor(formatearHora(dto.atencion_horaFin) || "")}
@@ -129,47 +129,50 @@ function llenarTablaFichas(fichas) {
     const hoy = new Date(fechaActual);
 
 
-    document.querySelectorAll("tr[data-fecha-cita]").forEach(tr => {
-        const fechaCita = tr.getAttribute("data-fecha-cita");
-        const fecha = new Date(fechaCita);
+document.querySelectorAll("tr[data-fecha-cita]").forEach(tr => {
+    const fechaCita = tr.getAttribute("data-fecha-cita");
+    const fechaFila = new Date(fechaCita);
 
-        if (fechaCita !== fechaActual) {
-            tr.classList.add("tr-fecha-distinta");
+    if (fechaCita !== fechaActual) {
+        tr.classList.add("tr-fecha-distinta");
+    }
+
+    tr.addEventListener("click", () => {
+
+        //Asignar primero el id y la fecha seleccionada
+        idFichaSeleccionada = parseInt(tr.dataset.idFicha, 10);
+        fecha = fechaFila; // si tienes fecha como global también
+
+        //Quitar bloqueo de todos los botones
+        document.querySelectorAll(".bloqueable-fecha-pasada, .btn-duplicar")
+            .forEach(btn => btn.classList.remove("bloqueado"));
+
+        //Caso 1: Ficha antigua (ID negativo) → bloquear todo
+        if (idFichaSeleccionada < 0) {
+            document.querySelectorAll(".bloqueable-fecha-pasada, .btn-duplicar")
+                .forEach(btn => btn.classList.add("bloqueado"));
+            return;
         }
 
-        tr.addEventListener("click", () => {
-            // Siempre quitamos bloqueos al inicio
-            document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                btn.classList.remove("bloqueado");
-            });
-            document.querySelectorAll(".btn-duplicar").forEach(btn => {
-                btn.classList.remove("bloqueado");
-            });
-
-            // Solo aplicar bloqueo si NO es administrador (id ≠ 3)
-            if(idFichaSeleccionada > 0){
-                if (idRolUsuario !== 3) {
-                    if (fecha < hoy) {
-                        document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
+        // Caso 2: Usuario no administrador
+        if (idRolUsuario !== 3) {
+            if (fecha < hoy) {
+                // Bloquear edición, pero permitir duplicar
+                document.querySelectorAll(".bloqueable-fecha-pasada")
+                    .forEach(btn => btn.classList.add("bloqueado"));
+            } else if (fecha > hoy) {
+                // Bloquear solo los que no tengan habilitado-futuro
+                document.querySelectorAll(".bloqueable-fecha-pasada")
+                    .forEach(btn => {
+                        if (!btn.classList.contains("habilitado-futuro")) {
                             btn.classList.add("bloqueado");
-                        });
-                    } else if (fecha > hoy) {
-                        document.querySelectorAll(".bloqueable-fecha-pasada").forEach(btn => {
-                            if (!btn.classList.contains("habilitado-futuro")) {
-                                btn.classList.add("bloqueado");
-                            }
-                        });
-                    }
-                }
-            }else{
-                document.querySelectorAll(".btn-duplicar").forEach(btn => {
-                    btn.classList.add("bloqueado");
-                });
+                        }
+                    });
             }
-
-
-        });
+        }
     });
+});
+
 
 
     aplicarFiltrosOtros();
@@ -209,7 +212,8 @@ function tdConColor(valor) {
 }
 
 
-function calcularRangoHora(horaInicio, horasDuracion, minutosDuracion) {
+function calcularRangoHora(horaInicio, duracionMinutos) {
+
     if (!horaInicio) return "";
 
     const [h, m] = horaInicio.split(":").map(Number);
@@ -218,19 +222,20 @@ function calcularRangoHora(horaInicio, horasDuracion, minutosDuracion) {
     const pad = (num) => String(num).padStart(2, '0');
     const inicioStr = `${pad(inicio.getHours())}:${pad(inicio.getMinutes())}`;
 
-    const duracionTotal = (horasDuracion || 0) * 60 + (minutosDuracion || 0);
+    const totalMin = duracionMinutos || 0;
 
     // Si no hay duración, mostrar solo la hora programada
-    if (duracionTotal === 0) {
+    if (totalMin === 0) {
         return inicioStr;
     }
 
     const fin = new Date(inicio);
-    fin.setMinutes(fin.getMinutes() + duracionTotal);
+    fin.setMinutes(fin.getMinutes() + totalMin);
     const finStr = `${pad(fin.getHours())}:${pad(fin.getMinutes())}`;
 
     return `${inicioStr} - ${finStr}`;
 }
+
 
 
 

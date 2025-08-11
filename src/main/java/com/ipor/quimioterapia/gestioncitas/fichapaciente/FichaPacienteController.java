@@ -2,7 +2,6 @@ package com.ipor.quimioterapia.gestioncitas.fichapaciente;
 
 import com.ipor.quimioterapia.gestioncitas.dto.FiltroFechasDTO;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguos;
-import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguosRepository;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.registrosantiguos.RegistrosAntiguosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,10 +51,10 @@ public class FichaPacienteController {
             }
             System.out.println(LocalDate.now() + " " + LocalTime.now());
             return ResponseEntity.ok(fichasdto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Error al obtener fichas del día: " + e.getMessage()));
-        }
+        }  catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "Error al obtener fichas del día: " + e.getMessage()));
+    }
     }
 
     @PostMapping("/fichas/entre-fechas")
@@ -63,15 +63,17 @@ public class FichaPacienteController {
             List<FichaPaciente> fichasActuales = fichaPacienteService.getListaEntreFechas(filtro.getDesde(), filtro.getHasta());
             List<RegistrosAntiguos> fichasAntiguas = registrosAntiguosService.registrosAntiguosEntreFechas(filtro.getDesde(), filtro.getHasta());
             List<FichaPacienteDTO> listaDTO = new ArrayList<>();
-            for (FichaPaciente ficha : fichasActuales){
-                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha);
-                listaDTO.add(fichaDTO);
+
+            for (FichaPaciente ficha : fichasActuales) {
+                listaDTO.add(new FichaPacienteDTO(ficha));
             }
-            for (RegistrosAntiguos ficha : fichasAntiguas){
-                FichaPacienteDTO fichaDTO = new FichaPacienteDTO(ficha);
-                listaDTO.add(fichaDTO);
+            for (RegistrosAntiguos ficha : fichasAntiguas) {
+                listaDTO.add(new FichaPacienteDTO(ficha));
             }
-            System.out.println(filtro.getDesde() + " " + filtro.getHasta());
+
+            // Ordenar por fecha ascendente
+            listaDTO.sort(Comparator.comparing(FichaPacienteDTO::getCita_fecha));
+
             return ResponseEntity.ok(listaDTO);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -87,7 +89,7 @@ public class FichaPacienteController {
                 FichaPaciente fp = fichaPacienteService.getPorID(id);
                 pacienteDTO = new FichaPacienteDTO(fp);
             }else {
-                RegistrosAntiguos ra = registrosAntiguosService.getPorId(-id);
+                RegistrosAntiguos ra = registrosAntiguosService.getPorID(-id);
                 pacienteDTO = new FichaPacienteDTO(ra);
             }
             if (pacienteDTO.getFicha_id() == null) {

@@ -16,7 +16,7 @@ public class RegistrosAntiguosService {
         return registrosAntiguosRepository.buscarFichasEntreFechas(desde, hasta);
     }
 
-    public RegistrosAntiguos getPorId(Long id){
+    public RegistrosAntiguos getPorID(Long id){
         return registrosAntiguosRepository.findById(id).get();
 
     }

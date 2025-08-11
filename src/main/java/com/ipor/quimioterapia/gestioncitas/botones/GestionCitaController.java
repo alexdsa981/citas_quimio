@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/app/gestion-citas/boton")
@@ -174,14 +175,21 @@ public class GestionCitaController {
                 boolean esNueva = fichaAsignacion.getAtencionQuimioterapia() == null;
                 String valorAnteriorJson = null;
 
-                if (!esNueva){
-                    Map<String, Object> valorAanteriorMap = Map.of(
-                            "enfermera", fichaAsignacion.getAtencionQuimioterapia().getEnfermera().getNombreCompleto(),
-                            "cubiculo", fichaAsignacion.getAtencionQuimioterapia().getCubiculo().getCodigo(),
-                            "medico", fichaAsignacion.getAtencionQuimioterapia().getMedico().getNombreCompleto()
+                if (!esNueva) {
+                    Map<String, Object> valorAnteriorMap = Map.of(
+                            "enfermera", Optional.ofNullable(fichaAsignacion.getAtencionQuimioterapia().getEnfermera())
+                                    .map(Enfermera::getNombreCompleto)
+                                    .orElse(" "),
+                            "cubiculo", Optional.ofNullable(fichaAsignacion.getAtencionQuimioterapia().getCubiculo())
+                                    .map(Cubiculo::getCodigo)
+                                    .orElse(" "),
+                            "medico", Optional.ofNullable(fichaAsignacion.getAtencionQuimioterapia().getMedico())
+                                    .map(Medico::getNombreCompleto)
+                                    .orElse(" ")
                     );
-                    valorAnteriorJson = objectMapper.writeValueAsString(valorAanteriorMap);
+                    valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
                 }
+
 
                 AtencionQuimioterapia resultado = atencionQuimioterapiaService.crearOActualizar(dto, fichaAsignacion, medico, enfermera, cubiculo);
                 if (esNueva) {
@@ -231,6 +239,7 @@ public class GestionCitaController {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                     "success", false,
                     "message", "Se produjo un error al intentar registrar la atención. Por favor, asegúrese de completar todos los campos requeridos."

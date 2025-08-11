@@ -57,6 +57,7 @@ public class CieService {
         // Agregar nuevos
         for (Long idCie : idsNuevos) {
             if (!idsActuales.contains(idCie)) {
+                System.out.println(idCie);
                 Cie cie = getPorID(idCie);
                 DetalleCie nuevoDetalle = new DetalleCie();
                 nuevoDetalle.setCie(cie);

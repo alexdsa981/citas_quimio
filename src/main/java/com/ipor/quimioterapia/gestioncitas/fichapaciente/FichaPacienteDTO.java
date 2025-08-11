@@ -19,7 +19,6 @@ public class FichaPacienteDTO {
     //FICHA PACIENTE
     private Long ficha_id;
     private Boolean ficha_isNuevo;
-    private LocalDate ficha_fechaCreacion;
     private LocalTime ficha_horaCreacion;
     private Boolean ficha_isActive;
 
@@ -47,16 +46,6 @@ public class FichaPacienteDTO {
     private Integer cita_duracionMinutosProtocolo;
     private String cita_usuarioCreacion;
     private LocalDate cita_fechaRegistro;
-
-    public Integer getHorasProtocolo() {
-        if (cita_duracionMinutosProtocolo == null) return 0;
-        return cita_duracionMinutosProtocolo / 60;
-    }
-
-    public Integer getMinutosRestantesProtocolo() {
-        if (cita_duracionMinutosProtocolo == null) return 0;
-        return cita_duracionMinutosProtocolo % 60;
-    }
 
     //DETALLE
     private String detalle_medicinas;
@@ -91,7 +80,6 @@ public class FichaPacienteDTO {
             this.ficha_id = fichaPaciente.getId();
             this.ficha_isActive = fichaPaciente.getIsActive();
             this.ficha_horaCreacion = fichaPaciente.getHoraCreacion();
-            this.ficha_fechaCreacion = fichaPaciente.getFechaCreacion();
         }
 
         //CITA
@@ -146,13 +134,23 @@ public class FichaPacienteDTO {
         }
 
         //ATENCION
-        if(fichaPaciente.getAtencionQuimioterapia() != null) {
+        if (fichaPaciente.getAtencionQuimioterapia() != null) {
             this.atencion_horaFin = fichaPaciente.getAtencionQuimioterapia().getHoraFin();
             this.atencion_horaInicio = fichaPaciente.getAtencionQuimioterapia().getHoraInicio();
-            this.atencion_medico = fichaPaciente.getAtencionQuimioterapia().getMedico().getNombreCompleto();
-            this.atencion_enfermera = fichaPaciente.getAtencionQuimioterapia().getEnfermera().getNombreCompleto();
-            this.atencion_cubiculo = fichaPaciente.getAtencionQuimioterapia().getCubiculo().getCodigo();
+
+            this.atencion_medico = (fichaPaciente.getAtencionQuimioterapia().getMedico() != null)
+                    ? fichaPaciente.getAtencionQuimioterapia().getMedico().getNombreCompleto()
+                    : "No Asignado";
+
+            this.atencion_enfermera = (fichaPaciente.getAtencionQuimioterapia().getEnfermera() != null)
+                    ? fichaPaciente.getAtencionQuimioterapia().getEnfermera().getNombreCompleto()
+                    : "No Asignado";
+
+            this.atencion_cubiculo = (fichaPaciente.getAtencionQuimioterapia().getCubiculo() != null)
+                    ? fichaPaciente.getAtencionQuimioterapia().getCubiculo().getCodigo()
+                    : "";
         }
+
 
         //DETALLE
         if(fichaPaciente.getDetalleQuimioterapia() != null) {
@@ -232,7 +230,6 @@ public class FichaPacienteDTO {
         this.ficha_id = -registrosAntiguos.getIdQuimioterapia();
         this.ficha_isActive = true;
         this.ficha_horaCreacion = null;
-        this.ficha_fechaCreacion = null;
 
         //EXTRA
         this.ficha_isNuevo = false;

@@ -90,6 +90,7 @@ public class DiagnosticoController {
             return ResponseEntity.ok(Map.of("detalleCies", listaActualizada));
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("mensaje", "Error al guardar lista CIE: " + e.getMessage())
             );
@@ -130,7 +131,7 @@ public class DiagnosticoController {
                 ));
 
             }else{
-                RegistrosAntiguos registrosAntiguos = registrosAntiguosService.getPorId(-idFicha);
+                RegistrosAntiguos registrosAntiguos = registrosAntiguosService.getPorID(-idFicha);
                 FichaPacienteDTO fichaPacienteDTO = new FichaPacienteDTO(registrosAntiguos);
 
 
@@ -141,6 +142,7 @@ public class DiagnosticoController {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                     "success", false,
                     "message", "No se pudo obtener los diagnósticos para la ficha especificada."
