@@ -70,7 +70,7 @@
 
 
 /* Aumentamos ligeramente el z-index por si hay traslapes */
-#modalCie, #modalBuscarPaciente {
+#modalCie, #modalBuscarPaciente, #modalBuscarAseguradora{
     z-index: 1056;
 }
 

@@ -1,5 +1,11 @@
 <div th:fragment="modalDuplicarCita" xmlns:th="http://www.thymeleaf.org">
-    <div class="modal fade" id="modalDuplicarSesion" tabindex="-1" aria-labelledby="tituloDuplicarSesion" aria-hidden="true">
+    <div class="modal fade" id="modalDuplicarSesion"
+         tabindex="-1"
+         aria-labelledby="tituloDuplicarSesion"
+         aria-hidden="true"
+         data-bs-backdrop="static"
+         data-bs-keyboard="false">
+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -33,21 +39,33 @@
                         </select>
                     </div>
 
-                    <div class="mb-3 d-flex align-items-end gap-4">
-                        <div class="flex-grow-1">
-                            <label class="form-label">Aseguradora</label>
-                            <input type="text" class="form-control bloqueable" id="duplicadaAseguradora">
+                    <div class="mb-3 d-flex align-items-end gap-3">
+                        <!-- Campo aseguradora + botón -->
+                        <div class="d-flex flex-grow-1 align-items-end gap-2">
+                            <div class="flex-grow-1">
+                                <label class="form-label">Aseguradora</label>
+                                <input type="text" class="form-control bloqueable" id="duplicadaAseguradora" readonly>
+                            </div>
+                            <div>
+                                <label class="form-label d-block">&nbsp;</label>
+                                <button type="button" class="btn btn-secondary btn-sm" style="margin-bottom:3px;"
+                                        onclick="abrirModalAseguradora('duplicadaAseguradora')">
+                                    Otros
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex align-items-center" style="margin-bottom: 6px;">
+
+                        <!-- Checkbox CRP -->
+                        <div class="d-flex align-items-center mb-2">
                             <label class="form-check-label me-2" for="duplicadaCheckCRP">CRP:</label>
                             <input type="checkbox"
                                    class="form-check-input"
                                    id="duplicadaCheckCRP"
                                    onclick="toggleCRPduplicada()"
                                    style="transform: scale(1.4); margin-top: 2px;">
-
                         </div>
                     </div>
+
 
                     <div class="mb-3">
                         <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>

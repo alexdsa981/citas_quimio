@@ -1,0 +1,28 @@
+<div th:fragment="modalBusquedaAseguradora" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal fade" id="modalBuscarAseguradora"
+         tabindex="-1" aria-labelledby="modalBuscarAseguradoraLabel"
+         aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buscar Aseguradora</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-12">
+                            <label class="form-label">Nombre de Aseguradora</label>
+                            <input type="text" id="inputBuscarNombreAseguradora" class="form-control"
+                                   placeholder="Ingrese nombre de la aseguradora" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div id="resultadoAseguradoras" class="list-group">
+                        <div class="text-muted">Cargando aseguradoras...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

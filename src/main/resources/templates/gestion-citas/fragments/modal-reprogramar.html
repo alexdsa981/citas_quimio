@@ -1,5 +1,11 @@
 <div th:fragment="modalReprogramarCita" xmlns:th="http://www.thymeleaf.org">
-    <div class="modal fade" id="modalReprogramar" tabindex="-1" aria-labelledby="modalReprogramarLabel" aria-hidden="true">
+    <div class="modal fade" id="modalReprogramar"
+         tabindex="-1"
+         aria-labelledby="modalReprogramarLabel"
+         aria-hidden="true"
+         data-bs-backdrop="static"
+         data-bs-keyboard="false">
+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -33,15 +39,24 @@
 
                     </div>
 
-                    <div class="mb-3 d-flex align-items-end gap-4">
-                        <!-- Campo Aseguradora -->
-                        <div class="flex-grow-1">
-                            <label class="form-label">Aseguradora</label>
-                            <input type="text" class="form-control bloqueable" id="reprogramarAseguradoraCita" readonly>
+                    <div class="mb-3 d-flex align-items-end gap-3">
+                        <!-- Campo aseguradora + botón -->
+                        <div class="d-flex flex-grow-1 align-items-end gap-2">
+                            <div class="flex-grow-1">
+                                <label class="form-label">Aseguradora</label>
+                                <input type="text" class="form-control bloqueable" id="reprogramarAseguradoraCita" readonly>
+                            </div>
+                            <div>
+                                <label class="form-label d-block">&nbsp;</label>
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                        onclick="abrirModalAseguradora('reprogramarAseguradoraCita')" style="margin-bottom:3px;">
+                                    Otros
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Checkbox CRP -->
-                        <div class="d-flex align-items-center" style="margin-bottom: 6px;">
+                        <div class="d-flex align-items-center mb-2">
                             <label class="form-check-label me-2" for="reprogramarCheckCRP">CRP:</label>
                             <input type="checkbox"
                                    class="form-check-input"

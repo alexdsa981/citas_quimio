@@ -103,6 +103,7 @@ function seleccionarPacienteDesdeModal(paciente) {
     document.getElementById("medicinasCita").disabled = false;
     document.getElementById("tratamientoCita").disabled = false;
     document.getElementById("observacionesCita").disabled = false;
+    document.getElementById("btn-busqueda-aseguradoras").disabled = false;
 
     // Cierra solo el modal de búsqueda
     const modal = bootstrap.Modal.getInstance(document.getElementById("modalBuscarPaciente"));

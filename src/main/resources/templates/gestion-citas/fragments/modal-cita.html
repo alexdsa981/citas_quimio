@@ -87,9 +87,20 @@
                                             <label class="form-label">Teléfono</label>
                                             <input type="text" class="form-control bloqueable" id="telefonoCita" readonly>
                                         </div>
-                                        <div class="col-md-8">
-                                            <label class="form-label">Aseguradora</label>
-                                            <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
+
+
+
+                                        <div class="col-md-8 d-flex">
+                                            <div class="flex-grow-1">
+                                                <label class="form-label">Aseguradora</label>
+                                                <input type="text" class="form-control bloqueable" id="aseguradoraCita" readonly>
+                                            </div>
+                                            <div class="ms-2 d-flex align-items-end">
+                                                <button type="button" class="btn btn-secondary btn-sm" style="white-space: nowrap; margin-bottom:3px;"
+                                                        onclick="abrirModalAseguradora('aseguradoraCita')" id="btn-busqueda-aseguradoras" disabled>
+                                                    Otros
+                                                </button>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-1 d-flex align-items-center mt-5">
@@ -101,6 +112,7 @@
                                                        style="margin-left: 10px;" disabled="true">
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
 

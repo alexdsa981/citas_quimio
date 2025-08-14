@@ -135,6 +135,7 @@ document.getElementById("btnGuardarCita").addEventListener("click", async functi
             if (checkCRP) checkCRP.disabled = true;
 
             document.getElementById("btnGuardarCita").disabled = true;
+            document.getElementById("btn-busqueda-aseguradoras").disabled = true;
 
             modal.hide();
         } else {
