@@ -1,5 +1,7 @@
 package com.ipor.quimioterapia.helper.model;
 
+import com.ipor.quimioterapia.gestioncitas.botones.reprogramar.MotivoReprogramacion;
+import com.ipor.quimioterapia.gestioncitas.botones.reprogramar.MotivoReprogramacionService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.diagnostico.cie.CieService;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.cita.EstadoCita;
 import com.ipor.quimioterapia.recursos.cubiculo.Cubiculo;
@@ -18,6 +20,9 @@ public class ClasificadoresModelBuilder {
 
     @Autowired
     CubiculoService cubiculoService;
+
+    @Autowired
+    MotivoReprogramacionService motivoReprogramacionService;
 
     //ESTADO CITA
     public Model getListaEstadoCita(Model model) {
@@ -39,6 +44,10 @@ public class ClasificadoresModelBuilder {
         return model;
     }
 
-
+    public Model getListaMotivosReprogramacionsActivos(Model model) {
+        List<MotivoReprogramacion> lista = motivoReprogramacionService.getListaActivos();
+        model.addAttribute("Lista_Cubiculo_Activos", lista);
+        return model;
+    }
 
 }

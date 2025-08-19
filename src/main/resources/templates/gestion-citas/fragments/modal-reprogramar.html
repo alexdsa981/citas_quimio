@@ -9,63 +9,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalReprogramarLabel">Editar Cita</h5>
+                    <h5 class="modal-title" id="modalReprogramarLabel">Reprogramar Cita</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="hiddenTipoDoc">
-                    <input type="hidden" id="hiddenNumDoc">
                     <div class="mb-3">
                         <label class="form-label">Paciente</label>
                         <input type="text" class="form-control" id="nombrePacienteReprogramar" disabled>
                     </div>
                     <div class="mb-3">
-                        <label for="modalFechaCita" class="form-label">Fecha de la Cita</label>
-                        <input type="date" class="form-control" id="modalFechaCita">
+                        <label for="modalFechaReprogramacion" class="form-label">Fecha de la Cita</label>
+                        <input type="date" class="form-control" id="modalFechaReprogramacion">
                     </div>
                     <div class="mb-3">
-                        <label for="modalHoraCita" class="form-label">Hora Programada</label>
-                        <input type="time" class="form-control" id="modalHoraCita">
+                        <label for="modalHoraReprogramacion" class="form-label">Hora Programada</label>
+                        <input type="time" class="form-control" id="modalHoraReprogramacion">
                     </div>
-                    <div class="mb-3">
-                        <label for="modalMedicoCita" class="form-label">Médico Tratante</label>
-                        <select id="modalMedicoCita" name="medico" class="form-select"
-                                required>
-                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
-                                <option th:value="${medico.idPersona}"
-                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
-                            </th:block>
-                        </select>
-
-                    </div>
-
-                    <div class="mb-3 d-flex align-items-end gap-3">
-                        <!-- Campo aseguradora + botón -->
-                        <div class="d-flex flex-grow-1 align-items-end gap-2">
-                            <div class="flex-grow-1">
-                                <label class="form-label">Aseguradora</label>
-                                <input type="text" class="form-control bloqueable" id="reprogramarAseguradoraCita" readonly>
-                            </div>
-                            <div>
-                                <label class="form-label d-block">&nbsp;</label>
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                        onclick="abrirModalAseguradora('reprogramarAseguradoraCita')" style="margin-bottom:3px;">
-                                    Otros
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Checkbox CRP -->
-                        <div class="d-flex align-items-center mb-2">
-                            <label class="form-check-label me-2" for="reprogramarCheckCRP">CRP:</label>
-                            <input type="checkbox"
-                                   class="form-check-input"
-                                   id="reprogramarCheckCRP"
-                                   onclick="toggleCRP()"
-                                   style="transform: scale(1.4); margin-top: 2px;">
-                        </div>
-                    </div>
-
 
                     <div class="mb-3">
                         <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
@@ -91,26 +50,20 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="mb-3">
-                        <label for="reprogramarMedicinasCita" class="form-label">Medicamentos</label>
-                        <textarea id="reprogramarMedicinasCita" class="form-control " rows="2" placeholder="" ></textarea>
+                        <label class="form-label">Seleccione el Motivo</label><span style="color:red;">*</span>
+                        <select class="form-select" name="idMotivo" id="idMotivoReprogramacion">
+                            <option value="prueba">Prueba</option>
+                        </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="reprogramarObservacionesCita" class="form-label">Observaciones del médico tratante</label>
-                        <textarea id="reprogramarObservacionesCita" class="form-control " rows="2" placeholder="" ></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="reprogramarTratamientoCita" class="form-label">Tratamiento</label>
-                        <textarea id="reprogramarTratamientoCita" class="form-control " rows="2" placeholder="" ></textarea>
-                    </div>
-
+                        <label class="form-label">Descripción</label><span style="color:red;">*</span>
+                        <textarea class="form-control" placeholder="Describe el motivo de la reprogramación..." required></textarea>                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarReprogramacion()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,118 @@
+<div th:fragment="modalEditarCita" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal fade" id="modalEditar"
+         tabindex="-1"
+         aria-labelledby="modalEditarLabel"
+         aria-hidden="true"
+         data-bs-backdrop="static"
+         data-bs-keyboard="false">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarLabel">Editar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="hiddenTipoDoc">
+                    <input type="hidden" id="hiddenNumDoc">
+                    <div class="mb-3">
+                        <label class="form-label">Paciente</label>
+                        <input type="text" class="form-control" id="nombrePacienteEditar" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modalFechaCita" class="form-label">Fecha de la Cita</label>
+                        <input type="date" class="form-control" id="modalFechaCita">
+                    </div>
+                    <div class="mb-3">
+                        <label for="modalHoraCita" class="form-label">Hora Programada</label>
+                        <input type="time" class="form-control" id="modalHoraCita">
+                    </div>
+                    <div class="mb-3">
+                        <label for="modalMedicoCita" class="form-label">Médico Tratante</label>
+                        <select id="modalMedicoCita" name="medico" class="form-select"
+                                required>
+                            <th:block th:each="medico : ${Lista_Medicos_Activos}">
+                                <option th:value="${medico.idPersona}"
+                                        th:text="${medico.apellidoP + ' ' + medico.apellidoM + ' ' + medico.nombre}"></option>
+                            </th:block>
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-end gap-3">
+                        <!-- Campo aseguradora + botón -->
+                        <div class="d-flex flex-grow-1 align-items-end gap-2">
+                            <div class="flex-grow-1">
+                                <label class="form-label">Aseguradora</label>
+                                <input type="text" class="form-control bloqueable" id="editarAseguradoraCita" readonly>
+                            </div>
+                            <div>
+                                <label class="form-label d-block">&nbsp;</label>
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                        onclick="abrirModalAseguradora('editarAseguradoraCita')" style="margin-bottom:3px;">
+                                    Otros
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox CRP -->
+                        <div class="d-flex align-items-center mb-2">
+                            <label class="form-check-label me-2" for="editarCheckCRP">CRP:</label>
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="editarCheckCRP"
+                                   onclick="toggleCRP()"
+                                   style="transform: scale(1.4); margin-top: 2px;">
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
+                        <div class="input-group">
+                            <select class="form-select " id="editarHorasProtocoloCita" required >
+                                <option value="0">0 h</option>
+                                <option value="1">1 h</option>
+                                <option value="2">2 h</option>
+                                <option value="3">3 h</option>
+                                <option value="4">4 h</option>
+                                <option value="5">5 h</option>
+                                <option value="6">6 h</option>
+                                <option value="7">7 h</option>
+                                <option value="8">8 h</option>
+                                <option value="9">9 h</option>
+                                <option value="10">10 h</option>
+                            </select>
+                            <select class="form-select " id="editarMinutosProtocoloCita" required >
+                                <option value="0">0 min</option>
+                                <option value="15">15 min</option>
+                                <option value="30">30 min</option>
+                                <option value="45">45 min</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarMedicinasCita" class="form-label">Medicamentos</label>
+                        <textarea id="editarMedicinasCita" class="form-control " rows="2" placeholder="" ></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarObservacionesCita" class="form-label">Observaciones del médico tratante</label>
+                        <textarea id="editarObservacionesCita" class="form-control " rows="2" placeholder="" ></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarTratamientoCita" class="form-label">Tratamiento</label>
+                        <textarea id="editarTratamientoCita" class="form-control " rows="2" placeholder="" ></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

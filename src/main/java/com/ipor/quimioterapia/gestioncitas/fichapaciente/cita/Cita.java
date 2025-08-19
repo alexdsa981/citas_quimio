@@ -1,7 +1,7 @@
 package com.ipor.quimioterapia.gestioncitas.fichapaciente.cita;
 
 
-import com.ipor.quimioterapia.gestioncitas.fichapaciente.paciente.Paciente;
+import com.ipor.quimioterapia.gestioncitas.botones.reprogramar.Reprogramacion;
 import com.ipor.quimioterapia.recursos.personal.medico.Medico;
 import com.ipor.quimioterapia.usuario.Usuario;
 import jakarta.persistence.*;
@@ -20,9 +20,7 @@ public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@Column(nullable = false)
     private LocalDate fecha;
-    //@Column(nullable = false)
     private LocalTime horaProgramada;
 
     @ManyToOne
@@ -36,6 +34,8 @@ public class Cita {
     @Column(nullable = false)
     private String aseguradora;
 
+    @OneToOne(mappedBy = "cita")
+    private Reprogramacion reprogramacion;
 
     @ManyToOne
     @JoinColumn(name = "id_medico")

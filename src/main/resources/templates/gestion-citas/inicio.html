@@ -36,7 +36,11 @@
                 </button>
 
                 <button id="btn-transferir" class="btn btn-sm btn-outline-secondary bloqueable-fecha-pasada habilitado-futuro">
-                    <i class="bi bi-arrow-left-right"></i> Editar
+                    <i class="bi bi-pencil-fill"></i> Editar
+                </button>
+
+                <button id="btn-reprogramar" class="btn btn-sm btn-outline-secondary btn-duplicar">
+                    <i class="bi bi-arrow-repeat"></i> Reprogramar
                 </button>
 
                 <button id="btn-duplicar" class="btn btn-sm btn-outline-secondary btn-duplicar habilitado-futuro">
@@ -143,7 +147,8 @@
     <div th:replace="~{gestion-citas/fragments/modal-iniciar :: modalIniciarProtocolo}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-atender :: modalFinalizarProtocolo}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-asignar :: modalAsignarAtencion}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-reprogramar :: modalReprogramarCita}"></div>
+    <div th:replace="~{gestion-citas/fragments/modal-editar :: modalEditarCita}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-reprogramar :: modalReprogramarCita}"></div>
     <div th:replace="~{gestion-citas/fragments/modal-duplicar :: modalDuplicarCita}"></div>
 
     <div th:replace="~{gestion-citas/fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
@@ -171,6 +176,7 @@
 <script src="/js/gestion-citas/botones/modal-atender.js"></script>
 <script src="/js/gestion-citas/botones/seleccion-ficha.js"></script>
 <script src="/js/gestion-citas/botones/modal-asignar.js"></script>
+<script src="/js/gestion-citas/botones/modal-editar.js"></script>
 <script src="/js/gestion-citas/botones/modal-reprogramar.js"></script>
 <script src="/js/gestion-citas/botones/modal-duplicar.js"></script>
 <script src="/js/gestion-citas/botones/exportar.js"></script>

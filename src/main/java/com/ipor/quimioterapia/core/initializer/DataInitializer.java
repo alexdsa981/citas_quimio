@@ -1,5 +1,7 @@
 package com.ipor.quimioterapia.core.initializer;
 
+import com.ipor.quimioterapia.gestioncitas.botones.reprogramar.MotivoReprogramacionRepository;
+import com.ipor.quimioterapia.gestioncitas.botones.reprogramar.MotivoReprogramacion;
 import com.ipor.quimioterapia.usuario.Usuario;
 import com.ipor.quimioterapia.usuario.UsuarioRepository;
 import com.ipor.quimioterapia.usuario.rol.RolUsuario;
@@ -19,6 +21,8 @@ public class DataInitializer implements CommandLineRunner {
     RolUsuarioRepository rolUsuarioRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    MotivoReprogramacionRepository motivoReprogramacionRepository;
 
 
     @Override
@@ -41,8 +45,21 @@ public class DataInitializer implements CommandLineRunner {
             admin.setChangedPass(false);
             admin.setIsSpringUser(false);
             usuarioRepository.save(admin);
-
         }
+
+        if (motivoReprogramacionRepository.count() == 0) {
+            MotivoReprogramacion motivo1 = new MotivoReprogramacion();
+            motivo1.setNombre("Efectos adversos");
+            motivo1.setIsActive(Boolean.TRUE);
+            motivoReprogramacionRepository.save(motivo1);
+            MotivoReprogramacion motivo2= new MotivoReprogramacion();
+            motivo2.setNombre("Otros");
+            motivo2.setIsActive(Boolean.TRUE);
+            motivoReprogramacionRepository.save(motivo2);
+        }
+
+
+
 
     }
 }
