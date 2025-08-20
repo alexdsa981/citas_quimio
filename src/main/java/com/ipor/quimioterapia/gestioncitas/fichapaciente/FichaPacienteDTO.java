@@ -74,6 +74,10 @@ public class FichaPacienteDTO {
     //LISTA CIE
     private List<DetalleCieDTO> listaCIE = new ArrayList<>();
 
+    private String cita_motivoReprogramacion;
+    private String cita_descripcionReprogramacion;
+
+
     public FichaPacienteDTO(FichaPaciente fichaPaciente){
         //FICHA
         if(fichaPaciente.getCita() != null) {
@@ -159,6 +163,10 @@ public class FichaPacienteDTO {
             this.detalle_medicinas = fichaPaciente.getDetalleQuimioterapia().getMedicinas();
         }
 
+        if (fichaPaciente.getCita().getReprogramacion() != null){
+            this.cita_motivoReprogramacion = fichaPaciente.getCita().getReprogramacion().getMotivoReprogramacion().getNombre();
+            this.cita_descripcionReprogramacion = fichaPaciente.getCita().getReprogramacion().getDescripcion();
+        }
         //EXTRA
         this.ficha_isNuevo = true;
     }

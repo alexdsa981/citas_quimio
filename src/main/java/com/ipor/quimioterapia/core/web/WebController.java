@@ -50,6 +50,7 @@ public class WebController {
     public String redirigePaginaInicio(Model model) {
         clasificadoresModelBuilder.getListaEstadoCita(model);
         clasificadoresModelBuilder.getListaCubiculosActivos(model);
+        clasificadoresModelBuilder.getListaMotivosReprogramacionsActivos(model);
 
         personalModelBuilder.getListaMedicosActivos(model);
         personalModelBuilder.getListaEnfermerasActivos(model);

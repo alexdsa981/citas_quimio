@@ -2,6 +2,7 @@ package com.ipor.quimioterapia.gestioncitas.botones;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ipor.quimioterapia.core.websocket.WSNotificacionesService;
+import com.ipor.quimioterapia.gestioncitas.botones.reprogramar.*;
 import com.ipor.quimioterapia.gestioncitas.dto.*;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.FichaPaciente;
 import com.ipor.quimioterapia.gestioncitas.fichapaciente.atencionquimioterapia.AtencionQuimioterapia;
@@ -60,11 +61,12 @@ public class GestionCitaController {
     @Autowired
     UsuarioService usuarioService;
     @Autowired
-    RolUsuarioRepository rolUsuarioRepository;
-    @Autowired
     DetalleQuimioterapiaService detalleQuimioterapiaService;
     @Autowired
-    FuncionesVitalesService funcionesVitalesService;
+    MotivoReprogramacionService motivoReprogramacionService;
+    @Autowired
+    ReprogramacionService reprogramacionService;
+
     @Autowired
     LogService logService;
     @Autowired
@@ -80,7 +82,7 @@ public class GestionCitaController {
             LocalDate fechaCita = citaCreadaDTO.fechaCita;
             LocalTime horaProgramada = citaCreadaDTO.horaProgramada;
 
-            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L){
+            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L) {
                 if (fechaCita == null || horaProgramada == null) {
                     return ResponseEntity
                             .status(HttpStatus.BAD_REQUEST)
@@ -140,7 +142,7 @@ public class GestionCitaController {
             );
 
 
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.AGENDAR_CITA, null, valorNuevoJson,descripcionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.AGENDAR_CITA, null, valorNuevoJson, descripcionLog);
             //---------------------------------------------------
 
             return ResponseEntity.ok(Map.of("message", "Cita agendada correctamente"));
@@ -168,7 +170,12 @@ public class GestionCitaController {
                         "success", false,
                         "message", "La atención ya se encuentra en curso."
                 ));
-            } else {
+            } else if (fichaAsignacion.getCita().getEstado() == EstadoCita.REPROGRAMADO) {
+                return ResponseEntity.ok(Map.of(
+                        "success", false,
+                        "message", "La atención ha sido reprogramada."
+                ));
+            }else {
                 Medico medico = medicoService.getPorID(dto.getIdMedico());
                 Enfermera enfermera = enfermeraService.getPorID(dto.getIdEnfermera());
                 Cubiculo cubiculo = cubiculoService.getPorID(dto.getIdCubiculo());
@@ -223,11 +230,8 @@ public class GestionCitaController {
                 );
 
 
-                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaAsignacion,  AccionLogFicha.ASIGNAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaAsignacion, AccionLogFicha.ASIGNAR_CITA, valorAnteriorJson, valorNuevoJson, descripcionLog);
                 //---------------------------------------------------
-
-
-
 
 
                 return ResponseEntity.ok(Map.of(
@@ -246,7 +250,6 @@ public class GestionCitaController {
             ));
         }
     }
-
 
 
     @PostMapping("/iniciar")
@@ -276,14 +279,17 @@ public class GestionCitaController {
                 ));
             }
 
+            if (fichaPaciente.getCita().getEstado() == EstadoCita.REPROGRAMADO) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "REPROGRAMADA",
+                        "message", "La atención para este paciente ya ha sido reprogramada."
+                ));
+            }
 
             citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
             atencionQuimioterapiaService.iniciarProtocolo(iniciarProtocoloDTO.getHoraInicio(), fichaPaciente);
 
             wsNotificacionesService.notificarActualizacionTabla();
-
-
-
 
 
             //LOG INICIAR ATENCION---------------------------------------------------
@@ -302,7 +308,7 @@ public class GestionCitaController {
             );
 
 
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.INICIAR_ATENCION, null, valorNuevoJson,descripcionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.INICIAR_ATENCION, null, valorNuevoJson, descripcionLog);
             //---------------------------------------------------
 
 
@@ -321,8 +327,6 @@ public class GestionCitaController {
     }
 
 
-
-
     @PostMapping("/atender")
     public ResponseEntity<?> finalizarProtocolo(@RequestBody FinalizarProtocoloDTO finalizarProtocoloDTO) {
         try {
@@ -333,7 +337,6 @@ public class GestionCitaController {
                 atencionQuimioterapiaService.finalizarProtocolo(finalizarProtocoloDTO.getHoraFin(), fichaPaciente);
                 //restriccionService.comprobarDespuesDeAtendido(fichaPaciente);
                 wsNotificacionesService.notificarActualizacionTabla();
-
 
 
                 //LOG FINALIZAR ATENCION---------------------------------------------------
@@ -352,7 +355,7 @@ public class GestionCitaController {
                 );
 
 
-                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.FINALIZAR_ATENCION, null, valorNuevoJson,descripcionLog);
+                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.FINALIZAR_ATENCION, null, valorNuevoJson, descripcionLog);
                 //---------------------------------------------------
 
 
@@ -374,9 +377,6 @@ public class GestionCitaController {
             ));
         }
     }
-
-
-
 
 
     @PostMapping("/retroceso")
@@ -423,21 +423,37 @@ public class GestionCitaController {
                 // Cambiar estado explícitamente antes de guardar
                 citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
 
-            }
-            else if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
+            } else if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.EN_CONFLICTO) {
                 atencionQuimioterapia.setCubiculo(null);
                 atencionQuimioterapia.setEnfermera(null);
                 atencionQuimioterapia.setMedico(null);
                 // Cambiar estado y guardar correctamente
                 citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
 
+            } else if (cita.getEstado() == EstadoCita.REPROGRAMADO) {
+                if (fichaPaciente.getAtencionQuimioterapia() == null) {
+                    citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
+                } else {
+                    if (fichaPaciente.getAtencionQuimioterapia().getHoraInicio() != null && fichaPaciente.getAtencionQuimioterapia().getHoraFin() != null) {
+                        citaService.cambiarEstado(EstadoCita.ATENDIDO, fichaPaciente);
+                    } else if (fichaPaciente.getAtencionQuimioterapia().getHoraInicio() != null) {
+                        citaService.cambiarEstado(EstadoCita.EN_PROCESO, fichaPaciente);
+                    } else if (fichaPaciente.getAtencionQuimioterapia().getHoraFin() == null) {
+                        citaService.cambiarEstado(EstadoCita.PENDIENTE, fichaPaciente);
+                    } else if (fichaPaciente.getAtencionQuimioterapia().getCubiculo() == null) {
+                        citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
+                    } else {
+                        citaService.cambiarEstado(EstadoCita.NO_ASIGNADO, fichaPaciente);
+                    }
+                }
+                    reprogramacionService.delete(fichaPaciente.getCita().getReprogramacion().getId());
             }
 
             // Guardar solo la atención, la cita ya fue guardada en cambiarEstado
-            atencionQuimioterapiaService.save(atencionQuimioterapia);
+            if (fichaPaciente.getAtencionQuimioterapia() != null) {
+                atencionQuimioterapiaService.save(atencionQuimioterapia);
+            }
             wsNotificacionesService.notificarActualizacionTabla();
-
-
 
 
             //LOG FINALIZAR ATENCION---------------------------------------------------
@@ -462,9 +478,8 @@ public class GestionCitaController {
             );
 
 
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.RETROCEDER_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.RETROCEDER_CITA, valorAnteriorJson, valorNuevoJson, descripcionLog);
             //---------------------------------------------------
-
 
 
             return ResponseEntity.ok(Map.of(
@@ -473,6 +488,7 @@ public class GestionCitaController {
             ));
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                     "status", "ERROR",
                     "message", "Se produjo un error al intentar retroceder la atención: " + e.getMessage()
@@ -482,7 +498,7 @@ public class GestionCitaController {
 
 
     @PostMapping("/editar")
-    public ResponseEntity<?> reprogramarCita(@RequestBody ReprogramacionDTO dto) {
+    public ResponseEntity<?> reprogramarCita(@RequestBody EdicionDTO dto) {
         try {
             FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFicha());
             Cita cita = fichaPaciente.getCita();
@@ -500,12 +516,11 @@ public class GestionCitaController {
             }
 
 
-
             // Validar fecha
             LocalDate fechaCita = dto.getFecha();
             LocalTime horaProgramada = dto.getHora();
 
-            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L ){
+            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L) {
                 if (fechaCita == null || horaProgramada == null) {
                     return ResponseEntity
                             .status(HttpStatus.BAD_REQUEST)
@@ -540,14 +555,12 @@ public class GestionCitaController {
                     "duracionMinutos", cita.getDuracionMinutosProtocolo(),
                     "medico", cita.getMedicoConsulta().getNombreCompleto(),
                     "medicina", fichaPaciente.getDetalleQuimioterapia().getMedicinas(),
-                    "observacion",fichaPaciente.getDetalleQuimioterapia().getObservaciones(),
+                    "observacion", fichaPaciente.getDetalleQuimioterapia().getObservaciones(),
                     "tratamiento", fichaPaciente.getDetalleQuimioterapia().getTratamiento()
             );
             String valorAnteriorJson = objectMapper.writeValueAsString(valorAnteriorMap);
 
             //-------------------------------------------
-
-
 
 
             citaService.editar(cita, dto.getFecha(), dto.getHora(), medico, dto.getDuracionMinutos(), dto.getAseguradora());
@@ -561,11 +574,6 @@ public class GestionCitaController {
             wsNotificacionesService.notificarActualizacionTabla();
 
 
-
-
-
-
-
             //LOG EDITAR ATENCION---------------------------------------------------
             Map<String, Object> valorNuevoMap = Map.of(
                     "estadoCita", cita.getEstado().toString(),
@@ -575,7 +583,7 @@ public class GestionCitaController {
                     "duracionMinutos", cita.getDuracionMinutosProtocolo(),
                     "medico", cita.getMedicoConsulta().getNombreCompleto(),
                     "medicina", fichaPaciente.getDetalleQuimioterapia().getMedicinas(),
-                    "observacion",fichaPaciente.getDetalleQuimioterapia().getObservaciones(),
+                    "observacion", fichaPaciente.getDetalleQuimioterapia().getObservaciones(),
                     "tratamiento", fichaPaciente.getDetalleQuimioterapia().getTratamiento()
             );
             String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
@@ -589,7 +597,7 @@ public class GestionCitaController {
             );
 
 
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.EDITAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.EDITAR_CITA, valorAnteriorJson, valorNuevoJson, descripcionLog);
             //---------------------------------------------------
 
 
@@ -641,11 +649,8 @@ public class GestionCitaController {
             );
 
 
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente,  AccionLogFicha.CANCELAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.CANCELAR_CITA, valorAnteriorJson, valorNuevoJson, descripcionLog);
             //---------------------------------------------------
-
-
-
 
 
             // El frontend espera que haya una propiedad "success"
@@ -664,7 +669,6 @@ public class GestionCitaController {
     }
 
 
-
     @PostMapping("/duplicar")
     public ResponseEntity<?> duplicarCita(@RequestBody DuplicarCitaDTO duplicarCitaDTO) {
         try {
@@ -672,7 +676,7 @@ public class GestionCitaController {
             LocalDate fechaCita = duplicarCitaDTO.getFecha();
             LocalTime horaProgramada = duplicarCitaDTO.getHoraProgramada();
 
-            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L ){
+            if (usuarioService.getUsuarioLogeado().getRolUsuario().getId() != 3L) {
                 if (fechaCita == null || horaProgramada == null) {
                     return ResponseEntity
                             .status(HttpStatus.BAD_REQUEST)
@@ -708,7 +712,6 @@ public class GestionCitaController {
             fichaPacienteService.save(fichaNueva);
 
             wsNotificacionesService.notificarActualizacionTabla();
-
 
 
             //LOG DUPLICAR CITA----------------------------------------------
@@ -756,8 +759,8 @@ public class GestionCitaController {
             );
 
 
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaActual,  AccionLogFicha.DUPLICAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionDuplicacionLog);
-            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaNueva,  AccionLogFicha.DUPLICAR_CITA, valorAnteriorJson, valorNuevoJson,descripcionDuplicadoLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaActual, AccionLogFicha.DUPLICAR_CITA, valorAnteriorJson, valorNuevoJson, descripcionDuplicacionLog);
+            logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaNueva, AccionLogFicha.DUPLICAR_CITA, valorAnteriorJson, valorNuevoJson, descripcionDuplicadoLog);
             //---------------------------------------------------
 
 
@@ -773,6 +776,55 @@ public class GestionCitaController {
         }
     }
 
+    @PostMapping("/reprogramar")
+    public ResponseEntity<?> guardarReprogramacion(@RequestBody ReprogramacionCitaDTO dto) {
+        try {
+            FichaPaciente fichaPaciente = fichaPacienteService.getPorID(dto.getIdFichaSeleccionada());
 
+            if (fichaPaciente.getCita().getEstado() != EstadoCita.REPROGRAMADO) {
+                Reprogramacion reprogramacion;
+                if (fichaPaciente.getCita().getReprogramacion() == null) {
+                    reprogramacion = new Reprogramacion();
+                } else {
+                    reprogramacion = fichaPaciente.getCita().getReprogramacion();
+                }
+                reprogramacion.setCita(fichaPaciente.getCita());
+                reprogramacion.setMotivoReprogramacion(motivoReprogramacionService.getPorID(dto.getIdMotivo()));
+                reprogramacion.setUsuario(usuarioService.getUsuarioLogeado());
+                reprogramacion.setDescripcion(dto.getDescripcion());
+                reprogramacion.setFecha(LocalDateTime.now());
+                reprogramacionService.save(reprogramacion);
+                citaService.cambiarEstado(EstadoCita.REPROGRAMADO, fichaPaciente);
+
+                String motivoRep = motivoReprogramacionService.getPorID(dto.getIdMotivo()).getNombre();
+                //LOG AGENDAR CITA---------------------------------------------------
+                Map<String, Object> valorNuevoMap = Map.of(
+                        "paciente", fichaPaciente.getPaciente().getNombreCompleto(),
+                        "fechaReprogramacion", LocalDateTime.now(),
+                        "motivoReprogramacion", motivoRep
+                );
+
+                String valorNuevoJson = objectMapper.writeValueAsString(valorNuevoMap);
+
+                String descripcionLog = String.format(
+                        "Cita reprogramada por el usuario %s para el paciente %s. Fecha y hora de registro: %s.",
+                        usuarioService.getUsuarioLogeado().getNombre(),
+                        fichaPaciente.getPaciente().getNombreCompleto(),
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                );
+
+                logService.saveDeFicha(usuarioService.getUsuarioLogeado(), fichaPaciente, AccionLogFicha.REPROGRAMAR_CITA, null, valorNuevoJson, descripcionLog);
+                //---------------------------------------------------
+
+                return ResponseEntity.ok().body(Map.of("mensaje", "Reprogramación guardada correctamente"));
+            } else {
+                return ResponseEntity.ok().body(Map.of("mensaje", "Ya ha sido reprogramado"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Ocurrió un error al guardar la reprogramación: " + e.getMessage()));
+        }
+    }
 
 }

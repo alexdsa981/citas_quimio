@@ -48,10 +48,8 @@
                     <div class="tab-content mt-3">
 
 
-
-
-
-                        <div id="citaFicha" class="tab-pane fade show active" role="tabpanel" aria-labelledby="cita-tab">
+                        <div id="citaFicha" class="tab-pane fade show active" role="tabpanel"
+                             aria-labelledby="cita-tab">
                             <div class="row g-4">
 
                                 <!-- Columna Paciente -->
@@ -63,9 +61,12 @@
                                         </div>
                                         <div class="card-body">
                                             <p><strong>Nombre:</strong> <span id="nombrePacienteFicha"></span></p>
-                                            <p><strong>Tipo Documento:</strong> <span id="tipoDocumentoPacienteFicha"></span></p>
-                                            <p><strong>Número Documento:</strong> <span id="numeroDocumentoPacienteFicha"></span></p>
-                                            <p><strong>Edad:</strong> <span id="edadPacienteFicha"></span> años (<span id="fechaNacimientoPacienteFicha"></span>)</p>
+                                            <p><strong>Tipo Documento:</strong> <span
+                                                    id="tipoDocumentoPacienteFicha"></span></p>
+                                            <p><strong>Número Documento:</strong> <span
+                                                    id="numeroDocumentoPacienteFicha"></span></p>
+                                            <p><strong>Edad:</strong> <span id="edadPacienteFicha"></span> años (<span
+                                                    id="fechaNacimientoPacienteFicha"></span>)</p>
                                             <p><strong>Sexo:</strong> <span id="sexoPacienteFicha"></span></p>
                                             <p><strong>Celular:</strong> <span id="celularPacienteFicha"></span></p>
                                             <p><strong>Teléfono:</strong> <span id="telefonoPacienteFicha"></span></p>
@@ -91,10 +92,20 @@
                                             <i class="bi bi-calendar-check-fill me-2"></i>Datos de la Cita
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Registrado Por:</strong> <span id="usuarioRegistroCita"></span> | <span id="fechaRegistroCita"></span></p>
-                                            <p><strong>Fecha Programada:</strong> <span id="fechaCitaFicha"></span> | <span id="horaCitaFicha"></span> - <span id="horaCitaFinFicha"></span> </p>
+                                            <p><strong>Registrado Por:</strong> <span id="usuarioRegistroCita"></span> |
+                                                <span id="fechaRegistroCita"></span></p>
+                                            <p><strong>Fecha Programada:</strong> <span id="fechaCitaFicha"></span> |
+                                                <span id="horaCitaFicha"></span> - <span id="horaCitaFinFicha"></span>
+                                            </p>
                                             <p><strong>Médico:</strong> <span id="medicoCitaFicha"></span></p>
                                             <p><strong>Estado:</strong> <span id="estadoCitaFicha"></span></p>
+
+                                            <div id="reprogramacionCampos" style="display: none;">
+                                                <p><strong>Motivo de Reprogramación:</strong> <span
+                                                        id="motivoReprogramacionCita"></span></p>
+                                                <p><strong>Descripción de Reprogramación:</strong> <span
+                                                        id="descripcionReprogramacionCita"></span></p>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -116,53 +127,56 @@
                         </div>
 
 
-
-
-
-
-
-
-
-
-
-
-                        <div class="tab-pane fade" id="signos-vitalesFicha" role="tabpanel" aria-labelledby="signos-vitales-tab">
+                        <div class="tab-pane fade" id="signos-vitalesFicha" role="tabpanel"
+                             aria-labelledby="signos-vitales-tab">
                             <div class="card shadow-sm rounded-4 border-0">
                                 <div class="card-header bg-light text-dark fw-bold border-bottom">
-                                    <i class="bi bi-heart-pulse-fill text-danger me-2"></i>Signos Vitales y Datos Antropométricos
+                                    <i class="bi bi-heart-pulse-fill text-danger me-2"></i>Signos Vitales y Datos
+                                    Antropométricos
                                 </div>
-                                <div class="card-body row g-3 form-disabled" id="datosModificablesFuncionesVitalesFicha">
+                                <div class="card-body row g-3 form-disabled"
+                                     id="datosModificablesFuncionesVitalesFicha">
 
                                     <!-- Signos Vitales -->
                                     <div class="col-md-3">
-                                        <label class="form-label">Presión Arterial <span style="color:red;">*</span> <small>(mmHg)</small></label>
+                                        <label class="form-label">Presión Arterial <span style="color:red;">*</span>
+                                            <small>(mmHg)</small></label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" placeholder="Sistólica" id="presionSistolicaFicha">
+                                            <input type="number" class="form-control" placeholder="Sistólica"
+                                                   id="presionSistolicaFicha">
                                             <span class="input-group-text">/</span>
-                                            <input type="number" class="form-control" placeholder="Diastólica" id="presionDiastolicaFicha">
+                                            <input type="number" class="form-control" placeholder="Diastólica"
+                                                   id="presionDiastolicaFicha">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label">Frecuencia Respiratoria <span style="color:red;">*</span> <small>(x min)</small></label>
-                                        <input type="number" class="form-control" placeholder="--" id="frecuenciaRespiratoriaFicha">
+                                        <label class="form-label">Frecuencia Respiratoria <span
+                                                style="color:red;">*</span> <small>(x min)</small></label>
+                                        <input type="number" class="form-control" placeholder="--"
+                                               id="frecuenciaRespiratoriaFicha">
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label">Frecuencia Cardíaca <span style="color:red;">*</span> <small>(x min)</small></label>
-                                        <input type="number" class="form-control" placeholder="--" id="frecuenciaCardiacaFicha">
+                                        <label class="form-label">Frecuencia Cardíaca <span style="color:red;">*</span>
+                                            <small>(x min)</small></label>
+                                        <input type="number" class="form-control" placeholder="--"
+                                               id="frecuenciaCardiacaFicha">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Temperatura <span style="color:red;">*</span> <small>(°C)</small></label>
-                                        <input type="number" step="0.1" class="form-control" placeholder="--" id="temperaturaFicha">
+                                        <input type="number" step="0.1" class="form-control" placeholder="--"
+                                               id="temperaturaFicha">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Saturación <span style="color:red;">*</span> <small>(%)</small></label>
-                                        <input type="number" class="form-control" placeholder="--" id="saturacionOxigenoFicha">
+                                        <input type="number" class="form-control" placeholder="--"
+                                               id="saturacionOxigenoFicha">
                                     </div>
 
                                     <!-- Datos Antropométricos -->
                                     <div class="col-md-3">
                                         <label class="form-label">Peso <small>(kg)</small></label>
-                                        <input type="number" step="0.1" class="form-control" placeholder="--" id="pesoFicha">
+                                        <input type="number" step="0.1" class="form-control" placeholder="--"
+                                               id="pesoFicha">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Talla <small>(cm)</small></label>
@@ -171,35 +185,34 @@
                                     <div class="col-md-3">
                                         <label class="form-label">Sup. Corporal <small>(m²)</small></label>
                                         <input type="text" class="form-control" id="superficieCorporalFicha" readonly
-                                               style="background-color: #e9ecef; cursor: not-allowed;" placeholder="Formula de Mosteller">
+                                               style="background-color: #e9ecef; cursor: not-allowed;"
+                                               placeholder="Formula de Mosteller">
                                     </div>
 
                                     <!-- Botones -->
                                     <div class="mt-4 d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-outline-primary bloqueable-fecha-pasada" id="btnModificarSignosVitalesFicha"
-                                                onclick="habilitarEdicionSignosVitalesFicha()">Modificar</button>
-                                        <button type="button" class="btn btn-success bloqueable-fecha-pasada" id="btnGuardarSignosVitalesFicha"
-                                                onclick="guardarSignosVitalesFicha()">Guardar</button>
+                                        <button type="button" class="btn btn-outline-primary bloqueable-fecha-pasada"
+                                                id="btnModificarSignosVitalesFicha"
+                                                onclick="habilitarEdicionSignosVitalesFicha()">Modificar
+                                        </button>
+                                        <button type="button" class="btn btn-success bloqueable-fecha-pasada"
+                                                id="btnGuardarSignosVitalesFicha"
+                                                onclick="guardarSignosVitalesFicha()">Guardar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
 
-
-
-
-
-
-
-
-
-                        <div class="tab-pane fade" id="detalleQuimioterapiaFicha" role="tabpanel" aria-labelledby="detalle-quimioterapia-tab">
+                        <div class="tab-pane fade" id="detalleQuimioterapiaFicha" role="tabpanel"
+                             aria-labelledby="detalle-quimioterapia-tab">
                             <div class="card shadow-sm border-0 rounded-4">
                                 <div class="card-header bg-light fw-bold text-dark border-bottom">
                                     <i class="bi bi-journal-medical me-2 text-info"></i>Detalle Clínico de Quimioterapia
                                 </div>
-                                <div class="card-body row g-3 form-disabled" id="datosModificablesDetalleQuimioterapiaFicha">
+                                <div class="card-body row g-3 form-disabled"
+                                     id="datosModificablesDetalleQuimioterapiaFicha">
 
                                     <!-- Medicinas y Observaciones -->
                                     <div class="col-md-6">
@@ -212,14 +225,16 @@
                                             <small>
                                                 <label for="observacionesFicha" class="form-label">Observaciones</label>
                                             </small>
-                                            <textarea id="observacionesFicha" name="observaciones" class="form-control" rows="3" placeholder=""></textarea>
+                                            <textarea id="observacionesFicha" name="observaciones" class="form-control"
+                                                      rows="3" placeholder=""></textarea>
                                         </div>
 
                                         <div class="col-12 mt-3">
                                             <small>
                                                 <label for="tratamientoFicha" class="form-label">Tratamiento</label>
                                             </small>
-                                            <textarea id="tratamientoFicha" name="tratamiento" class="form-control" rows="3" placeholder=""></textarea>
+                                            <textarea id="tratamientoFicha" name="tratamiento" class="form-control"
+                                                      rows="3" placeholder=""></textarea>
                                         </div>
                                     </div>
 
@@ -227,18 +242,17 @@
                                 </div>
 
                                 <div class="card-footer bg-white border-top mt-3 d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-primary bloqueable-fecha-pasada" id="btnModificarDetalleQuimioterapiaFicha"
-                                            onclick="habilitarEdicionDetalleQuimioterapiaFicha()">Modificar</button>
-                                    <button type="button" class="btn btn-success bloqueable-fecha-pasada" id="btnGuardarDetalleQuimioterapiaFicha"
-                                            onclick="guardarDetalleQuimioterapiaFicha()" disabled>Guardar</button>
+                                    <button type="button" class="btn btn-outline-primary bloqueable-fecha-pasada"
+                                            id="btnModificarDetalleQuimioterapiaFicha"
+                                            onclick="habilitarEdicionDetalleQuimioterapiaFicha()">Modificar
+                                    </button>
+                                    <button type="button" class="btn btn-success bloqueable-fecha-pasada"
+                                            id="btnGuardarDetalleQuimioterapiaFicha"
+                                            onclick="guardarDetalleQuimioterapiaFicha()" disabled>Guardar
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
 
 
                         <div class="tab-pane fade" id="cie10Ficha" role="tabpanel" aria-labelledby="cie10-tab">
@@ -250,7 +264,8 @@
                                 <div class="card-body">
                                     <!-- Mensaje si no hay CIE -->
                                     <div id="mensajeCieNoDiagnostico" class="text-muted mb-3">
-                                        <i class="bi bi-info-circle-fill"></i> No se han registrado diagnósticos CIE10 aún.
+                                        <i class="bi bi-info-circle-fill"></i> No se han registrado diagnósticos CIE10
+                                        aún.
                                     </div>
 
                                     <!-- Campo de búsqueda oculto por defecto -->
@@ -261,7 +276,10 @@
                                                 <span class="form-control" style="background-color: #e9ecef;">
                                                     Haz clic en Buscar para seleccionar un CIE10
                                                 </span>
-                                                <button id="btnBuscarCie" class="btn btn-outline-primary bloqueable-fecha-pasada" type="button" onclick="abrirModalCie()" disabled>Buscar</button>
+                                                <button id="btnBuscarCie"
+                                                        class="btn btn-outline-primary bloqueable-fecha-pasada"
+                                                        type="button" onclick="abrirModalCie()" disabled>Buscar
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -276,18 +294,17 @@
                                 </div>
 
                                 <div class="card-footer bg-white d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-info bloqueable-fecha-pasada" id="btnModificarCieFicha"
-                                            onclick="habilitarModificacionCieFicha() ">Modificar</button>
-                                    <button id="btnGuardarCie" class="btn btn-success bloqueable-fecha-pasada" type="button"
-                                            onclick="guardarCieSeleccionados()" disabled>Guardar CIE10</button>
+                                    <button type="button" class="btn btn-outline-info bloqueable-fecha-pasada"
+                                            id="btnModificarCieFicha"
+                                            onclick="habilitarModificacionCieFicha() ">Modificar
+                                    </button>
+                                    <button id="btnGuardarCie" class="btn btn-success bloqueable-fecha-pasada"
+                                            type="button"
+                                            onclick="guardarCieSeleccionados()" disabled>Guardar CIE10
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
 
 
                     </div>

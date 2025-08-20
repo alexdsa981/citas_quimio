@@ -162,3 +162,8 @@ tr.no-click {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.bg-reprogramado {
+    background-color: #8e8eaa !important;
+    color: #fff !important;
+}

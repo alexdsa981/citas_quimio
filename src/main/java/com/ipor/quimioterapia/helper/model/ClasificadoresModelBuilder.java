@@ -31,13 +31,6 @@ public class ClasificadoresModelBuilder {
     }
 
 
-    public Model getListaCubiculos(Model model) {
-        List<Cubiculo> lista = cubiculoService.getLista();
-        model.addAttribute("Lista_Cubiculo", lista);
-        return model;
-    }
-
-
     public Model getListaCubiculosActivos(Model model) {
         List<Cubiculo> lista = cubiculoService.getListaActivos();
         model.addAttribute("Lista_Cubiculo_Activos", lista);
@@ -46,7 +39,7 @@ public class ClasificadoresModelBuilder {
 
     public Model getListaMotivosReprogramacionsActivos(Model model) {
         List<MotivoReprogramacion> lista = motivoReprogramacionService.getListaActivos();
-        model.addAttribute("Lista_Cubiculo_Activos", lista);
+        model.addAttribute("Lista_MotivoReprogramacion_Activos", lista);
         return model;
     }
 

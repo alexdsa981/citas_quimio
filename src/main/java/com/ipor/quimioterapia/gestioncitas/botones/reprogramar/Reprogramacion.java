@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +21,8 @@ public class Reprogramacion {
 
     @Column(nullable = false)
     private String descripcion;
+
+    private LocalDateTime fecha;
 
     @ManyToOne
     @JoinColumn(name = "id_motivo_reprogramacion")
@@ -32,6 +36,4 @@ public class Reprogramacion {
     @JoinColumn(name = "id_usuario_creador")
     private Usuario usuario;
 
-    @Column(nullable = false)
-    private Boolean isActive;
 }

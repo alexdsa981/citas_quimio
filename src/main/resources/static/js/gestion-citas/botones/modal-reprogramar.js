@@ -13,12 +13,6 @@ document.getElementById('btn-reprogramar').addEventListener('click', () => {
         })
         .then(data => {
             document.getElementById('nombrePacienteReprogramar').value = data.nombrePaciente || '';
-            document.getElementById('modalFechaReprogramacion').value = data.fechaCita || '';
-            document.getElementById('modalHoraReprogramacion').value = data.horaCita || '';
-
-            const duracion = data.duracion || 0;
-            document.getElementById('reprogramarHorasProtocoloCita').value = Math.floor(duracion / 60).toString();
-            document.getElementById('reprogramarMinutosProtocoloCita').value = (duracion % 60).toString();
 
             modalReprogramar.show();
         })
@@ -27,3 +21,43 @@ document.getElementById('btn-reprogramar').addEventListener('click', () => {
             Swal.fire("Error", "Ocurrió un error al cargar la información.", "error");
         });
 });
+
+
+
+
+function guardarReprogramacion() {
+    const selectMotivo = document.getElementById('idMotivoReprogramacion');
+    const descripcionInput = document.querySelector('textarea[placeholder="Describe el motivo de la reprogramación..."]');
+
+    const idMotivo = selectMotivo.value;
+    const descripcion = descripcionInput.value;
+
+    fetch('/app/gestion-citas/boton/reprogramar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            idFichaSeleccionada,
+            idMotivo,
+            descripcion
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        Swal.fire('Aviso', data.mensaje, data.mensaje === "Reprogramación guardada correctamente" ? 'success' : 'info')
+            .then(() => {
+                if (data.mensaje === "Reprogramación guardada correctamente") {
+                    // Limpiar los inputs y seleccionar el primer valor del select
+                    descripcionInput.value = "";
+                    selectMotivo.selectedIndex = 0;
+                }
+                refrescarTablaSegunFiltro();
+                modalReprogramar.hide();
+            });
+    })
+    .catch(error => {
+        console.log(error);
+        Swal.fire('Error', 'No se pudo guardar la reprogramación', 'error');
+    });
+}

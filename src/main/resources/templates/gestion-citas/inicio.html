@@ -8,7 +8,7 @@
 <div th:replace="~{common/header :: header}">
 </div>
 
-<input type="hidden" id="fechaActual" th:value="${fechaInputActual}" />
+<input type="hidden" id="fechaActual" th:value="${fechaInputActual}"/>
 <div class="card shadow-sm border-0 panel-botones-cita" style="top: 1rem; z-index: 1020;">
     <div class="card-body">
         <!-- Acciones -->
@@ -35,7 +35,8 @@
                     <i class="bi bi-arrow-counterclockwise"></i> Retroceso
                 </button>
 
-                <button id="btn-transferir" class="btn btn-sm btn-outline-secondary bloqueable-fecha-pasada habilitado-futuro">
+                <button id="btn-transferir"
+                        class="btn btn-sm btn-outline-secondary bloqueable-fecha-pasada habilitado-futuro">
                     <i class="bi bi-pencil-fill"></i> Editar
                 </button>
 
@@ -47,13 +48,15 @@
                     <i class="bi bi-copy"></i> Duplicar Cita
                 </button>
 
-                <button id="btn-cancelar" class="btn btn-sm btn-outline-danger bloqueable-fecha-pasada habilitado-futuro">
+                <button id="btn-cancelar"
+                        class="btn btn-sm btn-outline-danger bloqueable-fecha-pasada habilitado-futuro">
                     <i class="bi bi-x-circle"></i> Cancelar
                 </button>
             </div>
 
             <!-- Botón agendar a la derecha -->
-            <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5" data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
+            <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5"
+                    data-bs-toggle="modal" data-bs-target="#modalAgendarCita">
                 <i class="bi bi-plus-circle"></i> Agendar Cita
             </button>
 
@@ -61,9 +64,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 <main class="container-fluid py-4 flex-fill">
@@ -74,7 +74,8 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-3">
                     <label class="form-label">Buscar paciente</label>
-                    <input type="text" id="filtroPaciente" class="form-control" placeholder="Nombre o documento" autocomplete="off">
+                    <input type="text" id="filtroPaciente" class="form-control" placeholder="Nombre o documento"
+                           autocomplete="off">
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Estado</label>
@@ -87,12 +88,14 @@
                     <label class="form-label">Cubículo</label>
                     <select class="form-select" id="filtroCubiculo">
                         <option value="TODO">TODO</option>
-                        <option th:each="c : ${Lista_Cubiculo_Activos}" th:value="${c.codigo}" th:text="${c.codigo}"></option>
+                        <option th:each="c : ${Lista_Cubiculo_Activos}" th:value="${c.codigo}"
+                                th:text="${c.codigo}"></option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Fecha</label>
-                    <input type="text" id="filtroFecha" class="form-control" placeholder="Seleccionar fecha(s)" autocomplete="off">
+                    <input type="text" id="filtroFecha" class="form-control" placeholder="Seleccionar fecha(s)"
+                           autocomplete="off">
                 </div>
                 <div class="col-md-2 d-flex gap-2">
                     <button class="btn btn-dark w-50" title="Reporte" disabled>
@@ -100,7 +103,8 @@
                     </button>
                     <button id="btnExportarExcel" class="btn btn-outline-dark w-50" title="Exportar">
                         <span class="icono-exportar"><i class="bi bi-download"></i></span>
-                        <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm ms-2 d-none" role="status"
+                              aria-hidden="true"></span>
                     </button>
 
                 </div>
@@ -136,24 +140,20 @@
 </main>
 
 
-
-    <div th:replace="~{gestion-citas/fragments/modal-cita :: modalCita}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-busqueda-paciente :: modalBusquedaPaciente}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-busqueda-aseguradora :: modalBusquedaAseguradora}"></div>
-
+<div th:replace="~{gestion-citas/fragments/modal-cita :: modalCita}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-busqueda-paciente :: modalBusquedaPaciente}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-busqueda-aseguradora :: modalBusquedaAseguradora}"></div>
 
 
-    <div th:replace="~{gestion-citas/fragments/modal-busqueda-cie :: modalBusquedaCie}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-iniciar :: modalIniciarProtocolo}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-atender :: modalFinalizarProtocolo}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-asignar :: modalAsignarAtencion}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-editar :: modalEditarCita}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-busqueda-cie :: modalBusquedaCie}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-iniciar :: modalIniciarProtocolo}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-atender :: modalFinalizarProtocolo}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-asignar :: modalAsignarAtencion}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-editar :: modalEditarCita}"></div>
 <div th:replace="~{gestion-citas/fragments/modal-reprogramar :: modalReprogramarCita}"></div>
-    <div th:replace="~{gestion-citas/fragments/modal-duplicar :: modalDuplicarCita}"></div>
+<div th:replace="~{gestion-citas/fragments/modal-duplicar :: modalDuplicarCita}"></div>
 
-    <div th:replace="~{gestion-citas/fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
-
-
+<div th:replace="~{gestion-citas/fragments/modal-ficha-paciente :: modalFichaPaciente}"></div>
 
 
 <th:block th:replace="~{common/imports :: bodyImports}"/>
@@ -180,7 +180,6 @@
 <script src="/js/gestion-citas/botones/modal-reprogramar.js"></script>
 <script src="/js/gestion-citas/botones/modal-duplicar.js"></script>
 <script src="/js/gestion-citas/botones/exportar.js"></script>
-
 
 
 <script src="/js/gestion-citas/ficha-paciente/tab-cita/datos.js"></script>

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 @Getter
 @Setter
-public class ReprogramacionDTO {
+public class EdicionDTO {
     private Long idFicha;
     private LocalDate fecha;
     private LocalTime hora;

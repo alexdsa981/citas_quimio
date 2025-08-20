@@ -88,10 +88,11 @@ function llenarTablaFichas(fichas) {
             bloqueaClick = true;
         } else if (estado === "EN_CONFLICTO") {
             claseEstado = "bg-danger text-white";
+        } else if (estado === "REPROGRAMADO") {
+            claseEstado = "bg-reprogramado text-white";
         } else {
             claseEstado = "bg-light text-muted border";
         }
-
         const esSeleccionada = dto.ficha_id == idFichaSeleccionada ? 'seleccionada' : '';
         claseFila += esSeleccionada ? ' seleccionada' : '';
         const claseFila2 = dto.ficha_id < 0 ? "ficha_antigua" : "";
@@ -304,6 +305,8 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (estado === "EN_PROCESO") claseEstado = "bg-info text-dark";
         else if (estado === "ATENDIDO") claseEstado = "bg-success";
         else if (estado === "NO_ASIGNADO") claseEstado = "bg-secondary text-white";
+        else if (estado === "REPROGRAMADO") claseEstado = "bg-reprogramado text-white";
+
 
         document.getElementById("info-cita").innerHTML = `
             <div><strong>Fecha:</strong> ${fecha} | <strong>Hora:</strong> ${hora}</div>

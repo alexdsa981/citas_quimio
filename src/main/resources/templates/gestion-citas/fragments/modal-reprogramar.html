@@ -17,53 +17,24 @@
                         <label class="form-label">Paciente</label>
                         <input type="text" class="form-control" id="nombrePacienteReprogramar" disabled>
                     </div>
-                    <div class="mb-3">
-                        <label for="modalFechaReprogramacion" class="form-label">Fecha de la Cita</label>
-                        <input type="date" class="form-control" id="modalFechaReprogramacion">
-                    </div>
-                    <div class="mb-3">
-                        <label for="modalHoraReprogramacion" class="form-label">Hora Programada</label>
-                        <input type="time" class="form-control" id="modalHoraReprogramacion">
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Duración Protocolo</label><span style="color:red;">*</span>
-                        <div class="input-group">
-                            <select class="form-select " id="reprogramarHorasProtocoloCita" required >
-                                <option value="0">0 h</option>
-                                <option value="1">1 h</option>
-                                <option value="2">2 h</option>
-                                <option value="3">3 h</option>
-                                <option value="4">4 h</option>
-                                <option value="5">5 h</option>
-                                <option value="6">6 h</option>
-                                <option value="7">7 h</option>
-                                <option value="8">8 h</option>
-                                <option value="9">9 h</option>
-                                <option value="10">10 h</option>
-                            </select>
-                            <select class="form-select " id="reprogramarMinutosProtocoloCita" required >
-                                <option value="0">0 min</option>
-                                <option value="15">15 min</option>
-                                <option value="30">30 min</option>
-                                <option value="45">45 min</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="mb-3">
                         <label class="form-label">Seleccione el Motivo</label><span style="color:red;">*</span>
                         <select class="form-select" name="idMotivo" id="idMotivoReprogramacion">
-                            <option value="prueba">Prueba</option>
+                            <th:block th:each="motivo : ${Lista_MotivoReprogramacion_Activos}">
+                                <option th:value="${motivo.id}" th:text="${motivo.nombre}"></option>
+                            </th:block>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Descripción</label><span style="color:red;">*</span>
-                        <textarea class="form-control" placeholder="Describe el motivo de la reprogramación..." required></textarea>                    </div>
+                        <textarea class="form-control" placeholder="Describe el motivo de la reprogramación..."
+                                  required></textarea></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarReprogramacion()">Guardar</button>
                 </div>
             </div>
         </div>

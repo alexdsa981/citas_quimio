@@ -76,6 +76,14 @@ document.querySelector('.btn-confirmar-inicio').addEventListener('click', functi
                 });
                 break;
 
+            case 'REPROGRAMADO':
+                Swal.fire({
+                    title: 'ℹ️ Atención ya reprogramada',
+                    text: data.message,
+                    icon: 'info'
+                });
+                break;
+
             case 'EN_CURSO':
                 Swal.fire({
                     title: '⛔ Atención en curso',

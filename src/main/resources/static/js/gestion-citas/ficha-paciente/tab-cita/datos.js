@@ -36,6 +36,17 @@ function llenarVisualFichaPaciente(ficha) {
         document.getElementById('horaCitaFinFicha').textContent = "";
     }
 
+    // Mostrar/ocultar campos de reprogramación según el estado
+    if (ficha.cita_estado === "REPROGRAMADO") {
+        document.getElementById('reprogramacionCampos').style.display = "block";
+        document.getElementById('motivoReprogramacionCita').textContent = ficha.cita_motivoReprogramacion || '';
+        document.getElementById('descripcionReprogramacionCita').textContent = ficha.cita_descripcionReprogramacion || '';
+    } else {
+        document.getElementById('reprogramacionCampos').style.display = "none";
+        document.getElementById('motivoReprogramacionCita').textContent = '';
+        document.getElementById('descripcionReprogramacionCita').textContent = '';
+    }
+
 
     document.getElementById('estadoCitaFicha').textContent = ficha.cita_estado || '';
     document.getElementById('medicoCitaFicha').textContent = ficha.cita_medico || '';
