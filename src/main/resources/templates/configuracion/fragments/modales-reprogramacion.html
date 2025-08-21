@@ -1,0 +1,46 @@
+<div th:fragment="modalMotivoReprogramacion" xmlns:th="http://www.thymeleaf.org">
+    <!-- Modal Crear Motivo de Reprogramación -->
+    <div class="modal fade" id="modalAgregarMotivoReprogramacion" tabindex="-1" aria-labelledby="modalAgregarMotivoReprogramacionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border-warning">
+                <div class="modal-header bg-warning-subtle">
+                    <h5 class="modal-title" id="modalAgregarMotivoReprogramacionLabel">
+                        <i class="bi bi-exclamation-circle"></i> Nuevo Motivo de Reprogramación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="inputNombreMotivoReprogramacion" class="form-label">Nombre del motivo</label>
+                    <input type="text" class="form-control" id="inputNombreMotivoReprogramacion" placeholder="Ej: Falta de Pago" autocomplete="off">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning" onclick="guardarMotivoReprogramacion()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Motivo de Reprogramación -->
+    <div class="modal fade" id="modalEditarMotivoReprogramacion" tabindex="-1" aria-labelledby="modalEditarMotivoReprogramacionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border-primary">
+                <div class="modal-header bg-primary-subtle">
+                    <h5 class="modal-title" id="modalEditarMotivoReprogramacionLabel">
+                        <i class="bi bi-pencil-square"></i> Editar Motivo de Reprogramación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idMotivoReprogramacionEditar">
+                    <label for="inputEditarNombreMotivoReprogramacion" class="form-label">Nuevo nombre del motivo</label>
+                    <input type="text" class="form-control" id="inputEditarNombreMotivoReprogramacion" autocomplete="off">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicionMotivoReprogramacion()">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

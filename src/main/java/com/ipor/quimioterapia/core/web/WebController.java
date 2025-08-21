@@ -76,6 +76,12 @@ public class WebController {
         model.addAttribute("Titulo", "ClínicaDeDía | Cubículos");
         return "recursos/cubiculos";
     }
+
+    @GetMapping("/configuracion/motivo-reprogramacion")
+    public String redirigePaginaConfiguracionReprogramacion(Model model) {
+        model.addAttribute("Titulo", "ClínicaDeDía | Motivo-Reprogramacion");
+        return "configuracion/motivo-reprogramacion";
+    }
     @GetMapping("/configuracion/usuarios")
     public String redirigePaginaConfiguracion(Model model) {
         usuarioModelBuilder.getListaRoles(model);

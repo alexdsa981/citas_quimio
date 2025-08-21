@@ -53,9 +53,10 @@ public class MotivoReprogramacionService {
         return motivoReprogramacionRepository.findById(id).get();
     }
 
-    public void actualizar(Long id, String codigo) {
+    public void actualizar(Long id, String nombre) {
         MotivoReprogramacion entidad = motivoReprogramacionRepository.findById(id).orElseThrow();
         String nombreAnterior = entidad.getNombre();
+        entidad.setNombre(nombre);
         motivoReprogramacionRepository.save(entidad);
 
         //LOG GLOBAL----------------------
